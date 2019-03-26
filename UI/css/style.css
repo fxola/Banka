@@ -1,0 +1,191 @@
+* {
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: "Gill Sans", "Gill Sans MT", Calibri, "Trebuchet MS", sans-serif;
+}
+
+/******************************************************* 
+            HEADER AND NAVIGATION STYLES 
+***********************************************************/
+
+.logo {
+  position: fixed;
+  float: left;
+  margin: 16px 36px;
+  font-weight: bold;
+  color: white;
+  font-size: 1.5em;
+}
+
+nav {
+  position: fixed;
+  width: 100%;
+}
+
+nav ul {
+  list-style-type: none;
+  background: #000000;
+  padding: 0;
+  margin: 0;
+  color: white;
+  overflow: hidden;
+  text-align: right;
+  transition: 1s;
+}
+
+nav ul li {
+  display: inline-block;
+  padding: 1em;
+}
+
+nav ul li a {
+  text-decoration: none;
+  color: white;
+  font-size: 1.2em;
+}
+
+.menu-icon {
+  width: 100%;
+  text-align: right;
+  box-sizing: border-box;
+  padding: 1em 1.5em;
+  cursor: pointer;
+  display: none;
+}
+
+@media (max-width: 767px) {
+  .logo {
+    position: fixed;
+    top: 0;
+    font-size: 1.1em;
+    margin-top: 1.3em;
+  }
+
+  nav ul {
+    max-height: 0px;
+    background: #000000;
+  }
+
+  .showing {
+    max-height: 20em;
+  }
+
+  nav ul li {
+    box-sizing: border-box;
+    width: 100%;
+    padding: 1em 0;
+    text-align: center;
+  }
+
+  .menu-icon {
+    display: block;
+    background: #000000;
+  }
+}
+/******************************************************* 
+              FOOTER STYLES 
+  ***********************************************************/
+
+footer {
+  height: 10vh;
+  background: #000000;
+  color: white;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+/******************************************************* 
+            SIGN UP PAGE STYLES 
+***********************************************************/
+
+#signup-main {
+  height: 90vh;
+  background-color: #fefefe;
+}
+
+#signup-section {
+  padding-top: 5em;
+}
+
+#signup-section form {
+  padding-top: 2em;
+  background: rgba(0, 0, 0, 0.8);
+  width: 40%;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  border-radius: 0.7em;
+}
+
+#signup-section form input {
+  display: block;
+  width: 70%;
+  margin: 0 auto;
+  margin-bottom: 1em;
+  padding: 0.5em;
+  outline: none;
+  border: none;
+  font-size: 1.2em;
+  border-bottom: 4px solid rgba(0, 0, 0, 0.9);
+  color: rgba(0, 0, 0, 0.7);
+}
+
+#signup-section form input::placeholder {
+  color: rgba(0, 0, 0, 0.9);
+}
+
+#signup-section form button {
+  padding: 0.7em;
+  width: 74%;
+  font-size: 1.1em;
+  margin-bottom: 1em;
+  color: white;
+  background: rgba(0, 0, 0, 0.3);
+  border: none;
+  transition: ease 0.4s;
+  cursor: pointer;
+  border-radius: 4px;
+}
+
+#signup-section form button:hover {
+  color: white;
+  background: rgba(0, 0, 0, 0.9);
+}
+
+#signup-section a {
+  color: white;
+}
+
+#signup-section p,
+#signup-section h3 {
+  margin-bottom: 1em;
+}
+
+#signup-section h3 {
+  color: rgba(0, 0, 0, 0.9);
+}
+
+@media (max-width: 769px) {
+  #signup-main {
+    overflow-x: auto;
+  }
+  #signup-section form {
+    width: 90%;
+    margin-bottom: 1em;
+  }
+  #signup-section form input {
+    font-size: 1.2em;
+    text-align: center;
+  }
+  #signup-section form button {
+    padding: 0.5em;
+    width: 76%;
+  }
+}
