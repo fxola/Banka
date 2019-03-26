@@ -189,3 +189,87 @@ footer {
     width: 76%;
   }
 }
+
+/******************************************************* 
+            SIGN IN PAGE STYLES 
+***********************************************************/
+#signin-main {
+  height: 90vh;
+  background-color: #fefefe;
+}
+#signin-section {
+  padding-top: 7em;
+}
+#signin-section form {
+  padding-top: 2em;
+  background: rgba(0, 0, 0, 0.8);
+  width: 40%;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  border-radius: 0.7em;
+}
+
+#signin-section form input {
+  display: block;
+  width: 70%;
+  margin: 0 auto;
+  margin-bottom: 1em;
+  padding: 0.5em;
+  outline: none;
+  border: none;
+  font-size: 1.2em;
+  border-bottom: 4px solid rgba(0, 0, 0, 0.9);
+  color: rgba(0, 0, 0, 0.7);
+}
+
+#signin-section form input::placeholder {
+  color: rgba(0, 0, 0, 0.9);
+}
+
+#signin-section form button {
+  padding: 0.7em;
+  width: 74%;
+  font-size: 1.1em;
+  margin-bottom: 1em;
+  color: white;
+  background: rgba(0, 0, 0, 0.3);
+  border: none;
+  transition: ease 0.4s;
+  cursor: pointer;
+  border-radius: 4px;
+}
+
+#signin-section form button:hover {
+  color: white;
+  background: rgba(0, 0, 0, 0.7);
+}
+
+#signin-section a {
+  color: white;
+}
+
+#signin-section p,
+#signin-section h3 {
+  margin-bottom: 1em;
+}
+
+#signin-section h3 {
+  color: #000000;
+}
+
+@media (max-width: 769px) {
+  #signin-section form {
+    width: 90%;
+  }
+  #signin-section form input {
+    font-size: 1.2em;
+    text-align: center;
+  }
+  #signin-section form button {
+    padding: 0.5em;
+    width: 76%;
+  }
+}
