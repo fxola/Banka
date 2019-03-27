@@ -54,65 +54,66 @@
           <article class="menu">
             <ul>
               <li><a href="admin_dashboard.html">Admin</a></li>
-              <li><a href="dashboard.html">Profile</a></li>
+              <li><a href="accounts.html">Accounts</a></li>
               <li><a href="transactions.html">Transactions</a></li>
             </ul>
           </article>
         </nav>
       </header>
-      <main id="dashboard-main">
-        <section id="dashboard-section">
-          <section id="profile">
-            <article id="photo">
-              <article class="card-img">
-                <img src="avatar.png" alt="profile photo" />
-              </article>
-              <article class="container">
+      <main id="accounts-main">
+        <section id="accounts-section">
+          <article class="account-record">
+            <article class="record-details">
+              <figure>
+                <img
+                  height="100px"
+                  width="100px"
+                  src="avatar.png"
+                  alt="profile photo"
+                />
+              </figure>
+
+              <article>
+                <p>Fullname</p>
                 <p>Abass Ajanaku</p>
               </article>
-            </article>
-            <article class="details">
               <article>
-                <p>
-                  Account Number
-                </p>
-                <p class="account-number">0123456789</p>
-              </article>
-              <article>
-                <p>Account Balance</p>
-                <p class="account-balance">&#8358; 295,000</p>
+                <p>Account Number</p>
+                <p>0123456789</p>
               </article>
               <article>
                 <p>Account Status</p>
-                <p class="account-status">Active</p>
+                <p>Draft</p>
               </article>
               <article>
-                  <p>
-                    Email Address
-                  </p>
-                  <p class="account-number">random@gmail.com</p>
-                </article>
+                <p>Account Balance</p>
+                <p>&#8358; 0.00</p>
+              </article>
             </article>
-          </section>
-          <section id="account">
-            <a href="#account-modal"><button>Create Bank Account</button></a>
-          </section>
-          <article id="account-modal">
-            <article class="account-modal-content" id="account-modal">
-                <form action="#" id="account-form">
-                    <article class="fields">
-                        <input type="text" name="firstname" placeholder="Firstname">
-                        <input type="text" name="lastname" placeholder="Lastname">
-                        <input type="email" name="email" placeholder="Email">
-                        <input type="text" name="account-type" placeholder="Account Type (Savings or Current)">
-                        <label for="avata">Upload Profile Picture(Optional)</label>
-                        <input type="file" name="avatar" id="avatar">
+            <article class="actions">
+              <h1>Actions</h1>
+              <article class="action-buttons">
+                <a href="#transaction-modal"><button>Make Transaction</button></a>
+                <button class="activate">Activate</button>
+                <button class="cancel">Deactivate</button>
+              </article>
+            </article>
+            <article id="transaction-modal">
+                    <article class="transaction-modal-content" id="transaction-modal">
+                        <form action="#" id="transaction-form">
+                            <article class="fields">
+                                    <input name="transaction-type" id="transaction-type" list="type" placeholder="Select Transaction Type (credit or debit)">
+                                    <datalist id="type">
+                                            <option>credit</option>
+                                            <option>debit</option> 
+                                    </datalist>
+                                    <input type="amount" name="amount" placeholder="Transaction Amount">
+                            </article>
+                                <a href="#"><button class="confirm" type="submit">Make Transaction</button><a/>
+                                <a href="#"><button class="cancel" type="submit">Cancel</button><a/>
+                            </form>
                     </article>
-                        <a href="#"><button class="confirm" type="submit">Create Account</button><a/>
-                        <a href="#"><button class="cancel" type="submit">Cancel</button><a/>
-                    </form>
-            </article>
-        </article>
+          </article>
         </section>
       </main>
       <footer>

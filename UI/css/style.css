@@ -320,7 +320,7 @@ footer {
 }
 
 .transaction-table {
-  background: rgba(0, 0, 0, 0.5);
+  background: rgba(0, 0, 0, 0.2);
   margin-bottom: 1em;
   table-layout: fixed;
   color: #909090;
@@ -334,7 +334,7 @@ td {
 
 .transaction-table th {
   padding: 1em;
-  background: rgba(0, 0, 0, 0.7);
+  background: rgba(0, 0, 0, 0.4);
   color: #eee;
   table-layout: fixed;
   width: 200px;
@@ -342,8 +342,8 @@ td {
 .transaction-table td {
   width: 214px;
   padding: 0.5em;
-  border: 1px solid #00000063;
-  color: #eee;
+  border: 1px solid #f4f7f8;
+  color: rgba(0, 0, 0, 0.5);
 }
 .transaction-table tr {
   display: block;
@@ -427,6 +427,8 @@ td {
 }
 .container {
   text-align: center;
+  background: rgba(0, 0, 0, 0.4);
+  color: white;
 }
 
 .card-img {
@@ -441,8 +443,8 @@ td {
 
 #photo,
 .details {
-  background: rgba(0, 0, 0, 0.4);
-  color: white;
+  background: rgba(0, 0, 0, 0.1);
+  color: rgba(0, 0, 0, 0.5);
 }
 
 #account button {
@@ -558,7 +560,7 @@ td {
   }
 
   #photo p {
-    font-size: 1.7em;
+    font-size: 1.4em;
   }
 
   .details {
@@ -612,7 +614,7 @@ td {
   text-align: center;
 }
 .account-details {
-  width: 45vw;
+  width: 60vw;
   margin: 0.4em auto;
   background: rgba(0, 0, 0, 0.1);
   color: rgba(0, 0, 0, 0.5);
@@ -624,10 +626,16 @@ td {
 .account-details article {
   display: flex;
   justify-content: space-between;
+  border-bottom: 0.3px solid;
+}
+
+article.buttons {
+  border-bottom: 0px;
 }
 
 .account-details a {
   text-decoration: none;
+  width: 30%;
 }
 .account-details a button {
   width: 100%;
@@ -642,7 +650,7 @@ td {
   width: 30%;
   border: none;
   cursor: pointer;
-  font-size: 1.2em;
+  font-size: 1.1em;
   transition: 0.6s;
   border-radius: 4px;
 }
@@ -675,5 +683,211 @@ td {
 
   .account-details a button {
     padding: 0.7em 1em 0.7em 1em;
+  }
+}
+
+/******************************************************* 
+           ACCOUNTS PAGE STYLES 
+***********************************************************/
+#accounts-main {
+  height: 90vh;
+  overflow: auto;
+  background-color: #ffffff;
+  background-image: url("data:image/svg+xml,%3Csvg width='40' height='40' viewBox='0 0 40 40' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M0 0h20v20H0V0zm10 17a7 7 0 1 0 0-14 7 7 0 0 0 0 14zm20 0a7 7 0 1 0 0-14 7 7 0 0 0 0 14zM10 37a7 7 0 1 0 0-14 7 7 0 0 0 0 14zm10-17h20v20H20V20zm10 17a7 7 0 1 0 0-14 7 7 0 0 0 0 14z' fill='%23000000' fill-opacity='0.02' fill-rule='evenodd'/%3E%3C/svg%3E");
+}
+
+#accounts-section {
+  padding-top: 5em;
+  margin-left: 1em;
+  margin-right: 1em;
+}
+
+.account-record {
+  height: 70vh;
+  border-radius: 0.7em;
+  background: rgba(0, 0, 0, 0.15);
+  color: rgba(0, 0, 0, 0.6);
+  display: flex;
+}
+.actions {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-evenly;
+  flex-basis: 50%;
+}
+
+.actions h1,
+.actions button {
+  margin: 0 auto;
+  font-size: 2em;
+}
+
+.actions button {
+  margin-top: 1em;
+  background: rgba(0, 0, 0, 0.1);
+  color: rgba(0, 0, 0, 0.5);
+  padding: 0.5em 0 0.5em 0;
+  width: 30%;
+  border: none;
+  cursor: pointer;
+  font-size: 1.1em;
+  transition: 0.6s;
+  border-radius: 4px;
+}
+
+.actions button:hover {
+  background: rgba(0, 0, 0, 0.7);
+  color: white;
+}
+
+.action-buttons {
+  display: flex;
+  flex-direction: column;
+  flex-basis: 60%;
+}
+
+.activate {
+  color: green !important;
+  background: rgba(71, 255, 80, 0.4) !important;
+  transition: 0.7s;
+}
+
+.activate:hover {
+  color: white !important;
+  background: rgba(0, 128, 0, 0.7) !important;
+}
+
+.record-details {
+  flex-basis: 50%;
+}
+
+.record-details img {
+  display: block;
+  margin: 10px auto;
+  border-radius: 100%;
+}
+
+.record-details article {
+  display: flex;
+  justify-content: space-between;
+  font-size: 2em;
+  margin: 0.5em;
+}
+.actions a {
+  display: block;
+  margin: 0 auto;
+  width: 30%;
+}
+.actions a button {
+  width: 100%;
+}
+#transaction-modal {
+  background-color: rgba(0, 0, 0, 0.8);
+  width: 100%;
+  height: 100vh;
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 10;
+  opacity: 0;
+  visibility: hidden;
+  transition: ease-in-out 1s;
+}
+
+#transaction-modal:target {
+  opacity: 1;
+  visibility: visible;
+}
+
+#transaction-modal:target .transaction-modal-content {
+  opacity: 1;
+  visibility: visible;
+}
+
+#transaction-form {
+  position: relative;
+  margin-top: 5em;
+  left: 50%;
+  transform: translate(-50%, 0);
+  height: auto;
+  width: 50vw;
+  background: #f4f7f8;
+  padding: 1em;
+  text-align: center;
+}
+
+#transaction-form button {
+  margin-top: 1em;
+  background: rgba(0, 0, 0, 0.1);
+  color: rgba(0, 0, 0, 0.5);
+  padding: 0.5em 0 0.5em 0;
+  width: 30%;
+  border: none;
+  cursor: pointer;
+  font-size: 1.2em;
+  transition: 0.6s;
+  border-radius: 4px;
+}
+
+#transaction-form button:hover {
+  background: rgba(0, 0, 0, 0.7);
+  color: white;
+}
+
+.fields input {
+  display: block;
+  padding: 1em;
+  width: 70%;
+  margin: 5px auto;
+  border: none;
+  outline: none;
+  border-left: 3px solid;
+  background: rgba(0, 0, 0, 0.1);
+}
+
+@media (max-width: 769px) {
+  #accounts-main {
+    height: 90vh;
+    overflow: auto;
+  }
+  .account-record {
+    flex-direction: column;
+    height: auto;
+    margin-bottom: 1em;
+  }
+  .record-details article {
+    font-size: 1.2em;
+  }
+
+  .actions h1 {
+    margin-top: 1em;
+  }
+  .actions button {
+    width: 70%;
+    margin-bottom: 1em;
+  }
+
+  .actions a {
+    display: block;
+    margin: 0 auto;
+    width: 70%;
+  }
+  .actions a button {
+    width: 100%;
+  }
+
+  .fields input {
+    width: 80%;
+  }
+
+  #transaction-form {
+    width: 95%;
+  }
+  #transaction-modal {
+    width: 99%;
+  }
+
+  #transaction-form button {
+    width: 70%;
   }
 }
