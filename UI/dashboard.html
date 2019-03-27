@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <link rel="stylesheet" href="css/style.css" />
+    <title>Banka</title>
+  </head>
+  <body>
+    <section>
+      <header>
+        <nav>
+          <article class="menu-icon">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              x="0px"
+              y="0px"
+              width="30"
+              height="30"
+              viewBox="0 0 192 192"
+              style=" fill:#000000;"
+            >
+              <g
+                fill="none"
+                fill-rule="nonzero"
+                stroke="none"
+                stroke-width="1"
+                stroke-linecap="butt"
+                stroke-linejoin="miter"
+                stroke-miterlimit="10"
+                stroke-dasharray=""
+                stroke-dashoffset="0"
+                font-family="none"
+                font-weight="none"
+                font-size="none"
+                text-anchor="none"
+                style="mix-blend-mode: normal"
+              >
+                <path d="M0,192v-192h192v192z" fill="none"></path>
+                <g fill="#ffffff">
+                  <path
+                    d="M19.2,44.8c-2.30807,-0.03264 -4.45492,1.18 -5.61848,3.17359c-1.16356,1.99358 -1.16356,4.45924 0,6.45283c1.16356,1.99358 3.31041,3.20623 5.61848,3.17359h153.6c2.30807,0.03264 4.45492,-1.18 5.61848,-3.17359c1.16356,-1.99358 1.16356,-4.45924 0,-6.45283c-1.16356,-1.99358 -3.31041,-3.20623 -5.61848,-3.17359zM19.2,89.6c-2.30807,-0.03264 -4.45492,1.18 -5.61848,3.17359c-1.16356,1.99358 -1.16356,4.45924 0,6.45283c1.16356,1.99358 3.31041,3.20623 5.61848,3.17359h153.6c2.30807,0.03264 4.45492,-1.18 5.61848,-3.17359c1.16356,-1.99358 1.16356,-4.45924 0,-6.45283c-1.16356,-1.99358 -3.31041,-3.20623 -5.61848,-3.17359zM19.2,134.4c-2.30807,-0.03264 -4.45492,1.18 -5.61848,3.17359c-1.16356,1.99358 -1.16356,4.45924 0,6.45283c1.16356,1.99358 3.31041,3.20623 5.61848,3.17359h153.6c2.30807,0.03264 4.45492,-1.18 5.61848,-3.17359c1.16356,-1.99358 1.16356,-4.45924 0,-6.45283c-1.16356,-1.99358 -3.31041,-3.20623 -5.61848,-3.17359z"
+                  ></path>
+                </g>
+              </g>
+            </svg>
+          </article>
+
+          <article class="logo">
+            Banka
+          </article>
+
+          <article class="menu">
+            <ul>
+              <li><a href="dashboard.html">Profile</a></li>
+              <li><a href="transactions.html">Transactions</a></li>
+            </ul>
+          </article>
+        </nav>
+      </header>
+      <main id="dashboard-main">
+        <section id="dashboard-section">
+          <section id="profile">
+            <article id="photo">
+              <article class="card-img">
+                <img src="avatar.png" alt="profile photo" />
+              </article>
+              <article class="container">
+                <p>Abass Ajanaku</p>
+                <!-- <label for="profile-photo">Upload Photo</label>
+                <input type="file" name="photo" id="profile-photo" /> -->
+              </article>
+            </article>
+            <article class="details">
+              <article>
+                <p>
+                  Account Number
+                </p>
+                <p class="account-number">0123456789</p>
+              </article>
+              <article>
+                <p>Account Balance</p>
+                <p class="account-balance">&#8358; 295,000</p>
+              </article>
+              <article>
+                <p>Account Status</p>
+                <p class="account-status">Active</p>
+              </article>
+            </article>
+          </section>
+          <section id="account">
+            <a href="#account-modal"><button>Create Bank Account</button></a>
+          </section>
+          <article id="account-modal">
+            <article class="account-modal-content" id="account-modal">
+                <form action="#" id="account-form">
+                    <article class="fields">
+                        <input type="text" name="firstname" placeholder="Firstname">
+                        <input type="text" name="lastname" placeholder="Lastname">
+                        <input type="email" name="email" placeholder="Email">
+                        <input type="text" name="account-type" placeholder="Account Type (Savings or Current)">
+                        <label for="avata">Upload Profile Picture(Optional)</label>
+                        <input type="file" name="avatar" id="avatar">
+                    </article>
+                        <a href="#"><button class="confirm" type="submit">Create Account</button><a/>
+                        <a href="#"><button class="cancel" type="submit">Cancel</button><a/>
+                    </form>
+            </article>
+        </article>
+        </section>
+      </main>
+      <footer>
+        Hand-crafted By Afolabi &#x00A9; 2019
+      </footer>
+    </section>
+    <script src="js/script.js"></script>
+  </body>
+</html>
