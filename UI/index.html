@@ -10,7 +10,7 @@
   <body>
     <section>
       <header>
-        <nav>
+        <nav id="landing-nav">
           <article class="menu-icon">
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -53,33 +53,17 @@
 
           <article class="menu">
             <ul>
-              <li><a href="admin_dashboard.html">Accounts</a></li>
-              <li><a href="create_user.html">Add Staff</a></li>
-              <li><a href="index.html">Log Out</a></li>
+              <li><a href="signin.html">Log In</a></li>
+              <li><a href="signup.html">Register</a></li>
             </ul>
           </article>
         </nav>
-      </header>
-      <main id="create-user-main">
-        <section id="create-user-section">
-            <h1>Create New Staff/Member</h1>
-            <form id="user-form">
-                <article class="user-fields">
-                    <input type="text" name="firstname" placeholder="Firstname">
-                    <input type="text" name="lastname" placeholder="Lastname">
-                    <input type="email" name="email" placeholder="Email">
-                    <input type="password" name="paassword" placeholder="Password">
-                    <input name="user-type" id="user-type" list="user" placeholder="Select User Type (admin or staff)">
-                    <datalist id="user">
-                            <option>admin</option>
-                            <option>staff</option> 
-                    </datalist>
-                    
-                </article>
-                   <button  type="submit">Create User Account</button><a/>
-                </form>
+        <section id="hero">
+          <h1>Want To Experience 21st Century Banking ?</h1>
+          <a href="signin.html"><button>Let's Go</button></a>
         </section>
-      </main>
+      </header>
+      <main id="landing-page-main"></main>
       <footer>
         Hand-crafted By Afolabi &#x00A9; 2019
       </footer>
