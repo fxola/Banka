@@ -53,67 +53,32 @@
 
           <article class="menu">
             <ul>
-              <li><a href="admin_dashboard.html">Admin</a></li>
-              <li><a href="dashboard.html">Profile</a></li>
-              <li><a href="transactions.html">Transactions</a></li>
+              <li><a href="admin_dashboard.html">Accounts</a></li>
+              <li><a href="accounts.html">Account Operations</a></li>
+              <li><a href="create_user.html">Add Staff</a></li>
               <li><a href="index.html">Log Out</a></li>
             </ul>
           </article>
         </nav>
       </header>
-      <main id="dashboard-main">
-        <section id="dashboard-section">
-          <section id="profile">
-            <article id="photo">
-              <article class="card-img">
-                <img src="avatar.png" alt="profile photo" />
-              </article>
-              <article class="container">
-                <p>Abass Ajanaku</p>
-              </article>
-            </article>
-            <article class="details">
-              <article>
-                <p>
-                  Account Number
-                </p>
-                <p class="account-number">0123456789</p>
-              </article>
-              <article>
-                <p>Account Balance</p>
-                <p class="account-balance">&#8358; 295,000</p>
-              </article>
-              <article>
-                <p>Account Status</p>
-                <p class="account-status">Active</p>
-              </article>
-              <article>
-                  <p>
-                    Email Address
-                  </p>
-                  <p class="account-number">random@gmail.com</p>
+      <main id="create-user-main">
+        <section id="create-user-section">
+            <h1>Create New Staff/Member</h1>
+            <form id="user-form">
+                <article class="user-fields">
+                    <input type="text" name="firstname" placeholder="Firstname">
+                    <input type="text" name="lastname" placeholder="Lastname">
+                    <input type="email" name="email" placeholder="Email">
+                    <input type="password" name="paassword" placeholder="Password">
+                    <input name="user-type" id="user-type" list="user" placeholder="Select User Type (admin or staff)">
+                    <datalist id="user">
+                            <option>admin</option>
+                            <option>staff</option> 
+                    </datalist>
+                    
                 </article>
-            </article>
-          </section>
-          <section id="account">
-            <a href="#account-modal"><button>Create Bank Account</button></a>
-          </section>
-          <article id="account-modal">
-            <article class="account-modal-content" id="account-modal">
-                <form action="#" id="account-form">
-                    <article class="fields">
-                        <input type="text" name="firstname" placeholder="Firstname">
-                        <input type="text" name="lastname" placeholder="Lastname">
-                        <input type="email" name="email" placeholder="Email">
-                        <input type="text" name="account-type" placeholder="Account Type (Savings or Current)">
-                        <label for="avata">Upload Profile Picture(Optional)</label>
-                        <input type="file" name="avatar" id="avatar">
-                    </article>
-                        <a href="#"><button class="confirm" type="submit">Create Account</button><a/>
-                        <a href="#"><button class="cancel" type="submit">Cancel</button><a/>
-                    </form>
-            </article>
-        </article>
+                   <button  type="submit">Create User Account</button><a/>
+                </form>
         </section>
       </main>
       <footer>
