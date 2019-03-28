@@ -891,3 +891,73 @@ article.buttons {
     width: 70%;
   }
 }
+
+/******************************************************* 
+          CREATE USER PAGE STYLES 
+***********************************************************/
+#create-user-main {
+  height: 90vh;
+  overflow: auto;
+  background-color: #ffffff;
+  background-image: url("data:image/svg+xml,%3Csvg width='40' height='40' viewBox='0 0 40 40' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M0 0h20v20H0V0zm10 17a7 7 0 1 0 0-14 7 7 0 0 0 0 14zm20 0a7 7 0 1 0 0-14 7 7 0 0 0 0 14zM10 37a7 7 0 1 0 0-14 7 7 0 0 0 0 14zm10-17h20v20H20V20zm10 17a7 7 0 1 0 0-14 7 7 0 0 0 0 14z' fill='%23000000' fill-opacity='0.02' fill-rule='evenodd'/%3E%3C/svg%3E");
+}
+
+#create-user-section {
+  padding-top: 8.5em;
+  margin-left: 1em;
+  margin-right: 1em;
+}
+
+#create-user-section h1 {
+  text-align: center;
+  font-size: 1.8em;
+}
+
+.user-fields input {
+  display: block;
+  padding: 1em;
+  width: 50%;
+  margin: 1em auto;
+  border: none;
+  outline: none;
+  border-left: 3px solid;
+  background: rgba(0, 0, 0, 0.1);
+}
+
+#user-form button {
+  background: rgba(0, 0, 0, 0.7);
+  color: white;
+  padding: 0.5em 0 0.5em 0;
+  width: 30%;
+  border: none;
+  cursor: pointer;
+  font-size: 1.2em;
+  transition: 0.6s;
+  border-radius: 4px;
+  display: block;
+  margin: 1em auto;
+}
+
+#user-form button:hover {
+  background: rgba(0, 0, 0, 0.1);
+  color: rgba(0, 0, 0, 0.5);
+}
+
+@media (max-width: 769px) {
+  #create-user-main {
+    height: 90vh;
+    overflow: auto;
+  }
+
+  #create-user-section h1 {
+    font-size: 1.4em;
+  }
+
+  .user-fields input {
+    width: 80%;
+  }
+
+  #user-form button {
+    width: 70%;
+  }
+}
