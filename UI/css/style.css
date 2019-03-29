@@ -342,7 +342,7 @@ td {
 .transaction-table td {
   width: 214px;
   padding: 0.5em;
-  border: 1px solid #f4f7f8;
+  border-bottom: 1px solid #f4f7f8;
   color: rgba(0, 0, 0, 0.5);
 }
 .transaction-table tr {
@@ -354,6 +354,24 @@ td {
   overflow: auto;
   height: 40vh;
   width: 100%;
+}
+.credit td {
+  color: #00bb00;
+}
+.debit td {
+  color: red;
+}
+
+.transaction-table td button {
+  width: 60%;
+  background: rgba(0, 0, 0, 0.1);
+  color: rgba(0, 0, 0, 0.7);
+  border: 2px solid rgba(0, 0, 0, 0.4);
+  cursor: pointer;
+}
+.transaction-table td button:hover {
+  background: rgba(0, 0, 0, 0.7);
+  color: white;
 }
 
 @media (max-width: 769px) {
@@ -371,6 +389,10 @@ td {
   }
   .transaction-table th {
     font-size: 0.93em;
+  }
+
+  .transaction-table td button {
+    width: 100%;
   }
 }
 
@@ -1044,4 +1066,159 @@ article.buttons {
     width: 100%;
     font-size: 0.8em;
   }
+}
+
+/******************************************************* 
+            RESET PASSWORD PAGE STYLES 
+***********************************************************/
+#reset1-main,
+#reset2-main {
+  height: 90vh;
+  background-color: #ffffff;
+  background-image: url("data:image/svg+xml,%3Csvg width='40' height='40' viewBox='0 0 40 40' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M0 0h20v20H0V0zm10 17a7 7 0 1 0 0-14 7 7 0 0 0 0 14zm20 0a7 7 0 1 0 0-14 7 7 0 0 0 0 14zM10 37a7 7 0 1 0 0-14 7 7 0 0 0 0 14zm10-17h20v20H20V20zm10 17a7 7 0 1 0 0-14 7 7 0 0 0 0 14z' fill='%23000000' fill-opacity='0.02' fill-rule='evenodd'/%3E%3C/svg%3E");
+}
+#reset1-section {
+  padding-top: 7em;
+}
+#reset1-section form {
+  padding-top: 2em;
+  background: rgba(0, 0, 0, 0.5);
+  width: 40%;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  border-radius: 0.7em;
+}
+
+#reset1-section form input {
+  display: block;
+  width: 70%;
+  margin: 0 auto;
+  margin-bottom: 1em;
+  padding: 0.5em;
+  outline: none;
+  border: none;
+  font-size: 1.2em;
+  border-left: 4px solid rgba(0, 0, 0, 0.9);
+  color: rgba(0, 0, 0, 0.7);
+}
+
+#reset1-section form input::placeholder {
+  color: rgba(0, 0, 0, 0.9);
+}
+
+#reset1-section form button {
+  padding: 0.7em;
+  width: 74%;
+  font-size: 1.1em;
+  margin-bottom: 1em;
+  color: white;
+  background: rgba(0, 0, 0, 0.3);
+  border: none;
+  transition: ease 0.4s;
+  cursor: pointer;
+  border-radius: 4px;
+}
+
+#reset1-section form button:hover {
+  color: white;
+  background: rgba(0, 0, 0, 0.9);
+}
+
+#reset1-section a {
+  color: white;
+}
+
+#reset1-section p,
+#reset1-section h3 {
+  margin-bottom: 1em;
+}
+
+#reset1-section p {
+  padding: 0 4.9em;
+  margin-top: 2em;
+  color: white;
+  font-size: 0.85em;
+  padding-bottom: 1.4em;
+}
+
+#reset1-section h2 {
+  text-align: center;
+  font-size: 2em;
+  color: white;
+}
+
+#reset1-section h3 {
+  color: black;
+}
+
+.reset2-header {
+  padding-bottom: 2em;
+}
+
+@media (max-width: 769px) {
+  #reset1-section form {
+    width: 90%;
+  }
+  #reset1-section form input {
+    font-size: 1em;
+    text-align: center;
+  }
+  #reset1-section form button {
+    padding: 0.5em;
+    width: 76%;
+  }
+
+  #reset1-section p {
+    padding: 0 2.9em;
+    padding-bottom: 1em;
+  }
+}
+#signup-section form {
+  padding-top: 2em;
+  background: rgba(0, 0, 0, 0.5);
+  width: 40%;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  border-radius: 0.7em;
+}
+
+#signup-section form input {
+  display: block;
+  width: 70%;
+  margin: 0 auto;
+  margin-bottom: 1em;
+  padding: 0.5em;
+  outline: none;
+  border: none;
+  font-size: 1.2em;
+  border-left: 4px solid rgba(0, 0, 0, 0.9);
+  color: rgba(0, 0, 0, 0.7);
+}
+
+#signup-section form input::placeholder {
+  color: rgba(0, 0, 0, 0.9);
+}
+
+#signup-section form button {
+  padding: 0.7em;
+  width: 74%;
+  font-size: 1.1em;
+  margin-bottom: 1em;
+  color: white;
+  background: rgba(0, 0, 0, 0.3);
+  border: none;
+  transition: ease 0.4s;
+  cursor: pointer;
+  border-radius: 4px;
+}
+
+#signup-section form button:hover {
+  color: white;
+  background: rgba(0, 0, 0, 0.9);
 }
