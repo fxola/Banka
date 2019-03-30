@@ -1176,49 +1176,4 @@ article.buttons {
     padding-bottom: 1em;
   }
 }
-#signup-section form {
-  padding-top: 2em;
-  background: rgba(0, 0, 0, 0.5);
-  width: 40%;
-  margin: 0 auto;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  border-radius: 0.7em;
-}
 
-#signup-section form input {
-  display: block;
-  width: 70%;
-  margin: 0 auto;
-  margin-bottom: 1em;
-  padding: 0.5em;
-  outline: none;
-  border: none;
-  font-size: 1.2em;
-  border-left: 4px solid rgba(0, 0, 0, 0.9);
-  color: rgba(0, 0, 0, 0.7);
-}
-
-#signup-section form input::placeholder {
-  color: rgba(0, 0, 0, 0.9);
-}
-
-#signup-section form button {
-  padding: 0.7em;
-  width: 74%;
-  font-size: 1.1em;
-  margin-bottom: 1em;
-  color: white;
-  background: rgba(0, 0, 0, 0.3);
-  border: none;
-  transition: ease 0.4s;
-  cursor: pointer;
-  border-radius: 4px;
-}
-
-#signup-section form button:hover {
-  color: white;
-  background: rgba(0, 0, 0, 0.9);
-}
