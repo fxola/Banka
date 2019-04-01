@@ -18,6 +18,20 @@ class UserController {
     const response = UserService.createUser(req.body);
     return res.status(response.status).json(response);
   }
+
+  /**
+   *
+   * Logs a user in if valid credentials are provided
+   * @static
+   * @param {Object} req
+   * @param {Object} res
+   * @returns {Object} JSON API Response
+   * @memberof UserController
+   */
+  static logUserIn(req, res) {
+    const response = UserService.logUserIn(req.body);
+    return res.status(response.status).json(response);
+  }
 }
 
 export default UserController;
