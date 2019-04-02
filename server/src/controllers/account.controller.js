@@ -33,6 +33,20 @@ class AccountController {
     const response = AccountService.updateAccountStatus(req.body.status, req.params.acctNumber);
     return res.status(response.status).json(response);
   }
+
+  /**
+   *
+   * Handles the logic for deleting a specific bank account
+   * @static
+   * @param {Object} req
+   * @param {Object} res
+   * @returns {Object} JSON API Response
+   * @memberof AccountController
+   */
+  static deleteBankAccount(req, res) {
+    const response = AccountService.deleteBankAccount(req.params.acctNumber);
+    return res.status(response.status).json(response);
+  }
 }
 
 export default AccountController;

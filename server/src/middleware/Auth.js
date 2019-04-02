@@ -30,6 +30,7 @@ class Auth {
       req.userEmail = decoded.email;
       req.userFirstName = decoded.firstName;
       req.userLastName = decoded.lastName;
+      req.userType = decoded.type;
 
       return next();
     } catch (e) {
@@ -38,6 +39,17 @@ class Auth {
         error: `${e.name}. ${e.message}`
       });
     }
+  }
+
+  static staffCheck(req, res, next) {
+    if (req.userType !== 'staff') {
+      return res.status(401).json({
+        status: 401,
+        error: `You are not Authorized to perform this Action`,
+        success: false
+      });
+    }
+    return next();
   }
 }
 
