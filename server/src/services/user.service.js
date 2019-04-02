@@ -19,10 +19,7 @@ class UserService {
     const { email, firstName, lastName, password, type, isAdmin } = newUser;
     const hashedpassword = Helper.hashPassword(password);
 
-    const usersLength = mockData.users.length;
-    const lastUserId = mockData.users[usersLength - 1].id;
-    const id = lastUserId + 1;
-
+    const id = mockData.users.length + 1;
     const userInstance = new User(id, email, firstName, lastName, hashedpassword, type, isAdmin);
     mockData.users.push(userInstance);
 

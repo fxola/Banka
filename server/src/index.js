@@ -1,8 +1,9 @@
 import express from 'express';
 
 import bodyParser from 'body-parser';
-
+// Routes
 import userRoutes from './routes/user.routes';
+import accountRoutes from './routes/account.routes';
 
 const app = express();
 
@@ -15,7 +16,9 @@ app.get('/', (req, res) => {
   return res.send({ status: 200, message: 'Welcome To Banka' });
 });
 
+// Handles
 app.use('/api/v1/auth', userRoutes);
+app.use('/api/v1/accounts', accountRoutes);
 
 app.use((req, res, next) => {
   const error = new Error('Not found');
