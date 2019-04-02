@@ -36,15 +36,7 @@ class AccountService {
 
     return {
       status: 201,
-      data: {
-        accountNumber,
-        firstName,
-        lastName,
-        email,
-        type,
-        balance,
-        status
-      },
+      data: { accountNumber, firstName, lastName, email, type, balance, status },
       success: true
     };
   }
@@ -54,7 +46,7 @@ class AccountService {
    * Handles the logic for activating or deactivating an account
    * @static
    * @param {string} acctStatus incoming status request
-   * @param {*} accountNumber account number of account to be updated
+   * @param {integer} accountNumber account number of account to be updated
    * @returns {object} API Response Object
    * @memberof AccountService
    */
@@ -116,10 +108,7 @@ class AccountService {
       mockData.accounts.splice(accountIndex, 1, foundAccount);
       return {
         status: 202,
-        data: {
-          accountNumber,
-          status
-        },
+        data: { accountNumber, status },
         success: true,
         message: `Account ${validStatus}d succesfully`
       };
@@ -130,6 +119,45 @@ class AccountService {
       success: false,
       message: `Account does not exist`
     };
+  }
+
+  /**
+   *
+   * Handles the logic for deleting a specific bank account
+   * @static
+   * @param {integer} accountNumber account number of account to be deleted
+   * @returns {object} API Response Object
+   * @memberof AccountService
+   */
+  static deleteBankAccount(accountNumber) {
+    if (!Number(accountNumber)) {
+      return {
+        status: 403,
+        error: `Request Forbidden`,
+        success: false,
+        message: `Account Number must be an Integer`
+      };
+    }
+
+    if (!accountNumber.startsWith(102) || accountNumber.length !== 10) {
+      return {
+        status: 403,
+        error: `Request Forbidden`,
+        success: false,
+        message: `Account Number must be 10 digits and begin with the digits 102.`
+      };
+    }
+
+    const foundAccount = mockData.accounts.find(
+      account => account.accountNumber === parseInt(accountNumber, 10)
+    );
+
+    if (foundAccount) {
+      const accountIndex = mockData.accounts.indexOf(foundAccount);
+      mockData.accounts.splice(accountIndex, 1);
+      return { status: 200, message: `Account sucessfully deleted`, success: true };
+    }
+    return { status: 404, error: `Not found`, message: `Account does not exist`, success: false };
   }
 }
 

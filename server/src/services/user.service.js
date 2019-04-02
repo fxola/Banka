@@ -23,17 +23,11 @@ class UserService {
     const userInstance = new User(id, email, firstName, lastName, hashedpassword, type, isAdmin);
     mockData.users.push(userInstance);
 
-    const payLoad = { id, firstName, lastName, email };
+    const payLoad = { id, firstName, lastName, email, type };
     const token = Helper.getToken(payLoad);
     return {
       status: 201,
-      data: {
-        token,
-        id,
-        firstName,
-        lastName,
-        email
-      },
+      data: { token, id, firstName, lastName, email, type },
       success: true
     };
   }
@@ -58,18 +52,12 @@ class UserService {
 
     const hash = foundUser.password;
     if (Helper.comparePassword(password, hash) === true) {
-      const { id, firstName, lastName } = foundUser;
+      const { id, firstName, lastName, type } = foundUser;
       const payLoad = { id, firstName, lastName, email };
       const token = Helper.getToken(payLoad);
       return {
         status: 200,
-        data: {
-          token,
-          id,
-          firstName,
-          lastName,
-          email
-        },
+        data: { token, id, firstName, lastName, email, type },
         success: true
       };
     }
