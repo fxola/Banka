@@ -20,7 +20,7 @@ class Account {
     this.owner = owner;
     this.type = type;
     this.status = status;
-    this.balance = balance;
+    this.balance = parseFloat(balance).toFixed(2);
     this.accountNumber = Account.generateAccountNumber();
   }
 

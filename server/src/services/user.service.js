@@ -53,7 +53,7 @@ class UserService {
     const hash = foundUser.password;
     if (Helper.comparePassword(password, hash) === true) {
       const { id, firstName, lastName, type } = foundUser;
-      const payLoad = { id, firstName, lastName, email };
+      const payLoad = { id, firstName, lastName, email, type };
       const token = Helper.getToken(payLoad);
       return {
         status: 200,

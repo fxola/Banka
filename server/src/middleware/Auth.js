@@ -41,6 +41,16 @@ class Auth {
     }
   }
 
+  /**
+   *
+   * Checks if the current user is a staff or not and applies appropriate access control
+   * @static
+   * @param {object} req
+   * @param {object} res
+   * @param {function} next
+   * @returns {(function|Object)} Function next() or an error Object
+   * @memberof Auth
+   */
   static staffCheck(req, res, next) {
     if (req.userType !== 'staff') {
       return res.status(401).json({

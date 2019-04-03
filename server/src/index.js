@@ -4,6 +4,7 @@ import bodyParser from 'body-parser';
 // Routes
 import userRoutes from './routes/user.routes';
 import accountRoutes from './routes/account.routes';
+import transactionRoutes from './routes/transaction.routes';
 
 const app = express();
 
@@ -19,6 +20,7 @@ app.get('/', (req, res) => {
 // Handles
 app.use('/api/v1/auth', userRoutes);
 app.use('/api/v1/accounts', accountRoutes);
+app.use('/api/v1/transactions', transactionRoutes);
 
 app.use((req, res, next) => {
   const error = new Error('Not found');
