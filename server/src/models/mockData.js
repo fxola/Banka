@@ -1,4 +1,5 @@
 export default {
   users: [],
-  accounts: []
+  accounts: [],
+  transactions: []
 };
