@@ -20,84 +20,7 @@ class TransactionService {
    * @returns {object} API response object
    * @memberof TransactionService
    */
-  static makeTransaction(accountNumber, amount, cashier, type, urltype) {
-    const filtered = type.replace(/\s/g, '');
-    if (!filtered) {
-      return {
-        status: 403,
-        error: `Request Forbidden`,
-        message: `Transaction type cannot be empty`,
-        success: false
-      };
-    }
-
-    const pattern = /^[a-zA-Z]+$/;
-    if (!pattern.test(filtered))
-      return {
-        status: 403,
-        error: `Request forbidden`,
-        message: `Status must be alphabetical`,
-        success: false
-      };
-
-    const validtype = filtered.toLowerCase();
-
-    let transactionType;
-    switch (validtype) {
-      case 'credit':
-        transactionType = validtype;
-        break;
-      case 'debit':
-        transactionType = validtype;
-        break;
-      default:
-        transactionType = 'invalid';
-    }
-
-    if (urltype !== transactionType) {
-      return {
-        status: 403,
-        error: `Request forbidden`,
-        mesasage: `Please confirm that the url matches the transaction type`,
-        success: false
-      };
-    }
-    if (transactionType === 'invalid') {
-      return {
-        status: 403,
-        error: `request forbidden`,
-        mesasage: `Transaction type can only be 'debit' or 'credit'`,
-        success: false
-      };
-    }
-
-    if (!Number(accountNumber) || !Number(amount)) {
-      return {
-        status: 403,
-        error: `Request Forbidden`,
-        success: false,
-        message: `Account Number and transaction amount must be a number`
-      };
-    }
-
-    if (!accountNumber.startsWith(102) || accountNumber.length !== 10) {
-      return {
-        status: 403,
-        error: `Request Forbidden`,
-        success: false,
-        message: `Account Number must be 10 digits and begin with the digits 102.`
-      };
-    }
-
-    if (Number(amount) < 500) {
-      return {
-        status: 403,
-        error: `Request Forbidden`,
-        success: false,
-        message: `You can only make ${transactionType} transactions above 500 Naira.`
-      };
-    }
-
+  static makeTransaction(accountNumber, amount, cashier, transactionType) {
     const foundAccount = mockData.accounts.find(
       account => account.accountNumber === parseInt(accountNumber, 10)
     );
@@ -124,7 +47,7 @@ class TransactionService {
           success: false,
           message: `Account status:${
             foundAccount.status
-          }.You can only perform transactions on an active account.`
+          }. You can only perform transactions on an active account.`
         };
       }
 
