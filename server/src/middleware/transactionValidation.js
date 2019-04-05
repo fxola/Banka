@@ -127,7 +127,7 @@ class TransactionValidation {
       return res.status(403).json({
         status: 403,
         error: `request forbidden`,
-        mesasage: `Transaction type can only be 'debit' or 'credit'`,
+        message: `Transaction type can only be 'debit' or 'credit'`,
         success: false
       });
     }
@@ -144,7 +144,7 @@ class TransactionValidation {
       return res.status(403).json({
         status: 403,
         error: `Request forbidden`,
-        mesasage: `Please confirm that the url matches the transaction type`,
+        message: `Please confirm that the url matches the transaction type`,
         success: false
       });
     }
