@@ -17,28 +17,19 @@ class AccountValidation {
     const { acctNumber } = req.params;
 
     if (!Number(acctNumber)) {
-      res.status(422).json({
-        status: 422,
-        error: `Invalid account number provided`,
+      return res.status(403).json({
+        status: 403,
+        error: `Request forbidden`,
         message: `Account Number must be a Number`,
         success: false
       });
     }
 
     if (!acctNumber.startsWith(102) || acctNumber.length !== 10) {
-      res.status(403).json({
+      return res.status(403).json({
         status: 403,
         error: `Request Forbidden`,
-        message: `Account Number must be 10 digits and begin with the digits 102.`,
-        success: false
-      });
-    }
-
-    if (!acctNumber) {
-      res.status(422).json({
-        status: 422,
-        error: `Invalid account number provided`,
-        message: `Account Number must be provided`,
+        message: `Account Number must be 10 digits and begin with the digits 102`,
         success: false
       });
     }
@@ -114,19 +105,28 @@ class AccountValidation {
      */
     const checkFieldEmpty = (value, field) => {
       if (!value) {
-        return res.status(422).json({
+        return {
           status: 422,
           error: `Invalid ${field} provided`,
           message: `${field} cannot be empty`,
           success: false
-        });
+        };
       }
       return false;
     };
-    checkFieldEmpty(firstName, 'firstname');
-    checkFieldEmpty(lastName, 'lastname');
-    checkFieldEmpty(email, 'email');
-    checkFieldEmpty(type, 'account type');
+
+    let isEmpty;
+    isEmpty = checkFieldEmpty(firstName, 'firstname');
+    if (isEmpty) return res.status(isEmpty.status).json(isEmpty);
+
+    isEmpty = checkFieldEmpty(lastName, 'lastname');
+    if (isEmpty) return res.status(isEmpty.status).json(isEmpty);
+
+    isEmpty = checkFieldEmpty(email, 'email');
+    if (isEmpty) return res.status(isEmpty.status).json(isEmpty);
+
+    isEmpty = checkFieldEmpty(type, 'account type');
+    if (isEmpty) return res.status(isEmpty.status).json(isEmpty);
 
     if (firstName) {
       firstName = firstName.trim();
@@ -160,10 +160,18 @@ class AccountValidation {
       return false;
     };
 
-    checkFieldWhiteSpace(firstName, 'firstname');
-    checkFieldWhiteSpace(lastName, 'lastname');
-    checkFieldWhiteSpace(email, 'email');
-    checkFieldWhiteSpace(type, 'account type');
+    let hasWhiteSpace;
+    hasWhiteSpace = checkFieldWhiteSpace(firstName, 'firstname');
+    if (hasWhiteSpace) return res.status(hasWhiteSpace.status).json(hasWhiteSpace);
+
+    hasWhiteSpace = checkFieldWhiteSpace(lastName, 'lastname');
+    if (hasWhiteSpace) return res.status(hasWhiteSpace.status).json(hasWhiteSpace);
+
+    hasWhiteSpace = checkFieldWhiteSpace(email, 'email');
+    if (hasWhiteSpace) return res.status(hasWhiteSpace.status).json(hasWhiteSpace);
+
+    hasWhiteSpace = checkFieldWhiteSpace(type, 'account type');
+    if (hasWhiteSpace) return res.status(hasWhiteSpace.status).json(hasWhiteSpace);
 
     /**
      * Checks if input provided is alphabetical
@@ -175,19 +183,27 @@ class AccountValidation {
     const checkFieldAlpha = (value, field) => {
       const pattern = /^[a-zA-Z]+$/;
       if (!pattern.test(value)) {
-        return res.status(422).json({
+        return {
           status: 422,
           error: `Invalid ${field} provided`,
           message: `${field} must be Alphabetical`,
           success: false
-        });
+        };
       }
-      return true;
+      return false;
     };
-    checkFieldAlpha(firstName, 'firstname');
-    checkFieldAlpha(lastName, 'lastname');
-    checkFieldAlpha(type, 'account type');
 
+    let isNotAlpha;
+    isNotAlpha = checkFieldAlpha(firstName, 'firstname');
+    if (isNotAlpha) return res.status(isNotAlpha.status).json(isNotAlpha);
+
+    isNotAlpha = checkFieldAlpha(lastName, 'lastname');
+    if (isNotAlpha) return res.status(isNotAlpha.status).json(isNotAlpha);
+
+    isNotAlpha = checkFieldAlpha(type, 'account type');
+    if (isNotAlpha) return res.status(isNotAlpha.status).json(isNotAlpha);
+
+    // cited from stackoverflow
     // eslint-disable-next-line no-useless-escape
     const emailPattern = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
 

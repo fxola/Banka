@@ -22,8 +22,9 @@ class AccountService {
     if (email !== userEmail)
       return {
         status: 403,
-        error: 'Request Forbidden. You can only create a bank account with your registered e-mail',
-        succcess: false
+        error: 'Request Forbidden',
+        message: 'You can only create a bank account with your registered e-mail',
+        success: false
       };
 
     const id = mockData.accounts.length + 1;
@@ -37,6 +38,7 @@ class AccountService {
     return {
       status: 201,
       data: { accountNumber, firstName, lastName, email, type, balance, status },
+      message: `New ${type} account created successfully`,
       success: true
     };
   }
