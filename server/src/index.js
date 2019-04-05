@@ -14,7 +14,7 @@ app.use(bodyParser.urlencoded({ extended: true }));
 const PORT = process.env.PORT || 3000;
 
 app.get('/', (req, res) => {
-  return res.send({ status: 200, message: 'Welcome To Banka' });
+  return res.send({ status: 200, message: 'Welcome To Banka. No More Insufficient Funds' });
 });
 
 // Handles
@@ -23,7 +23,7 @@ app.use('/api/v1/accounts', accountRoutes);
 app.use('/api/v1/transactions', transactionRoutes);
 
 app.use((req, res, next) => {
-  const error = new Error('Not found');
+  const error = new Error('Route Does not Exist');
   error.status = 404;
   next(error);
 });
