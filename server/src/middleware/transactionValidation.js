@@ -6,14 +6,14 @@ class TransactionValidation {
    * @param {string} field field name of the value to be validated
    * @returns {object|boolean} error object or boolean
    */
-  static checkFieldEmpty(value, field, res) {
+  static checkFieldEmpty(value, field) {
     if (!value) {
-      return res.status(422).json({
+      return {
         status: 422,
         error: `Invalid ${field} provided`,
         message: `${field} cannot be empty`,
         success: false
-      });
+      };
     }
     return false;
   }
@@ -25,14 +25,14 @@ class TransactionValidation {
    * @param {string} field field name of the value to be validated
    * @returns {object|boolean} error object or boolean
    */
-  static checkFieldWhiteSpace(value, field, res) {
+  static checkFieldWhiteSpace(value, field) {
     if (/\s/.test(value)) {
-      return res.status(422).json({
+      return {
         status: 422,
         error: `Invalid ${field} provided`,
         message: `No whitespaces allowed in ${field}`,
         success: false
-      });
+      };
     }
     return false;
   }
@@ -44,17 +44,17 @@ class TransactionValidation {
    * @param {string} field field name of the value to be validated
    * @returns {object|boolean} error object or boolean
    */
-  static checkFieldAlpha(value, field, res) {
+  static checkFieldAlpha(value, field) {
     const pattern = /^[a-zA-Z]+$/;
     if (!pattern.test(value)) {
-      return res.status(422).json({
+      return {
         status: 422,
         error: `Invalid ${field} provided`,
         message: `${field} must be Alphabetical`,
         success: false
-      });
+      };
     }
-    return true;
+    return false;
   }
 
   /**
@@ -69,8 +69,12 @@ class TransactionValidation {
   static transactionCheck(req, res, next) {
     let { amount, type } = req.body;
 
-    TransactionValidation.checkFieldEmpty(amount, 'transaction amount', res);
-    TransactionValidation.checkFieldEmpty(type, 'transaction type', res);
+    let isEmpty;
+    isEmpty = TransactionValidation.checkFieldEmpty(amount, 'transaction amount');
+    if (isEmpty) return res.status(isEmpty.status).json(isEmpty);
+
+    isEmpty = TransactionValidation.checkFieldEmpty(type, 'transaction type');
+    if (isEmpty) return res.status(isEmpty.status).json(isEmpty);
 
     if (amount && typeof amount === 'string') {
       amount = amount.trim();
@@ -79,10 +83,15 @@ class TransactionValidation {
       type = type.trim().toLowerCase();
     }
 
-    TransactionValidation.checkFieldWhiteSpace(amount, 'transaction amount', res);
-    TransactionValidation.checkFieldWhiteSpace(type, 'transaction type', res);
+    let hasWhiteSpace;
+    hasWhiteSpace = TransactionValidation.checkFieldWhiteSpace(amount, 'transaction amount');
+    if (hasWhiteSpace) return res.status(hasWhiteSpace.status).json(hasWhiteSpace);
 
-    TransactionValidation.checkFieldAlpha(type, 'transaction type', res);
+    hasWhiteSpace = TransactionValidation.checkFieldWhiteSpace(type, 'transaction type');
+    if (hasWhiteSpace) return res.status(hasWhiteSpace.status).json(hasWhiteSpace);
+
+    const isNotAlpha = TransactionValidation.checkFieldAlpha(type, 'transaction type', res);
+    if (isNotAlpha) return res.status(isNotAlpha.status).json(isNotAlpha);
 
     if (!Number(amount)) {
       return res.status(403).json({

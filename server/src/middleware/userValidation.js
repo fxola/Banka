@@ -13,14 +13,14 @@ class UserValidation {
    * @param {string} field field name of the value to be validated
    * @returns {object|boolean} error object or boolean
    */
-  static checkFieldEmpty(value, field, res) {
+  static checkFieldEmpty(value, field) {
     if (!value) {
-      return res.status(422).json({
+      return {
         status: 422,
         error: `Invalid ${field} provided`,
         message: `${field} cannot be empty`,
         success: false
-      });
+      };
     }
     return false;
   }
@@ -32,14 +32,14 @@ class UserValidation {
    * @param {string} field field name of the value to be validated
    * @returns {object|boolean} error object or boolean
    */
-  static checkFieldWhiteSpace(value, field, res) {
+  static checkFieldWhiteSpace(value, field) {
     if (/\s/.test(value)) {
-      return res.status(422).json({
+      return {
         status: 422,
         error: `Invalid ${field} provided`,
         message: `No whitespaces allowed in ${field}`,
         success: false
-      });
+      };
     }
     return false;
   }
@@ -51,17 +51,17 @@ class UserValidation {
    * @param {string} field field name of the value to be validated
    * @returns {object|boolean} error object or boolean
    */
-  static checkFieldAlpha(value, field, res) {
+  static checkFieldAlpha(value, field) {
     const pattern = /^[a-zA-Z]+$/;
     if (!pattern.test(value)) {
-      return res.status(422).json({
+      return {
         status: 422,
         error: `Invalid ${field} provided`,
         message: `${field} must be Alphabetical`,
         success: false
-      });
+      };
     }
-    return true;
+    return false;
   }
 
   /**
@@ -74,13 +74,23 @@ class UserValidation {
    * @memberof AccountValidation
    */
   static signUpCheck(req, res, next) {
-    let { email, firstName, lastName, password, type, isAdmin } = req.body;
+    let { email, firstName, lastName, password, type } = req.body;
 
-    UserValidation.checkFieldEmpty(firstName, 'firstname', res);
-    UserValidation.checkFieldEmpty(lastName, 'lastname', res);
-    UserValidation.checkFieldEmpty(email, 'email', res);
-    UserValidation.checkFieldEmpty(password, 'password', res);
-    UserValidation.checkFieldEmpty(type, 'account type', res);
+    let isEmpty;
+    isEmpty = UserValidation.checkFieldEmpty(firstName, 'firstname');
+    if (isEmpty) return res.status(isEmpty.status).json(isEmpty);
+
+    isEmpty = UserValidation.checkFieldEmpty(lastName, 'lastname');
+    if (isEmpty) return res.status(isEmpty.status).json(isEmpty);
+
+    isEmpty = UserValidation.checkFieldEmpty(email, 'email');
+    if (isEmpty) return res.status(isEmpty.status).json(isEmpty);
+
+    isEmpty = UserValidation.checkFieldEmpty(password, 'password');
+    if (isEmpty) return res.status(isEmpty.status).json(isEmpty);
+
+    isEmpty = UserValidation.checkFieldEmpty(type, 'user type');
+    if (isEmpty) return res.status(isEmpty.status).json(isEmpty);
 
     if (firstName) {
       firstName = firstName.trim();
@@ -99,29 +109,31 @@ class UserValidation {
       password = password.trim();
     }
 
-    // if (isAdmin) {
-    //   isAdmin = isAdmin.trim();
+    let hasWhiteSpace;
+    hasWhiteSpace = UserValidation.checkFieldWhiteSpace(firstName, 'firstname');
+    if (hasWhiteSpace) return res.status(hasWhiteSpace.status).json(hasWhiteSpace);
 
-    //   if (typeof isAdmin !== 'boolean') {
-    //     return res.status(422).json({
-    //       status: 422,
-    //       error: 'Invalid flag provided',
-    //       message: `'IsAdmin' must be a boolean`,
-    //       success: false
-    //     });
-    //   }
-    //   req.body.isAdmin = isAdmin.replace(/\s/g, '');
-    // }
+    hasWhiteSpace = UserValidation.checkFieldWhiteSpace(lastName, 'lastname');
+    if (hasWhiteSpace) return res.status(hasWhiteSpace.status).json(hasWhiteSpace);
 
-    UserValidation.checkFieldWhiteSpace(firstName, 'firstname', res);
-    UserValidation.checkFieldWhiteSpace(lastName, 'lastname', res);
-    UserValidation.checkFieldWhiteSpace(email, 'email', res);
-    UserValidation.checkFieldWhiteSpace(password, 'password', res);
-    UserValidation.checkFieldWhiteSpace(type, 'account type', res);
+    hasWhiteSpace = UserValidation.checkFieldWhiteSpace(email, 'email');
+    if (hasWhiteSpace) return res.status(hasWhiteSpace.status).json(hasWhiteSpace);
 
-    UserValidation.checkFieldAlpha(firstName, 'firstname', res);
-    UserValidation.checkFieldAlpha(lastName, 'lastname', res);
-    UserValidation.checkFieldAlpha(type, 'user type', res);
+    hasWhiteSpace = UserValidation.checkFieldWhiteSpace(password, 'password');
+    if (hasWhiteSpace) return res.status(hasWhiteSpace.status).json(hasWhiteSpace);
+
+    hasWhiteSpace = UserValidation.checkFieldWhiteSpace(type, 'user type');
+    if (hasWhiteSpace) return res.status(hasWhiteSpace.status).json(hasWhiteSpace);
+
+    let isNotAlpha;
+    isNotAlpha = UserValidation.checkFieldAlpha(firstName, 'firstname');
+    if (isNotAlpha) return res.status(isNotAlpha.status).json(isNotAlpha);
+
+    isNotAlpha = UserValidation.checkFieldAlpha(lastName, 'lastname');
+    if (isNotAlpha) return res.status(isNotAlpha.status).json(isNotAlpha);
+
+    isNotAlpha = UserValidation.checkFieldAlpha(type, 'user type');
+    if (isNotAlpha) return res.status(isNotAlpha.status).json(isNotAlpha);
 
     const passwordPattern = /\w{6,}/g;
 
@@ -194,8 +206,12 @@ class UserValidation {
   static loginCheck(req, res, next) {
     let { email, password } = req.body;
 
-    UserValidation.checkFieldEmpty(email, 'email', res);
-    UserValidation.checkFieldEmpty(password, 'password', res);
+    let isEmpty;
+    isEmpty = UserValidation.checkFieldEmpty(email, 'email');
+    if (isEmpty) return res.status(isEmpty.status).json(isEmpty);
+
+    isEmpty = UserValidation.checkFieldEmpty(password, 'password');
+    if (isEmpty) return res.status(isEmpty.status).json(isEmpty);
 
     if (email) {
       email = email.trim();
@@ -206,7 +222,7 @@ class UserValidation {
     }
     req.body.email = email;
     req.body.password = password;
-    next();
+    return next();
   }
 }
 
