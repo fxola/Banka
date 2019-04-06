@@ -1,3 +1,4 @@
+import helper from '../helpers/helper';
 /**
  *
  * @exports AccountValidation
@@ -96,36 +97,17 @@ class AccountValidation {
   static accountDetailsCheck(req, res, next) {
     let { firstName, lastName, email, type } = req.body;
 
-    /**
-     * Checks if input provided is empty
-     *
-     * @param {string} value value to be validated
-     * @param {string} field field name of the value to be validated
-     * @returns
-     */
-    const checkFieldEmpty = (value, field) => {
-      if (!value) {
-        return {
-          status: 422,
-          error: `Invalid ${field} provided`,
-          message: `${field} cannot be empty`,
-          success: false
-        };
-      }
-      return false;
-    };
-
     let isEmpty;
-    isEmpty = checkFieldEmpty(firstName, 'firstname');
+    isEmpty = helper.checkFieldEmpty(firstName, 'firstname');
     if (isEmpty) return res.status(isEmpty.status).json(isEmpty);
 
-    isEmpty = checkFieldEmpty(lastName, 'lastname');
+    isEmpty = helper.checkFieldEmpty(lastName, 'lastname');
     if (isEmpty) return res.status(isEmpty.status).json(isEmpty);
 
-    isEmpty = checkFieldEmpty(email, 'email');
+    isEmpty = helper.checkFieldEmpty(email, 'email');
     if (isEmpty) return res.status(isEmpty.status).json(isEmpty);
 
-    isEmpty = checkFieldEmpty(type, 'account type');
+    isEmpty = helper.checkFieldEmpty(type, 'account type');
     if (isEmpty) return res.status(isEmpty.status).json(isEmpty);
 
     if (firstName) {
@@ -141,66 +123,27 @@ class AccountValidation {
       email = email.trim();
     }
 
-    /**
-     * Checks for whitespace on input provided
-     *
-     * @param {string} value value to be validated
-     * @param {string} field field name of the value to be validated
-     * @returns
-     */
-    const checkFieldWhiteSpace = (value, field) => {
-      if (/\s/.test(value)) {
-        return res.status(422).json({
-          status: 422,
-          error: `Invalid ${field} provided`,
-          message: `No whitespaces allowed in ${field}`,
-          success: false
-        });
-      }
-      return false;
-    };
-
     let hasWhiteSpace;
-    hasWhiteSpace = checkFieldWhiteSpace(firstName, 'firstname');
+    hasWhiteSpace = helper.checkFieldWhiteSpace(firstName, 'firstname');
     if (hasWhiteSpace) return res.status(hasWhiteSpace.status).json(hasWhiteSpace);
 
-    hasWhiteSpace = checkFieldWhiteSpace(lastName, 'lastname');
+    hasWhiteSpace = helper.checkFieldWhiteSpace(lastName, 'lastname');
     if (hasWhiteSpace) return res.status(hasWhiteSpace.status).json(hasWhiteSpace);
 
-    hasWhiteSpace = checkFieldWhiteSpace(email, 'email');
+    hasWhiteSpace = helper.checkFieldWhiteSpace(email, 'email');
     if (hasWhiteSpace) return res.status(hasWhiteSpace.status).json(hasWhiteSpace);
 
-    hasWhiteSpace = checkFieldWhiteSpace(type, 'account type');
+    hasWhiteSpace = helper.checkFieldWhiteSpace(type, 'account type');
     if (hasWhiteSpace) return res.status(hasWhiteSpace.status).json(hasWhiteSpace);
-
-    /**
-     * Checks if input provided is alphabetical
-     *
-     * @param {string} value value to be validated
-     * @param {string} field field name of the value to be validated
-     * @returns
-     */
-    const checkFieldAlpha = (value, field) => {
-      const pattern = /^[a-zA-Z]+$/;
-      if (!pattern.test(value)) {
-        return {
-          status: 422,
-          error: `Invalid ${field} provided`,
-          message: `${field} must be Alphabetical`,
-          success: false
-        };
-      }
-      return false;
-    };
 
     let isNotAlpha;
-    isNotAlpha = checkFieldAlpha(firstName, 'firstname');
+    isNotAlpha = helper.checkFieldAlpha(firstName, 'firstname');
     if (isNotAlpha) return res.status(isNotAlpha.status).json(isNotAlpha);
 
-    isNotAlpha = checkFieldAlpha(lastName, 'lastname');
+    isNotAlpha = helper.checkFieldAlpha(lastName, 'lastname');
     if (isNotAlpha) return res.status(isNotAlpha.status).json(isNotAlpha);
 
-    isNotAlpha = checkFieldAlpha(type, 'account type');
+    isNotAlpha = helper.checkFieldAlpha(type, 'account type');
     if (isNotAlpha) return res.status(isNotAlpha.status).json(isNotAlpha);
 
     // cited from stackoverflow

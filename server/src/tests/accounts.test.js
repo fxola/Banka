@@ -240,6 +240,22 @@ describe('Tests for all accounts Endpoints', () => {
     });
   });
   describe('PATCH api/v1/accounts/<account-number>', () => {
+    it('Should update the status of a newly created account to dormant if authorized', done => {
+      chai
+        .request(app)
+        .patch('/api/v1/accounts/1029705319')
+        .set('Authorization', `Bearer ${staffToken}`)
+        .send({
+          status: 'deactivate'
+        })
+        .end((err, res) => {
+          expect(res).to.have.status(202);
+          expect(res.body.status).to.be.equal(202);
+          expect(res.body).to.have.keys('status', 'data', 'message', 'success');
+          expect(res.body.data.status).to.be.equal('dormant');
+          done();
+        });
+    });
     it('Should update the status of a newly created account to active if authorized', done => {
       chai
         .request(app)

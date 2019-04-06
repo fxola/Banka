@@ -31,12 +31,7 @@ class Helper {
    * @memberof Helper
    */
   static hashPassword(password) {
-    const hash = bcrypt.hashSync(password, 10, (err, result) => {
-      if (err) {
-        return err;
-      }
-      return result;
-    });
+    const hash = bcrypt.hashSync(password, 10);
     return hash;
   }
 
@@ -52,6 +47,64 @@ class Helper {
   static comparePassword(password, hash) {
     const result = bcrypt.compareSync(password, hash);
     return result;
+  }
+
+  /**
+   * Checks if input provided is empty
+   *
+   * @param {string} value value to be validated
+   * @param {string} field field name of the value to be validated
+   * @returns {object|boolean} error object or boolean
+   */
+  static checkFieldEmpty(value, field) {
+    if (!value) {
+      return {
+        status: 422,
+        error: `Invalid ${field} provided`,
+        message: `${field} cannot be empty`,
+        success: false
+      };
+    }
+    return false;
+  }
+
+  /**
+   * Checks for whitespace on input provided
+   *
+   * @param {string} value value to be validated
+   * @param {string} field field name of the value to be validated
+   * @returns {object|boolean} error object or boolean
+   */
+  static checkFieldWhiteSpace(value, field) {
+    if (/\s/.test(value)) {
+      return {
+        status: 422,
+        error: `Invalid ${field} provided`,
+        message: `No whitespaces allowed in ${field}`,
+        success: false
+      };
+    }
+    return false;
+  }
+
+  /**
+   * Checks if input provided is alphabetical
+   *
+   * @param {string} value value to be validated
+   * @param {string} field field name of the value to be validated
+   * @returns {object|boolean} error object or boolean
+   */
+  static checkFieldAlpha(value, field) {
+    const pattern = /^[a-zA-Z]+$/;
+    if (!pattern.test(value)) {
+      return {
+        status: 422,
+        error: `Invalid ${field} provided`,
+        message: `${field} must be Alphabetical`,
+        success: false
+      };
+    }
+    return false;
   }
 }
 

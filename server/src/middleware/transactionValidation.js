@@ -1,62 +1,6 @@
+import helper from '../helpers/helper';
+
 class TransactionValidation {
-  /**
-   * Checks if input provided is empty
-   *
-   * @param {string} value value to be validated
-   * @param {string} field field name of the value to be validated
-   * @returns {object|boolean} error object or boolean
-   */
-  static checkFieldEmpty(value, field) {
-    if (!value) {
-      return {
-        status: 422,
-        error: `Invalid ${field} provided`,
-        message: `${field} cannot be empty`,
-        success: false
-      };
-    }
-    return false;
-  }
-
-  /**
-   * Checks for whitespace on input provided
-   *
-   * @param {string} value value to be validated
-   * @param {string} field field name of the value to be validated
-   * @returns {object|boolean} error object or boolean
-   */
-  static checkFieldWhiteSpace(value, field) {
-    if (/\s/.test(value)) {
-      return {
-        status: 422,
-        error: `Invalid ${field} provided`,
-        message: `No whitespaces allowed in ${field}`,
-        success: false
-      };
-    }
-    return false;
-  }
-
-  /**
-   * Checks if input provided is alphabetical
-   *
-   * @param {string} value value to be validated
-   * @param {string} field field name of the value to be validated
-   * @returns {object|boolean} error object or boolean
-   */
-  static checkFieldAlpha(value, field) {
-    const pattern = /^[a-zA-Z]+$/;
-    if (!pattern.test(value)) {
-      return {
-        status: 422,
-        error: `Invalid ${field} provided`,
-        message: `${field} must be Alphabetical`,
-        success: false
-      };
-    }
-    return false;
-  }
-
   /**
    * Handles user input validation on making debit or credit transactions
    *
@@ -70,10 +14,10 @@ class TransactionValidation {
     let { amount, type } = req.body;
 
     let isEmpty;
-    isEmpty = TransactionValidation.checkFieldEmpty(amount, 'transaction amount');
+    isEmpty = helper.checkFieldEmpty(amount, 'transaction amount');
     if (isEmpty) return res.status(isEmpty.status).json(isEmpty);
 
-    isEmpty = TransactionValidation.checkFieldEmpty(type, 'transaction type');
+    isEmpty = helper.checkFieldEmpty(type, 'transaction type');
     if (isEmpty) return res.status(isEmpty.status).json(isEmpty);
 
     if (amount && typeof amount === 'string') {
@@ -84,13 +28,13 @@ class TransactionValidation {
     }
 
     let hasWhiteSpace;
-    hasWhiteSpace = TransactionValidation.checkFieldWhiteSpace(amount, 'transaction amount');
+    hasWhiteSpace = helper.checkFieldWhiteSpace(amount, 'transaction amount');
     if (hasWhiteSpace) return res.status(hasWhiteSpace.status).json(hasWhiteSpace);
 
-    hasWhiteSpace = TransactionValidation.checkFieldWhiteSpace(type, 'transaction type');
+    hasWhiteSpace = helper.checkFieldWhiteSpace(type, 'transaction type');
     if (hasWhiteSpace) return res.status(hasWhiteSpace.status).json(hasWhiteSpace);
 
-    const isNotAlpha = TransactionValidation.checkFieldAlpha(type, 'transaction type', res);
+    const isNotAlpha = helper.checkFieldAlpha(type, 'transaction type', res);
     if (isNotAlpha) return res.status(isNotAlpha.status).json(isNotAlpha);
 
     if (!Number(amount)) {
