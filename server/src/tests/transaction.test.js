@@ -264,5 +264,40 @@ describe('Tests for all transaction Endpoints', () => {
           done(err);
         });
     });
+    it('Should return an error if user tries to make a debit transaction on a non existent account', done => {
+      chai
+        .request(app)
+        .post('/api/v1/transactions/1020000000/debit')
+        .set('Authorization', `Bearer ${staffToken}`)
+        .send({
+          amount: '500000',
+          type: 'debit'
+        })
+        .end((err, res) => {
+          expect(res).to.have.status(404);
+          expect(res.body.status).to.be.equal(404);
+          expect(res.body).to.be.an('object');
+          expect(res.body).to.have.keys('status', 'error', 'message', 'success');
+          expect(res.body.message).to.be.equal('Account does not exist');
+          done(err);
+        });
+    });
+    it('Should return an error if user tries to make a debit transaction without authorization ', done => {
+      chai
+        .request(app)
+        .post('/api/v1/transactions/1029704416/debit')
+        .send({
+          amount: '500000',
+          type: 'debit'
+        })
+        .end((err, res) => {
+          expect(res).to.have.status(401);
+          expect(res.body.status).to.be.equal(401);
+          expect(res.body).to.be.an('object');
+          expect(res.body).to.have.key('status', 'error');
+          expect(res.body.error).to.include('You do not have access to this page');
+          done(err);
+        });
+    });
   });
 });
