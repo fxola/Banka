@@ -350,7 +350,7 @@ describe('Tests for all accounts Endpoints', () => {
           expect(res).to.have.status(422);
           expect(res.body.status).to.be.equal(422);
           expect(res.body).to.have.keys('status', 'error', 'message', 'success');
-          expect(res.body.message).to.be.equal('Status can not be empty');
+          expect(res.body.message).to.be.equal('status cannot be empty');
           done();
         });
     });
@@ -366,7 +366,7 @@ describe('Tests for all accounts Endpoints', () => {
           expect(res).to.have.status(422);
           expect(res.body.status).to.be.equal(422);
           expect(res.body).to.have.keys('status', 'error', 'message', 'success');
-          expect(res.body.message).to.be.equal('Status must be alphabetical');
+          expect(res.body.message).to.be.equal('status must be Alphabetical');
           done();
         });
     });
