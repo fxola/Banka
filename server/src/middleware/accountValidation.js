@@ -50,38 +50,20 @@ class AccountValidation {
   static accountStatusCheck(req, res, next) {
     let { status } = req.body;
 
-    if (!status) {
-      return res.status(422).json({
-        status: 422,
-        error: `Invalid status provided`,
-        message: `Status can not be empty`,
-        success: false
-      });
-    }
+    const isEmpty = helper.checkFieldEmpty(status, 'status');
+    if (isEmpty) return res.status(isEmpty.status).json(isEmpty);
 
     if (status) {
       status = status.trim();
     }
 
-    if (/\s/.test(status)) {
-      return res.status(422).json({
-        status: 422,
-        error: `Invalid status provided`,
-        message: `No whitespaces allowed in status`,
-        success: false
-      });
-    }
+    const hasWhiteSpace = helper.checkFieldWhiteSpace(status, 'status');
+    if (hasWhiteSpace) return res.status(hasWhiteSpace.status).json(hasWhiteSpace);
 
-    const pattern = /^[a-zA-Z]+$/;
-    if (!pattern.test(status))
-      return res.status(422).json({
-        status: 422,
-        error: `Invalid status provided`,
-        message: `Status must be alphabetical`,
-        success: false
-      });
+    const isNotAlpha = helper.checkFieldAlpha(status, 'status');
+    if (isNotAlpha) return res.status(isNotAlpha.status).json(isNotAlpha);
 
-    req.body.status = status.replace(/\s/g, '').toLowerCase();
+    req.body.status = status.toLowerCase();
     return next();
   }
 
@@ -159,10 +141,10 @@ class AccountValidation {
       });
     }
 
-    req.body.firstName = firstName.replace(/\s/g, '');
-    req.body.lastName = lastName.replace(/\s/g, '');
-    req.body.type = type.replace(/\s/g, '');
-    req.body.email = email.replace(/\s/g, '');
+    req.body.firstName = firstName;
+    req.body.lastName = lastName;
+    req.body.type = type;
+    req.body.email = email;
 
     return next();
   }
