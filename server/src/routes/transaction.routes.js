@@ -2,8 +2,8 @@ import { Router } from 'express';
 
 import TransactionController from '../controllers/transaction.controller';
 import Auth from '../middleware/Auth';
-import AccountValidation from '../middleware/accountValidation';
-import TransactionValidation from '../middleware/transactionValidation';
+import AccountValidation from '../middleware/AccountValidator';
+import TransactionValidation from '../middleware/TransactionValidator';
 
 const { getUser, staffCheck } = Auth;
 const { accountNumberCheck } = AccountValidation;

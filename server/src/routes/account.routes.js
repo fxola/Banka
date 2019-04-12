@@ -2,7 +2,7 @@ import { Router } from 'express';
 
 import AccountController from '../controllers/account.controller';
 import Auth from '../middleware/Auth';
-import AccountValidation from '../middleware/accountValidation';
+import AccountValidation from '../middleware/AccountValidator';
 
 const { getUser, staffCheck } = Auth;
 const { accountNumberCheck, accountStatusCheck, accountDetailsCheck } = AccountValidation;
