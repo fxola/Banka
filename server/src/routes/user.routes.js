@@ -2,7 +2,7 @@ import { Router } from 'express';
 
 import UserController from '../controllers/user.controller';
 
-import UserValidation from '../middleware/userValidation';
+import UserValidation from '../middleware/UserValidator';
 
 const { signUpCheck, loginCheck } = UserValidation;
 const { createUser, logUserIn } = UserController;

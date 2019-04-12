@@ -14,69 +14,19 @@ class UserValidation {
    * @param {Object} req
    * @param {Object} res
    * @returns {(function|Object)} function next() or an error response object
-   * @memberof AccountValidation
+   * @memberof UserValidation
    */
   static signUpCheck(req, res, next) {
     let { email, firstName, lastName, password, type } = req.body;
 
-    let isEmpty;
-    isEmpty = helper.checkFieldEmpty(firstName, 'firstname');
-    if (isEmpty) return res.status(isEmpty.status).json(isEmpty);
+    const errors = UserValidation.inputCheck(email, firstName, lastName, password, type);
+    if (errors.length > 0) return res.status(errors[0].status).json(errors[0]);
 
-    isEmpty = helper.checkFieldEmpty(lastName, 'lastname');
-    if (isEmpty) return res.status(isEmpty.status).json(isEmpty);
-
-    isEmpty = helper.checkFieldEmpty(email, 'email');
-    if (isEmpty) return res.status(isEmpty.status).json(isEmpty);
-
-    isEmpty = helper.checkFieldEmpty(password, 'password');
-    if (isEmpty) return res.status(isEmpty.status).json(isEmpty);
-
-    isEmpty = helper.checkFieldEmpty(type, 'user type');
-    if (isEmpty) return res.status(isEmpty.status).json(isEmpty);
-
-    if (firstName) {
-      firstName = firstName.trim();
-    }
-    if (lastName) {
-      lastName = lastName.trim();
-    }
-    if (type) {
-      type = type.trim();
-    }
-    if (email) {
-      email = email.trim();
-    }
-
-    if (password) {
-      password = password.trim();
-    }
-
-    let hasWhiteSpace;
-    hasWhiteSpace = helper.checkFieldWhiteSpace(firstName, 'firstname');
-    if (hasWhiteSpace) return res.status(hasWhiteSpace.status).json(hasWhiteSpace);
-
-    hasWhiteSpace = helper.checkFieldWhiteSpace(lastName, 'lastname');
-    if (hasWhiteSpace) return res.status(hasWhiteSpace.status).json(hasWhiteSpace);
-
-    hasWhiteSpace = helper.checkFieldWhiteSpace(email, 'email');
-    if (hasWhiteSpace) return res.status(hasWhiteSpace.status).json(hasWhiteSpace);
-
-    hasWhiteSpace = helper.checkFieldWhiteSpace(password, 'password');
-    if (hasWhiteSpace) return res.status(hasWhiteSpace.status).json(hasWhiteSpace);
-
-    hasWhiteSpace = helper.checkFieldWhiteSpace(type, 'user type');
-    if (hasWhiteSpace) return res.status(hasWhiteSpace.status).json(hasWhiteSpace);
-
-    let isNotAlpha;
-    isNotAlpha = helper.checkFieldAlpha(firstName, 'firstname');
-    if (isNotAlpha) return res.status(isNotAlpha.status).json(isNotAlpha);
-
-    isNotAlpha = helper.checkFieldAlpha(lastName, 'lastname');
-    if (isNotAlpha) return res.status(isNotAlpha.status).json(isNotAlpha);
-
-    isNotAlpha = helper.checkFieldAlpha(type, 'user type');
-    if (isNotAlpha) return res.status(isNotAlpha.status).json(isNotAlpha);
+    if (firstName) firstName = firstName.trim();
+    if (lastName) lastName = lastName.trim();
+    if (type) type = type.trim();
+    if (email) email = email.trim();
+    if (password) password = password.trim();
 
     const passwordPattern = /\w{6,}/g;
 
@@ -127,12 +77,11 @@ class UserValidation {
         success: false
       });
     }
-
-    req.body.firstName = firstName.replace(/\s/g, '');
-    req.body.lastName = lastName.replace(/\s/g, '');
-    req.body.password = password.replace(/\s/g, '');
-    req.body.type = type.replace(/\s/g, '');
-    req.body.email = email.replace(/\s/g, '');
+    req.body.firstName = firstName;
+    req.body.lastName = lastName;
+    req.body.password = password;
+    req.body.type = type;
+    req.body.email = email;
 
     return next();
   }
@@ -149,12 +98,16 @@ class UserValidation {
   static loginCheck(req, res, next) {
     let { email, password } = req.body;
 
+    const errors = [];
+
     let isEmpty;
     isEmpty = helper.checkFieldEmpty(email, 'email');
-    if (isEmpty) return res.status(isEmpty.status).json(isEmpty);
+    if (isEmpty) errors.push(isEmpty);
 
     isEmpty = helper.checkFieldEmpty(password, 'password');
-    if (isEmpty) return res.status(isEmpty.status).json(isEmpty);
+    if (isEmpty) errors.push(isEmpty);
+
+    if (errors.length > 0) return res.status(errors[0].status).json(errors[0]);
 
     if (email) {
       email = email.trim();
@@ -166,6 +119,65 @@ class UserValidation {
     req.body.email = email;
     req.body.password = password;
     return next();
+  }
+
+  /**
+   *
+   * Runs a check on the fields provided and returns appropriate errors if any
+   * @static
+   * @param {string} email
+   * @param {string} firstName
+   * @param {string} lastName
+   * @param {string} password
+   * @param {string} type
+   * @returns {Array} an array of error(s)
+   * @memberof UserValidation
+   */
+  static inputCheck(email, firstName, lastName, password, type) {
+    const errors = [];
+    let isEmpty;
+    isEmpty = helper.checkFieldEmpty(firstName, 'firstname');
+    if (isEmpty) errors.push(isEmpty);
+
+    isEmpty = helper.checkFieldEmpty(lastName, 'lastname');
+    if (isEmpty) errors.push(isEmpty);
+
+    isEmpty = helper.checkFieldEmpty(email, 'email');
+    if (isEmpty) errors.push(isEmpty);
+
+    isEmpty = helper.checkFieldEmpty(password, 'password');
+    if (isEmpty) errors.push(isEmpty);
+
+    isEmpty = helper.checkFieldEmpty(type, 'user type');
+    if (isEmpty) errors.push(isEmpty);
+
+    let hasWhiteSpace;
+    hasWhiteSpace = helper.checkFieldWhiteSpace(firstName, 'firstname');
+    if (hasWhiteSpace) errors.push(hasWhiteSpace);
+
+    hasWhiteSpace = helper.checkFieldWhiteSpace(lastName, 'lastname');
+    if (hasWhiteSpace) errors.push(hasWhiteSpace);
+
+    hasWhiteSpace = helper.checkFieldWhiteSpace(email, 'email');
+    if (hasWhiteSpace) errors.push(hasWhiteSpace);
+
+    hasWhiteSpace = helper.checkFieldWhiteSpace(password, 'password');
+    if (hasWhiteSpace) errors.push(hasWhiteSpace);
+
+    hasWhiteSpace = helper.checkFieldWhiteSpace(type, 'user type');
+    if (hasWhiteSpace) errors.push(hasWhiteSpace);
+
+    let isNotAlpha;
+    isNotAlpha = helper.checkFieldAlpha(firstName, 'firstname');
+    if (isNotAlpha) errors.push(isNotAlpha);
+
+    isNotAlpha = helper.checkFieldAlpha(lastName, 'lastname');
+    if (isNotAlpha) errors.push(isNotAlpha);
+
+    isNotAlpha = helper.checkFieldAlpha(type, 'user type');
+    if (isNotAlpha) errors.push(isNotAlpha);
+
+    return errors;
   }
 }
 

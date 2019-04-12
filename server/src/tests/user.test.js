@@ -156,7 +156,7 @@ describe('Tests for all Auth(signup and signin) Endpoints', () => {
         .request(app)
         .post('/api/v1/auth/signup')
         .send({
-          firstName: '  ..',
+          firstName: '..',
           lastName: 'bellion',
           email: 'jon@gmail.com',
           password: 'simpleandweet',

@@ -71,14 +71,14 @@ API is deployed at https://bank-a.herokuapp.com
 |  Activate a bank account  | PATCH       | /api/v1/accounts/account-number      |
 | Deactivate a bank account | PATCH       | /api/v1/accounts/{account-number}    |
 |   Delete a bank account   | DELETE      | /api/v1/accounts/{account-number}    |
-|   Credit a bank account   | POST        | /api/v1/tranactions/{account-number} |
-|   Debit a bank account    | GET         | /api/v1/tranactions/{account-number} |
+|   Credit a bank account   | POST        | /api/v1/transactions/{account-number}|
+|   Debit a bank account    | POST        | /api/v1/transactions/{account-number}|
 
 ## Project References
 
 - I learnt how to build and structure my project backend with this tutorial by Bolaji Olajide - https://www.youtube.com/watch?v=WLIqvJzD9DE
 - I learnt how to implement Authentication with JWT with this tutorial by Academind - https://www.youtube.com/watch?v=0D5EEKH97NA
-- Huge Appreciation to Ekunola Ezekiel for letting me use his project as reference - https://github.com/Easybuoy/storemanager
+- Huge Appreciation to Ekunola Ezekiel for letting me use his project for reference - https://github.com/Easybuoy/storemanager
 - StackOverflow
 
 ## License
