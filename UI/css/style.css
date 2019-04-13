@@ -3,8 +3,21 @@
   padding: 0;
 }
 
+
+
+@font-face {
+    font-family: 'sofiapro-light';
+    src: url('./font/sofiapro-light-webfont.woff2') format('woff2'),
+         url('./font/sofiapro-light-webfont.woff') format('woff');
+    font-weight: normal;
+    font-style: italic;
+
+}
+
+
 body {
-  font-family: "Gill Sans", "Gill Sans MT", Calibri, "Trebuchet MS", sans-serif;
+  font-family: 'sofiapro-light', sans-serif;
+  /* letter-spacing: -1px; */
 }
 
 /* for custom scrollbar for webkit browser*/
@@ -12,12 +25,12 @@ body {
   width: 4px;
 }
 ::-webkit-scrollbar-track {
-  box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.4);
-  -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.4);
+  box-shadow: inset 0 0 6px teal;
+  -webkit-box-shadow: inset 0 0 6px teal;
 }
 ::-webkit-scrollbar-thumb {
-  box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.4);
-  -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.4);
+  box-shadow: inset 0 0 6px teal;
+  -webkit-box-shadow: inset 0 0 6px teal;
 }
 
 /******************************************************* 
@@ -29,7 +42,7 @@ body {
   float: left;
   margin: 16px 36px;
   font-weight: bold;
-  color: white;
+  color: teal;
   font-size: 1.5em;
 }
 
@@ -40,25 +53,28 @@ nav {
 
 nav ul {
   list-style-type: none;
-  background: #000000;
+  background: white;
   padding: 0;
   margin: 0;
-  color: white;
+  color: teal;
   overflow: hidden;
   text-align: right;
   transition: 1s;
+  box-shadow: 3px 15px 30px 1px #80808063;
 }
 
 nav ul li {
   display: inline-block;
   padding: 1em;
+  transition: .7s;
 }
 
 nav ul li a {
   text-decoration: none;
-  color: white;
+  color: teal;
   font-size: 1.2em;
 }
+
 
 .menu-icon {
   width: 100%;
@@ -79,11 +95,15 @@ nav ul li a {
 
   nav ul {
     max-height: 0px;
-    background: #000000;
+    background: white;
   }
 
   .showing {
     max-height: 20em;
+    background:teal;
+  }
+  nav ul li a{
+color:white;
   }
 
   nav ul li {
@@ -95,7 +115,7 @@ nav ul li a {
 
   .menu-icon {
     display: block;
-    background: #000000;
+    background: white;
   }
 }
 /******************************************************* 
@@ -104,8 +124,8 @@ nav ul li a {
 
 footer {
   height: 10vh;
-  background: #000000;
-  color: white;
+  background: white;
+  color: teal;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -118,7 +138,7 @@ footer {
 
 #signup-main {
   height: 90vh;
-  background-color: #ffffff;
+  background-color: #dfe0e2;
   background-image: url("data:image/svg+xml,%3Csvg width='40' height='40' viewBox='0 0 40 40' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M0 0h20v20H0V0zm10 17a7 7 0 1 0 0-14 7 7 0 0 0 0 14zm20 0a7 7 0 1 0 0-14 7 7 0 0 0 0 14zM10 37a7 7 0 1 0 0-14 7 7 0 0 0 0 14zm10-17h20v20H20V20zm10 17a7 7 0 1 0 0-14 7 7 0 0 0 0 14z' fill='%23000000' fill-opacity='0.02' fill-rule='evenodd'/%3E%3C/svg%3E");
 }
 
@@ -128,7 +148,7 @@ footer {
 
 #signup-section form {
   padding-top: 2em;
-  background: rgba(0, 0, 0, 0.5);
+  background: rgba(0,0,0,0.1);
   width: 40%;
   margin: 0 auto;
   display: flex;
@@ -147,12 +167,13 @@ footer {
   outline: none;
   border: none;
   font-size: 1.2em;
-  border-left: 4px solid rgba(0, 0, 0, 0.9);
-  color: rgba(0, 0, 0, 0.7);
+  border-left: 4px solid teal;
+  color: teal;
+  background:white;
 }
 
 #signup-section form input::placeholder {
-  color: rgba(0, 0, 0, 0.9);
+  color: #0080809c;
 }
 
 #signup-section form button {
@@ -161,7 +182,7 @@ footer {
   font-size: 1.1em;
   margin-bottom: 1em;
   color: white;
-  background: rgba(0, 0, 0, 0.3);
+  background: #0080809c;
   border: none;
   transition: ease 0.4s;
   cursor: pointer;
@@ -170,7 +191,7 @@ footer {
 
 #signup-section form button:hover {
   color: white;
-  background: rgba(0, 0, 0, 0.9);
+  background: teal;
 }
 
 #signup-section a {
@@ -183,7 +204,7 @@ footer {
 }
 
 #signup-section h3 {
-  color: rgba(0, 0, 0, 0.9);
+  color: teal;
 }
 
 @media (max-width: 769px) {
@@ -209,7 +230,7 @@ footer {
 ***********************************************************/
 #signin-main {
   height: 90vh;
-  background-color: #ffffff;
+  background-color: #dfe0e2;
   background-image: url("data:image/svg+xml,%3Csvg width='40' height='40' viewBox='0 0 40 40' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M0 0h20v20H0V0zm10 17a7 7 0 1 0 0-14 7 7 0 0 0 0 14zm20 0a7 7 0 1 0 0-14 7 7 0 0 0 0 14zM10 37a7 7 0 1 0 0-14 7 7 0 0 0 0 14zm10-17h20v20H20V20zm10 17a7 7 0 1 0 0-14 7 7 0 0 0 0 14z' fill='%23000000' fill-opacity='0.02' fill-rule='evenodd'/%3E%3C/svg%3E");
 }
 #signin-section {
@@ -217,7 +238,7 @@ footer {
 }
 #signin-section form {
   padding-top: 2em;
-  background: rgba(0, 0, 0, 0.5);
+  background: rgba(0, 0, 0, 0.1);
   width: 40%;
   margin: 0 auto;
   display: flex;
@@ -236,12 +257,12 @@ footer {
   outline: none;
   border: none;
   font-size: 1.2em;
-  border-left: 4px solid rgba(0, 0, 0, 0.9);
-  color: rgba(0, 0, 0, 0.7);
+  border-left: 4px solid teal;
+  color: #0080809c;
 }
 
 #signin-section form input::placeholder {
-  color: rgba(0, 0, 0, 0.9);
+  color: #0080809c;
 }
 
 #signin-section form button {
@@ -250,7 +271,7 @@ footer {
   font-size: 1.1em;
   margin-bottom: 1em;
   color: white;
-  background: rgba(0, 0, 0, 0.3);
+  background: #0080809c;
   border: none;
   transition: ease 0.4s;
   cursor: pointer;
@@ -259,7 +280,7 @@ footer {
 
 #signin-section form button:hover {
   color: white;
-  background: rgba(0, 0, 0, 0.7);
+  background: teal;
 }
 
 #signin-section a {
@@ -272,7 +293,7 @@ footer {
 }
 
 #signin-section h3 {
-  color: #000000;
+  color: teal;
 }
 
 @media (max-width: 769px) {
@@ -294,7 +315,7 @@ footer {
 ***********************************************************/
 #transaction-main {
   height: 90vh;
-  background-color: #ffffff;
+  background-color: #dfe0e2;
   background-image: url("data:image/svg+xml,%3Csvg width='40' height='40' viewBox='0 0 40 40' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M0 0h20v20H0V0zm10 17a7 7 0 1 0 0-14 7 7 0 0 0 0 14zm20 0a7 7 0 1 0 0-14 7 7 0 0 0 0 14zM10 37a7 7 0 1 0 0-14 7 7 0 0 0 0 14zm10-17h20v20H20V20zm10 17a7 7 0 1 0 0-14 7 7 0 0 0 0 14z' fill='%23000000' fill-opacity='0.02' fill-rule='evenodd'/%3E%3C/svg%3E");
 }
 
@@ -306,12 +327,14 @@ footer {
 #transaction-section > h3 {
   text-align: right;
   padding-right: 0.5em;
+  color:teal;
 }
 
 #transaction-section > h1 {
   text-align: center;
   font-size: 2.3em;
   margin-bottom: 1em;
+  color:teal;
 }
 #transaction-table {
   overflow: auto;
@@ -320,7 +343,7 @@ footer {
 }
 
 .transaction-table {
-  background: rgba(0, 0, 0, 0.2);
+  background: #ffffffc2;
   margin-bottom: 1em;
   table-layout: fixed;
   color: #909090;
@@ -334,7 +357,7 @@ td {
 
 .transaction-table th {
   padding: 1em;
-  background: rgba(0, 0, 0, 0.4);
+  background: teal;
   color: #eee;
   table-layout: fixed;
   width: 200px;
@@ -342,8 +365,8 @@ td {
 .transaction-table td {
   width: 214px;
   padding: 0.5em;
-  border-bottom: 1px solid #f4f7f8;
-  color: rgba(0, 0, 0, 0.5);
+  border-bottom: 2px solid #dfe0e2;
+  color: teal;
 }
 .transaction-table tr {
   display: block;
@@ -356,7 +379,7 @@ td {
   width: 100%;
 }
 .credit td {
-  color: #00bb00;
+  color: #008800;
 }
 .debit td {
   color: red;
@@ -365,12 +388,12 @@ td {
 .transaction-table td button {
   width: 60%;
   background: rgba(0, 0, 0, 0.1);
-  color: rgba(0, 0, 0, 0.7);
-  border: 2px solid rgba(0, 0, 0, 0.4);
+  color: teal;
+  border: 2px solid teal;
   cursor: pointer;
 }
 .transaction-table td button:hover {
-  background: rgba(0, 0, 0, 0.7);
+  background: teal;
   color: white;
 }
 
@@ -401,7 +424,7 @@ td {
 ***********************************************************/
 #dashboard-main {
   height: 90vh;
-  background-color: #ffffff;
+  background-color: #dfe0e2;
   background-image: url("data:image/svg+xml,%3Csvg width='40' height='40' viewBox='0 0 40 40' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M0 0h20v20H0V0zm10 17a7 7 0 1 0 0-14 7 7 0 0 0 0 14zm20 0a7 7 0 1 0 0-14 7 7 0 0 0 0 14zM10 37a7 7 0 1 0 0-14 7 7 0 0 0 0 14zm10-17h20v20H20V20zm10 17a7 7 0 1 0 0-14 7 7 0 0 0 0 14z' fill='%23000000' fill-opacity='0.02' fill-rule='evenodd'/%3E%3C/svg%3E");
 }
 
@@ -428,29 +451,31 @@ td {
   font-size: 1.8em;
   text-align: center;
 }
+#photo{
+  border:1px solid white;
+}
 
 .details {
-  border: 1px solid;
-  border-left: 7px solid;
   flex-basis: 70%;
   margin-bottom: 1em;
 }
 
 .details article {
-  border-bottom: 1px solid;
+  border-bottom: 3px solid #dfe0e2;
   display: flex;
   justify-content: space-between;
 }
 
 .details p {
+  margin-top: 0.5em;
   font-size: 1.6em;
   margin-bottom: 0.5em;
   padding: 0.2em;
 }
 .container {
   text-align: center;
-  background: rgba(0, 0, 0, 0.4);
-  color: white;
+  background: #ffffffc2;
+  color: teal;
 }
 
 .card-img {
@@ -465,8 +490,8 @@ td {
 
 #photo,
 .details {
-  background: rgba(0, 0, 0, 0.1);
-  color: rgba(0, 0, 0, 0.5);
+  background: #ffffffc2;
+  color: teal;
 }
 
 #account button {
@@ -474,9 +499,9 @@ td {
   margin: 3em auto;
   padding: 1em;
   border: none;
-  background: rgba(0, 0, 0, 0.1);
-  color: rgba(0, 0, 0, 0.7);
-  border: 2px solid rgba(0, 0, 0, 0.4);
+  background: #ffffffc2;
+  color: teal;
+  border: 2px solid teal;
   cursor: pointer;
   width: 20%;
   border-radius: 4px;
@@ -486,7 +511,7 @@ td {
 }
 
 #account button:hover {
-  background: rgba(0, 0, 0, 0.7);
+  background: teal;
   color: white;
 }
 
@@ -532,7 +557,7 @@ td {
 #account-form button {
   margin-top: 1em;
   background: rgba(0, 0, 0, 0.1);
-  color: rgba(0, 0, 0, 0.5);
+  color: teal;
   padding: 0.5em 0 0.5em 0;
   width: 30%;
   border: none;
@@ -543,7 +568,7 @@ td {
 }
 
 #account-form button:hover {
-  background: rgba(0, 0, 0, 0.7);
+  background: teal;
   color: white;
 }
 
@@ -554,7 +579,8 @@ td {
   margin: 5px auto;
   border: none;
   outline: none;
-  border-left: 3px solid;
+  color:teal;
+  border-left: 3px solid teal;
   background: rgba(0, 0, 0, 0.1);
 }
 
@@ -621,7 +647,7 @@ td {
 #admin-dashboard-main {
   height: 90vh;
   overflow: auto;
-  background-color: #ffffff;
+  background-color: #dfe0e2;
   background-image: url("data:image/svg+xml,%3Csvg width='40' height='40' viewBox='0 0 40 40' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M0 0h20v20H0V0zm10 17a7 7 0 1 0 0-14 7 7 0 0 0 0 14zm20 0a7 7 0 1 0 0-14 7 7 0 0 0 0 14zM10 37a7 7 0 1 0 0-14 7 7 0 0 0 0 14zm10-17h20v20H20V20zm10 17a7 7 0 1 0 0-14 7 7 0 0 0 0 14z' fill='%23000000' fill-opacity='0.02' fill-rule='evenodd'/%3E%3C/svg%3E");
 }
 
@@ -638,14 +664,15 @@ td {
 .account-details {
   width: 60vw;
   margin: 0.4em auto;
-  background: rgba(0, 0, 0, 0.1);
-  color: rgba(0, 0, 0, 0.5);
+  background: #ffffffc2;
+  color: teal;
   font-weight: bolder;
   padding: 0.7em;
   border-radius: 0.5em;
 }
 
 .account-details article {
+  padding:0.4em;
   display: flex;
   justify-content: space-between;
   border-bottom: 0.3px solid;
@@ -667,7 +694,7 @@ article.buttons {
 .account-details button {
   margin-top: 1em;
   background: rgba(0, 0, 0, 0.1);
-  color: rgba(0, 0, 0, 0.5);
+  color: teal;
   padding: 0.5em 0 0.5em 0;
   width: 30%;
   border: none;
@@ -678,7 +705,7 @@ article.buttons {
 }
 
 .account-details button:hover {
-  background: rgba(0, 0, 0, 0.7);
+  background: teal;
   color: white;
 }
 
@@ -714,7 +741,7 @@ article.buttons {
 #accounts-main {
   height: 90vh;
   overflow: auto;
-  background-color: #ffffff;
+  background-color: #dfe0e2;
   background-image: url("data:image/svg+xml,%3Csvg width='40' height='40' viewBox='0 0 40 40' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M0 0h20v20H0V0zm10 17a7 7 0 1 0 0-14 7 7 0 0 0 0 14zm20 0a7 7 0 1 0 0-14 7 7 0 0 0 0 14zM10 37a7 7 0 1 0 0-14 7 7 0 0 0 0 14zm10-17h20v20H20V20zm10 17a7 7 0 1 0 0-14 7 7 0 0 0 0 14z' fill='%23000000' fill-opacity='0.02' fill-rule='evenodd'/%3E%3C/svg%3E");
 }
 
@@ -727,8 +754,8 @@ article.buttons {
 .account-record {
   height: 70vh;
   border-radius: 0.7em;
-  background: rgba(0, 0, 0, 0.15);
-  color: rgba(0, 0, 0, 0.6);
+  background: #ffffffc2;
+  color: teal;
   display: flex;
 }
 .actions {
@@ -747,7 +774,7 @@ article.buttons {
 .actions button {
   margin-top: 1em;
   background: rgba(0, 0, 0, 0.1);
-  color: rgba(0, 0, 0, 0.5);
+  color: teal;
   padding: 0.5em 0 0.5em 0;
   width: 30%;
   border: none;
@@ -758,7 +785,7 @@ article.buttons {
 }
 
 .actions button:hover {
-  background: rgba(0, 0, 0, 0.7);
+  background: teal;
   color: white;
 }
 
@@ -788,12 +815,15 @@ article.buttons {
   margin: 10px auto;
   border-radius: 100%;
 }
+figure{
+  margin-bottom:3em;
+}
 
 .record-details article {
   display: flex;
   justify-content: space-between;
-  font-size: 2em;
-  margin: 0.5em;
+  font-size: 1.8em;
+  margin: 0.4em;
 }
 .actions a {
   display: block;
@@ -841,7 +871,7 @@ article.buttons {
 #transaction-form button {
   margin-top: 1em;
   background: rgba(0, 0, 0, 0.1);
-  color: rgba(0, 0, 0, 0.5);
+  color: teal;
   padding: 0.5em 0 0.5em 0;
   width: 30%;
   border: none;
@@ -852,7 +882,7 @@ article.buttons {
 }
 
 #transaction-form button:hover {
-  background: rgba(0, 0, 0, 0.7);
+  background: teal;
   color: white;
 }
 
@@ -863,8 +893,9 @@ article.buttons {
   margin: 5px auto;
   border: none;
   outline: none;
-  border-left: 3px solid;
-  background: rgba(0, 0, 0, 0.1);
+  border-left: 3px solid teal;
+  background: #ffffffc2;
+  color:teal;
 }
 
 @media (max-width: 769px) {
@@ -920,7 +951,7 @@ article.buttons {
 #create-user-main {
   height: 90vh;
   overflow: auto;
-  background-color: #ffffff;
+  background-color: #dfe0e2;
   background-image: url("data:image/svg+xml,%3Csvg width='40' height='40' viewBox='0 0 40 40' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M0 0h20v20H0V0zm10 17a7 7 0 1 0 0-14 7 7 0 0 0 0 14zm20 0a7 7 0 1 0 0-14 7 7 0 0 0 0 14zM10 37a7 7 0 1 0 0-14 7 7 0 0 0 0 14zm10-17h20v20H20V20zm10 17a7 7 0 1 0 0-14 7 7 0 0 0 0 14z' fill='%23000000' fill-opacity='0.02' fill-rule='evenodd'/%3E%3C/svg%3E");
 }
 
@@ -942,12 +973,13 @@ article.buttons {
   margin: 1em auto;
   border: none;
   outline: none;
-  border-left: 3px solid;
-  background: rgba(0, 0, 0, 0.1);
+  color:teal;
+  border-left: 3px solid teal;
+  background: #ffffffc2;
 }
 
 #user-form button {
-  background: rgba(0, 0, 0, 0.7);
+  background: teal;
   color: white;
   padding: 0.5em 0 0.5em 0;
   width: 30%;
@@ -962,7 +994,7 @@ article.buttons {
 
 #user-form button:hover {
   background: rgba(0, 0, 0, 0.1);
-  color: rgba(0, 0, 0, 0.5);
+  color: teal;
 }
 
 @media (max-width: 769px) {
@@ -1005,7 +1037,7 @@ article.buttons {
   content: "";
   background: url("../img/savings.svg");
   background-size: 100% 100%;
-  background-color: rgba(0, 0, 0, 0.08);
+  background-color: #dfe0e2;
   background-repeat: no-repeat;
   opacity: 0.7;
   top: 0;
@@ -1024,7 +1056,7 @@ article.buttons {
   padding: 1em;
   width: 100%;
   border: none;
-  color: rgba(0, 0, 0, 0.7);
+  color: teal;
   cursor: pointer;
   font-weight: bolder;
   transition: 0.8s;
@@ -1032,13 +1064,14 @@ article.buttons {
 }
 
 #hero button:hover {
-  background: rgba(0, 0, 0, 0.8);
+  background: teal;
   color: white;
 }
 
 #hero h1 {
   font-size: 3.2em;
   margin-bottom: 0.5em;
+  color:teal;
 }
 
 #hero a {
@@ -1074,7 +1107,7 @@ article.buttons {
 #reset1-main,
 #reset2-main {
   height: 90vh;
-  background-color: #ffffff;
+  background-color: #dfe0e2;
   background-image: url("data:image/svg+xml,%3Csvg width='40' height='40' viewBox='0 0 40 40' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M0 0h20v20H0V0zm10 17a7 7 0 1 0 0-14 7 7 0 0 0 0 14zm20 0a7 7 0 1 0 0-14 7 7 0 0 0 0 14zM10 37a7 7 0 1 0 0-14 7 7 0 0 0 0 14zm10-17h20v20H20V20zm10 17a7 7 0 1 0 0-14 7 7 0 0 0 0 14z' fill='%23000000' fill-opacity='0.02' fill-rule='evenodd'/%3E%3C/svg%3E");
 }
 #reset1-section {
@@ -1082,7 +1115,7 @@ article.buttons {
 }
 #reset1-section form {
   padding-top: 2em;
-  background: rgba(0, 0, 0, 0.5);
+  background: rgba(0,0,0,0.1);
   width: 40%;
   margin: 0 auto;
   display: flex;
@@ -1101,12 +1134,13 @@ article.buttons {
   outline: none;
   border: none;
   font-size: 1.2em;
-  border-left: 4px solid rgba(0, 0, 0, 0.9);
-  color: rgba(0, 0, 0, 0.7);
+  background:#ffffffc2;
+  border-left: 4px solid teal;
+  color: teal;
 }
 
 #reset1-section form input::placeholder {
-  color: rgba(0, 0, 0, 0.9);
+  color: #0080809c;
 }
 
 #reset1-section form button {
@@ -1115,7 +1149,7 @@ article.buttons {
   font-size: 1.1em;
   margin-bottom: 1em;
   color: white;
-  background: rgba(0, 0, 0, 0.3);
+  background: #0080809c;
   border: none;
   transition: ease 0.4s;
   cursor: pointer;
@@ -1124,7 +1158,7 @@ article.buttons {
 
 #reset1-section form button:hover {
   color: white;
-  background: rgba(0, 0, 0, 0.9);
+  background: teal;
 }
 
 #reset1-section a {
@@ -1151,7 +1185,7 @@ article.buttons {
 }
 
 #reset1-section h3 {
-  color: black;
+  color: teal;
 }
 
 .reset2-header {
@@ -1177,3 +1211,44 @@ article.buttons {
   }
 }
 
+/******************************************************* 
+        SITE OPTIONS PAGE STYLES 
+***********************************************************/
+#site-options {
+  padding-top: 7em;
+  
+}
+
+#option-article {
+  height: 50vh;
+  display: block;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+}
+
+#option-article h1{
+  font-size:2.5em;
+  color:teal;
+  margin-bottom:.6em;
+}
+
+#option-article li{
+  font-size:1.5em;
+  color:teal;
+  list-style-type:none;
+  padding:.4em;
+}
+
+#option-article li a{
+    color: inherit;
+    outline: none;
+    text-decoration: none;
+    background-image: linear-gradient(white, white);
+    background-size: 100% .6em;
+    background-repeat: no-repeat;
+    background-position: left 0 bottom -40%;
+}
