@@ -16,13 +16,10 @@ describe('Tests for all accounts Endpoints', () => {
   before(done => {
     chai
       .request(app)
-      .post('/api/v1/auth/signup')
+      .post('/api/v1/auth/signin')
       .send({
-        firstName: 'jon',
-        lastName: 'doe',
-        email: 'jdee@gmail.com',
-        password: 'complexandbitter',
-        type: 'staff'
+        email: 'user@staff.com',
+        password: 'staffuser'
       })
       .end((err, res) => {
         const { token } = res.body.data;
@@ -117,7 +114,7 @@ describe('Tests for all accounts Endpoints', () => {
           expect(res).to.have.status(422);
           expect(res.body.status).to.be.equal(422);
           expect(res.body).to.have.keys('status', 'error', 'message', 'success');
-          expect(res.body.message).to.be.equal('firstname cannot be empty');
+          expect(res.body.message).to.be.equal('firstName cannot be empty');
           done();
         });
     });
@@ -137,7 +134,7 @@ describe('Tests for all accounts Endpoints', () => {
           expect(res).to.have.status(422);
           expect(res.body.status).to.be.equal(422);
           expect(res.body).to.have.keys('status', 'error', 'message', 'success');
-          expect(res.body.message).to.be.equal('lastname cannot be empty');
+          expect(res.body.message).to.be.equal('lastName cannot be empty');
           done();
         });
     });
@@ -195,7 +192,7 @@ describe('Tests for all accounts Endpoints', () => {
           expect(res).to.have.status(422);
           expect(res.body.status).to.be.equal(422);
           expect(res.body).to.have.keys('status', 'error', 'message', 'success');
-          expect(res.body.message).to.be.equal('firstname must be Alphabetical');
+          expect(res.body.message).to.be.equal('firstName must be Alphabetical');
           done();
         });
     });
@@ -215,7 +212,7 @@ describe('Tests for all accounts Endpoints', () => {
           expect(res).to.have.status(422);
           expect(res.body.status).to.be.equal(422);
           expect(res.body).to.have.keys('status', 'error', 'message', 'success');
-          expect(res.body.message).to.be.equal('lastname must be Alphabetical');
+          expect(res.body.message).to.be.equal('lastName must be Alphabetical');
           done();
         });
     });

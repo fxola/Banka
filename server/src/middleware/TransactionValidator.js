@@ -26,18 +26,18 @@ class TransactionValidation {
     if (!Number(amount)) {
       return res.status(403).json({
         status: 403,
+        success: false,
         error: `Request Forbidden`,
-        message: `Transaction amount must be a number`,
-        success: false
+        message: `Transaction amount must be a number`
       });
     }
 
     if (Number(amount) < 500) {
       return res.status(403).json({
         status: 403,
+        success: false,
         error: `Request Forbidden`,
-        message: `You can only make debit/credit transactions above 500 Naira`,
-        success: false
+        message: `You can only make debit/credit transactions above 500 Naira`
       });
     }
 
@@ -56,9 +56,9 @@ class TransactionValidation {
     if (transactionType === 'invalid') {
       return res.status(403).json({
         status: 403,
+        success: false,
         error: `request forbidden`,
-        message: `Transaction type can only be 'debit' or 'credit'`,
-        success: false
+        message: `Transaction type can only be 'debit' or 'credit'`
       });
     }
 
@@ -73,9 +73,9 @@ class TransactionValidation {
     if (urltype !== type) {
       return res.status(403).json({
         status: 403,
+        success: false,
         error: `Request forbidden`,
-        message: `Please confirm that the url matches the transaction type`,
-        success: false
+        message: `Please confirm that the url matches the transaction type`
       });
     }
 
