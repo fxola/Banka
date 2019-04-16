@@ -20,19 +20,12 @@ describe('Tests for all Auth(signup and signin) Endpoints', () => {
           lastName: 'bellion',
           email: 'jon@gmail.com',
           password: 'simpleandweet',
-          type: 'staff'
+          confirmPassword: 'simpleandweet'
         })
         .end((err, res) => {
           expect(res).to.have.status(201);
           expect(res.body.status).to.be.equal(201);
-          expect(res.body.data).to.have.keys(
-            'token',
-            'id',
-            'firstName',
-            'lastName',
-            'email',
-            'type'
-          );
+          expect(res.body.data).to.have.keys('token', 'id', 'firstName', 'lastName', 'email');
           expect(res.body.data.token).to.be.a('string');
           done();
         });
@@ -52,7 +45,7 @@ describe('Tests for all Auth(signup and signin) Endpoints', () => {
           expect(res).to.have.status(422);
           expect(res.body.status).to.be.equal(422);
           expect(res.body).to.have.keys('status', 'error', 'message', 'success');
-          expect(res.body.error).to.be.equal('Invalid firstname provided');
+          expect(res.body.error).to.be.equal('Invalid firstName provided');
           done();
         });
     });
@@ -71,7 +64,7 @@ describe('Tests for all Auth(signup and signin) Endpoints', () => {
           expect(res).to.have.status(422);
           expect(res.body.status).to.be.equal(422);
           expect(res.body).to.have.keys('status', 'error', 'message', 'success');
-          expect(res.body.error).to.be.equal('Invalid lastname provided');
+          expect(res.body.error).to.be.equal('Invalid lastName provided');
           done();
         });
     });
@@ -91,25 +84,6 @@ describe('Tests for all Auth(signup and signin) Endpoints', () => {
           expect(res.body.status).to.be.equal(422);
           expect(res.body).to.have.keys('status', 'error', 'message', 'success');
           expect(res.body.error).to.be.equal('Invalid email provided');
-          done();
-        });
-    });
-    it('Should return an error if a user tries to sign up without specifying user type', done => {
-      chai
-        .request(app)
-        .post('/api/v1/auth/signup')
-        .send({
-          firstName: 'jon',
-          lastName: 'bellion',
-          email: 'jon@gmail.com',
-          password: 'simpleandweet',
-          type: ''
-        })
-        .end((err, res) => {
-          expect(res).to.have.status(422);
-          expect(res.body.status).to.be.equal(422);
-          expect(res.body).to.have.keys('status', 'error', 'message', 'success');
-          expect(res.body.error).to.be.equal('Invalid user type provided');
           done();
         });
     });
@@ -141,7 +115,7 @@ describe('Tests for all Auth(signup and signin) Endpoints', () => {
           lastName: 'bellion',
           email: 'jon@gmail.com',
           password: 'simpl',
-          type: 'staff'
+          confirmPassword: 'simpl'
         })
         .end((err, res) => {
           expect(res).to.have.status(406);
@@ -160,13 +134,13 @@ describe('Tests for all Auth(signup and signin) Endpoints', () => {
           lastName: 'bellion',
           email: 'jon@gmail.com',
           password: 'simpleandweet',
-          type: 'staff'
+          confirmPassword: 'simpleandweet'
         })
         .end((err, res) => {
           expect(res).to.have.status(422);
           expect(res.body.status).to.be.equal(422);
           expect(res.body).to.have.keys('status', 'error', 'message', 'success');
-          expect(res.body.message).to.be.equal('firstname must be Alphabetical');
+          expect(res.body.message).to.be.equal('firstName must be Alphabetical');
           done();
         });
     });
@@ -179,35 +153,17 @@ describe('Tests for all Auth(signup and signin) Endpoints', () => {
           lastName: '.@',
           email: 'jon@gmail.com',
           password: 'simpleandweet',
-          type: 'staff'
+          confirmPassword: 'simpleandweet'
         })
         .end((err, res) => {
           expect(res).to.have.status(422);
           expect(res.body.status).to.be.equal(422);
           expect(res.body).to.have.keys('status', 'error', 'message', 'success');
-          expect(res.body.message).to.be.equal('lastname must be Alphabetical');
+          expect(res.body.message).to.be.equal('lastName must be Alphabetical');
           done();
         });
     });
-    it('Should return an error if a user tries to sign up with a non-alpabetic user type', done => {
-      chai
-        .request(app)
-        .post('/api/v1/auth/signup')
-        .send({
-          firstName: 'jon',
-          lastName: 'bellion',
-          email: 'jon@gmail.com',
-          password: 'simpleandweet',
-          type: '#.'
-        })
-        .end((err, res) => {
-          expect(res).to.have.status(422);
-          expect(res.body.status).to.be.equal(422);
-          expect(res.body).to.have.keys('status', 'error', 'message', 'success');
-          expect(res.body.message).to.be.equal('user type must be Alphabetical');
-          done();
-        });
-    });
+
     it('Should return an error if a user tries to sign up with an invalid email address', done => {
       chai
         .request(app)
@@ -217,7 +173,7 @@ describe('Tests for all Auth(signup and signin) Endpoints', () => {
           lastName: 'bellion',
           email: 'jongmail.com',
           password: 'simpleandweet',
-          type: 'staff'
+          confirmPassword: 'simpleandweet'
         })
         .end((err, res) => {
           expect(res).to.have.status(422);
@@ -236,7 +192,7 @@ describe('Tests for all Auth(signup and signin) Endpoints', () => {
           lastName: 'bellion',
           email: 'jon@gmail.com',
           password: 'simpleandweet',
-          type: 'staff'
+          confirmPassword: 'simpleandweet'
         })
         .end((err, res) => {
           expect(res).to.have.status(409);
@@ -259,15 +215,8 @@ describe('Tests for all Auth(signup and signin) Endpoints', () => {
         .end((err, res) => {
           expect(res).to.have.status(200);
           expect(res.body.status).to.be.equal(200);
-          expect(res.body).to.have.keys('status', 'data', 'success');
-          expect(res.body.data).to.have.keys(
-            'token',
-            'id',
-            'firstName',
-            'lastName',
-            'email',
-            'type'
-          );
+          expect(res.body).to.have.keys('status', 'data', 'success', 'message');
+          expect(res.body.data).to.have.key('token', 'id', 'firstName', 'lastName', 'email');
           done();
         });
     });

@@ -22,9 +22,9 @@ class AccountService {
     if (email !== userEmail)
       return {
         status: 403,
+        success: false,
         error: 'Request Forbidden',
-        message: 'You can only create a bank account with your registered e-mail',
-        success: false
+        message: 'You can only create a bank account with your registered e-mail'
       };
 
     const id = mockData.accounts.length + 1;
@@ -37,9 +37,9 @@ class AccountService {
 
     return {
       status: 201,
+      success: true,
       data: { accountNumber, firstName, lastName, email, type, balance, status },
-      message: `New ${type} account created successfully`,
-      success: true
+      message: `New ${type} account created successfully`
     };
   }
 
@@ -68,8 +68,8 @@ class AccountService {
     if (status === 'invalid') {
       return {
         status: 403,
-        error: `Status can only be 'activate' or 'deactivate'`,
-        success: false
+        success: false,
+        error: `Status can only be 'activate' or 'deactivate'`
       };
     }
 
@@ -83,15 +83,15 @@ class AccountService {
       mockData.accounts.splice(accountIndex, 1, foundAccount);
       return {
         status: 202,
-        data: { accountNumber, status },
         success: true,
+        data: { accountNumber, status },
         message: `Account ${validStatus}d succesfully`
       };
     }
     return {
       status: 404,
-      error: `Not Found`,
       success: false,
+      error: `Not Found`,
       message: `Account does not exist`
     };
   }
@@ -112,9 +112,9 @@ class AccountService {
     if (foundAccount) {
       const accountIndex = mockData.accounts.indexOf(foundAccount);
       mockData.accounts.splice(accountIndex, 1);
-      return { status: 200, message: `Account sucessfully deleted`, success: true };
+      return { status: 200, success: true, message: `Account sucessfully deleted` };
     }
-    return { status: 404, error: `Not found`, message: `Account does not exist`, success: false };
+    return { status: 404, success: false, error: `Not found`, message: `Account does not exist` };
   }
 }
 

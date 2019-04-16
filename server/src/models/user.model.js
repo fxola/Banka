@@ -15,7 +15,7 @@ class User {
    * @param {boolean} [isAdmin=false]
    * @memberof User
    */
-  constructor(id, email, firstName, lastName, password, type, isAdmin = false) {
+  constructor(id, email, firstName, lastName, password, type = 'client', isAdmin = false) {
     this.id = id;
     this.email = email;
     this.firstName = firstName;

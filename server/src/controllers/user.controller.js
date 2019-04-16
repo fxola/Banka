@@ -32,6 +32,20 @@ class UserController {
     const response = UserService.logUserIn(req.body);
     return res.status(response.status).json(response);
   }
+
+  /**
+   *
+   * Updates the role of a current user to a staff role
+   * @static
+   * @param {Object} req
+   * @param {Object} res
+   * @returns {Object} JSON API Response
+   * @memberof UserController
+   */
+  static makeStaff(req, res) {
+    const response = UserService.makeStaff(req.body.email);
+    return res.status(response.status).json(response);
+  }
 }
 
 export default UserController;

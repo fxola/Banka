@@ -34,8 +34,8 @@ class TransactionService {
       ) {
         return {
           status: 403,
-          error: `Request Forbidden`,
           success: false,
+          error: `Request Forbidden`,
           message: `Insufficient Funds. You have ${oldBalance} Naira left`
         };
       }
@@ -43,8 +43,8 @@ class TransactionService {
       if (foundAccount.status !== 'active') {
         return {
           status: 403,
-          error: `Request forbidden`,
           success: false,
+          error: `Request forbidden`,
           message: `Account status:${
             foundAccount.status
           }. You can only perform transactions on an active account.`
@@ -83,6 +83,7 @@ class TransactionService {
 
       return {
         status: 201,
+        success: true,
         data: {
           transactionId: id,
           accountNumber: parseInt(accountNumber, 10),
@@ -94,7 +95,7 @@ class TransactionService {
         message: `Account ${transactionType}ed successfully`
       };
     }
-    return { status: 404, error: `Not found`, message: `Account does not exist`, success: false };
+    return { status: 404, success: false, error: `Not found`, message: `Account does not exist` };
   }
 }
 

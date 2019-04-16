@@ -17,16 +17,16 @@ class UserValidation {
    * @memberof UserValidation
    */
   static signUpCheck(req, res, next) {
-    let { email, firstName, lastName, password, type } = req.body;
+    let { email, firstName, lastName, password, confirmPassword } = req.body;
 
-    const errors = UserValidation.inputCheck(email, firstName, lastName, password, type);
+    const errors = UserValidation.inputCheck(email, firstName, lastName, password, confirmPassword);
     if (errors.length > 0) return res.status(errors[0].status).json(errors[0]);
 
     if (firstName) firstName = firstName.trim();
     if (lastName) lastName = lastName.trim();
-    if (type) type = type.trim();
     if (email) email = email.trim();
     if (password) password = password.trim();
+    if (confirmPassword) confirmPassword = confirmPassword.trim();
 
     const passwordPattern = /\w{6,}/g;
 
@@ -35,6 +35,15 @@ class UserValidation {
         status: 406,
         error: 'Invalid password provided',
         message: `Password must not be less than six(6) characters`,
+        success: false
+      });
+    }
+
+    if (password !== confirmPassword) {
+      return res.status(422).json({
+        status: 422,
+        error: 'Invalid password provided',
+        message: `Passwords do not match`,
         success: false
       });
     }
@@ -80,7 +89,6 @@ class UserValidation {
     req.body.firstName = firstName;
     req.body.lastName = lastName;
     req.body.password = password;
-    req.body.type = type;
     req.body.email = email;
 
     return next();
@@ -133,13 +141,13 @@ class UserValidation {
    * @returns {Array} an array of error(s)
    * @memberof UserValidation
    */
-  static inputCheck(email, firstName, lastName, password, type) {
+  static inputCheck(email, firstName, lastName, password, confirmPassword) {
     const errors = [];
     let isEmpty;
-    isEmpty = helper.checkFieldEmpty(firstName, 'firstname');
+    isEmpty = helper.checkFieldEmpty(firstName, 'firstName');
     if (isEmpty) errors.push(isEmpty);
 
-    isEmpty = helper.checkFieldEmpty(lastName, 'lastname');
+    isEmpty = helper.checkFieldEmpty(lastName, 'lastName');
     if (isEmpty) errors.push(isEmpty);
 
     isEmpty = helper.checkFieldEmpty(email, 'email');
@@ -148,7 +156,7 @@ class UserValidation {
     isEmpty = helper.checkFieldEmpty(password, 'password');
     if (isEmpty) errors.push(isEmpty);
 
-    isEmpty = helper.checkFieldEmpty(type, 'user type');
+    isEmpty = helper.checkFieldEmpty(confirmPassword, 'confirmPassword');
     if (isEmpty) errors.push(isEmpty);
 
     let hasWhiteSpace;
@@ -164,17 +172,11 @@ class UserValidation {
     hasWhiteSpace = helper.checkFieldWhiteSpace(password, 'password');
     if (hasWhiteSpace) errors.push(hasWhiteSpace);
 
-    hasWhiteSpace = helper.checkFieldWhiteSpace(type, 'user type');
-    if (hasWhiteSpace) errors.push(hasWhiteSpace);
-
     let isNotAlpha;
-    isNotAlpha = helper.checkFieldAlpha(firstName, 'firstname');
+    isNotAlpha = helper.checkFieldAlpha(firstName, 'firstName');
     if (isNotAlpha) errors.push(isNotAlpha);
 
-    isNotAlpha = helper.checkFieldAlpha(lastName, 'lastname');
-    if (isNotAlpha) errors.push(isNotAlpha);
-
-    isNotAlpha = helper.checkFieldAlpha(type, 'user type');
+    isNotAlpha = helper.checkFieldAlpha(lastName, 'lastName');
     if (isNotAlpha) errors.push(isNotAlpha);
 
     return errors;
