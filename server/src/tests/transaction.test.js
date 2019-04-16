@@ -15,13 +15,10 @@ describe('Tests for all transaction Endpoints', () => {
   before(done => {
     chai
       .request(app)
-      .post('/api/v1/auth/signup')
+      .post('/api/v1/auth/signin')
       .send({
-        firstName: 'new',
-        lastName: 'staff',
-        email: 'staff@gmail.com',
-        password: 'newsheriffintown',
-        type: 'staff'
+        email: 'user2@staff.com',
+        password: 'staffuser2'
       })
       .end((err, res) => {
         const { token } = res.body.data;

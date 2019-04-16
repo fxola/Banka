@@ -20,18 +20,18 @@ class AccountValidation {
     if (!Number(acctNumber)) {
       return res.status(403).json({
         status: 403,
+        success: false,
         error: `Request forbidden`,
-        message: `Account Number must be a Number`,
-        success: false
+        message: `Account Number must be a Number`
       });
     }
 
     if (!acctNumber.startsWith(102) || acctNumber.length !== 10) {
       return res.status(403).json({
         status: 403,
+        success: false,
         error: `Request Forbidden`,
-        message: `Account Number must be 10 digits and begin with the digits 102`,
-        success: false
+        message: `Account Number must be 10 digits and begin with the digits 102`
       });
     }
 
@@ -108,9 +108,9 @@ class AccountValidation {
     if (!emailPattern.test(email)) {
       return res.status(422).json({
         status: 422,
+        success: false,
         error: 'Invalid email address',
-        message: 'Please provide a valid email address',
-        success: false
+        message: 'Please provide a valid email address'
       });
     }
 
@@ -136,10 +136,10 @@ class AccountValidation {
   static inputCheck(firstName, lastName, email, type) {
     const errors = [];
     let isEmpty;
-    isEmpty = helper.checkFieldEmpty(firstName, 'firstname');
+    isEmpty = helper.checkFieldEmpty(firstName, 'firstName');
     if (isEmpty) errors.push(isEmpty);
 
-    isEmpty = helper.checkFieldEmpty(lastName, 'lastname');
+    isEmpty = helper.checkFieldEmpty(lastName, 'lastName');
     if (isEmpty) errors.push(isEmpty);
 
     isEmpty = helper.checkFieldEmpty(email, 'email');
@@ -149,10 +149,10 @@ class AccountValidation {
     if (isEmpty) errors.push(isEmpty);
 
     let hasWhiteSpace;
-    hasWhiteSpace = helper.checkFieldWhiteSpace(firstName, 'firstname');
+    hasWhiteSpace = helper.checkFieldWhiteSpace(firstName, 'firstName');
     if (hasWhiteSpace) errors.push(hasWhiteSpace);
 
-    hasWhiteSpace = helper.checkFieldWhiteSpace(lastName, 'lastname');
+    hasWhiteSpace = helper.checkFieldWhiteSpace(lastName, 'lastName');
     if (hasWhiteSpace) errors.push(hasWhiteSpace);
 
     hasWhiteSpace = helper.checkFieldWhiteSpace(email, 'email');
@@ -162,10 +162,10 @@ class AccountValidation {
     if (hasWhiteSpace) errors.push(hasWhiteSpace);
 
     let isNotAlpha;
-    isNotAlpha = helper.checkFieldAlpha(firstName, 'firstname');
+    isNotAlpha = helper.checkFieldAlpha(firstName, 'firstName');
     if (isNotAlpha) errors.push(isNotAlpha);
 
-    isNotAlpha = helper.checkFieldAlpha(lastName, 'lastname');
+    isNotAlpha = helper.checkFieldAlpha(lastName, 'lastName');
     if (isNotAlpha) errors.push(isNotAlpha);
 
     isNotAlpha = helper.checkFieldAlpha(type, 'account type');

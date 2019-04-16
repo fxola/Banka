@@ -1,5 +1,4 @@
 import jwt from 'jsonwebtoken';
-
 import dotenv from 'dotenv';
 
 dotenv.config();
@@ -28,9 +27,8 @@ class Auth {
 
       req.userId = decoded.id;
       req.userEmail = decoded.email;
-      req.userFirstName = decoded.firstName;
-      req.userLastName = decoded.lastName;
       req.userType = decoded.type;
+      req.isAdmin = decoded.isAdmin;
 
       return next();
     } catch (e) {
@@ -55,8 +53,29 @@ class Auth {
     if (req.userType !== 'staff') {
       return res.status(401).json({
         status: 401,
-        error: `You are not Authorized to perform this Action`,
-        success: false
+        success: false,
+        error: `You are not Authorized to perform this Action`
+      });
+    }
+    return next();
+  }
+
+  /**
+   *
+   * Checks if the current user is an admin or not and applies appropriate access control
+   * @static
+   * @param {object} req
+   * @param {object} res
+   * @param {function} next
+   * @returns {(function|Object)} Function next() or an error Object
+   * @memberof Auth
+   */
+  static adminCheck(req, res, next) {
+    if (req.isAdmin !== true) {
+      return res.status(401).json({
+        status: 401,
+        success: false,
+        error: `You are not Authorized to perform this Action`
       });
     }
     return next();

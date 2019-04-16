@@ -60,9 +60,9 @@ class Helper {
     if (!value) {
       return {
         status: 422,
+        success: false,
         error: `Invalid ${field} provided`,
-        message: `${field} cannot be empty`,
-        success: false
+        message: `${field} cannot be empty`
       };
     }
     return false;
@@ -79,9 +79,9 @@ class Helper {
     if (/\s/.test(value)) {
       return {
         status: 422,
+        success: false,
         error: `Invalid ${field} provided`,
-        message: `No whitespaces allowed in ${field}`,
-        success: false
+        message: `No whitespaces allowed in ${field}`
       };
     }
     return false;
@@ -99,9 +99,9 @@ class Helper {
     if (!pattern.test(value)) {
       return {
         status: 422,
+        success: false,
         error: `Invalid ${field} provided`,
-        message: `${field} must be Alphabetical`,
-        success: false
+        message: `${field} must be Alphabetical`
       };
     }
     return false;
