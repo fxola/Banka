@@ -3,20 +3,16 @@
   padding: 0;
 }
 
-
-
 @font-face {
-    font-family: 'sofiapro-light';
-    src: url('./font/sofiapro-light-webfont.woff2') format('woff2'),
-         url('./font/sofiapro-light-webfont.woff') format('woff');
-    font-weight: normal;
-    font-style: italic;
-
+  font-family: "sofiapro-light";
+  src: url("./font/sofiapro-light-webfont.woff2") format("woff2"),
+    url("./font/sofiapro-light-webfont.woff") format("woff");
+  font-weight: normal;
+  font-style: italic;
 }
 
-
 body {
-  font-family: 'sofiapro-light', sans-serif;
+  font-family: "sofiapro-light", sans-serif;
   /* letter-spacing: -1px; */
 }
 
@@ -66,7 +62,7 @@ nav ul {
 nav ul li {
   display: inline-block;
   padding: 1em;
-  transition: .7s;
+  transition: 0.7s;
 }
 
 nav ul li a {
@@ -74,7 +70,6 @@ nav ul li a {
   color: teal;
   font-size: 1.2em;
 }
-
 
 .menu-icon {
   width: 100%;
@@ -100,10 +95,10 @@ nav ul li a {
 
   .showing {
     max-height: 20em;
-    background:teal;
+    background: teal;
   }
-  nav ul li a{
-color:white;
+  nav ul li a {
+    color: white;
   }
 
   nav ul li {
@@ -148,7 +143,7 @@ footer {
 
 #signup-section form {
   padding-top: 2em;
-  background: rgba(0,0,0,0.1);
+  background: rgba(0, 0, 0, 0.1);
   width: 40%;
   margin: 0 auto;
   display: flex;
@@ -169,7 +164,7 @@ footer {
   font-size: 1.2em;
   border-left: 4px solid teal;
   color: teal;
-  background:white;
+  background: white;
 }
 
 #signup-section form input::placeholder {
@@ -327,14 +322,14 @@ footer {
 #transaction-section > h3 {
   text-align: right;
   padding-right: 0.5em;
-  color:teal;
+  color: teal;
 }
 
 #transaction-section > h1 {
   text-align: center;
   font-size: 2.3em;
   margin-bottom: 1em;
-  color:teal;
+  color: teal;
 }
 #transaction-table {
   overflow: auto;
@@ -413,7 +408,10 @@ td {
   .transaction-table th {
     font-size: 0.93em;
   }
-
+  .transaction-table td {
+    font-size: 0.9em;
+    width: 20%;
+  }
   .transaction-table td button {
     width: 100%;
   }
@@ -436,7 +434,7 @@ td {
 
 #profile {
   display: flex;
-  justify-content: space-between;
+  justify-content: center;
   align-items: flex-start;
 }
 
@@ -444,6 +442,7 @@ td {
   height: 50%;
   flex-basis: 16%;
   background: #fff;
+  margin-right: 1em;
   /* border: 1px solid; */
 }
 
@@ -451,8 +450,8 @@ td {
   font-size: 1.8em;
   text-align: center;
 }
-#photo{
-  border:1px solid white;
+#photo {
+  border: 1px solid white;
 }
 
 .details {
@@ -467,9 +466,9 @@ td {
 }
 
 .details p {
-  margin-top: 0.5em;
+  margin-top: 0.3em;
   font-size: 1.6em;
-  margin-bottom: 0.5em;
+  margin-bottom: 0.3em;
   padding: 0.2em;
 }
 .container {
@@ -579,7 +578,7 @@ td {
   margin: 5px auto;
   border: none;
   outline: none;
-  color:teal;
+  color: teal;
   border-left: 3px solid teal;
   background: rgba(0, 0, 0, 0.1);
 }
@@ -660,6 +659,7 @@ td {
 #admin-dashboard-section h1 {
   font-size: 2em;
   text-align: center;
+  color: teal;
 }
 .account-details {
   width: 60vw;
@@ -672,7 +672,7 @@ td {
 }
 
 .account-details article {
-  padding:0.4em;
+  padding: 0.4em;
   display: flex;
   justify-content: space-between;
   border-bottom: 0.3px solid;
@@ -815,8 +815,8 @@ article.buttons {
   margin: 10px auto;
   border-radius: 100%;
 }
-figure{
-  margin-bottom:3em;
+figure {
+  margin-bottom: 3em;
 }
 
 .record-details article {
@@ -895,7 +895,7 @@ figure{
   outline: none;
   border-left: 3px solid teal;
   background: #ffffffc2;
-  color:teal;
+  color: teal;
 }
 
 @media (max-width: 769px) {
@@ -964,6 +964,7 @@ figure{
 #create-user-section h1 {
   text-align: center;
   font-size: 1.8em;
+  color: teal;
 }
 
 .user-fields input {
@@ -973,7 +974,7 @@ figure{
   margin: 1em auto;
   border: none;
   outline: none;
-  color:teal;
+  color: teal;
   border-left: 3px solid teal;
   background: #ffffffc2;
 }
@@ -1071,7 +1072,7 @@ figure{
 #hero h1 {
   font-size: 3.2em;
   margin-bottom: 0.5em;
-  color:teal;
+  color: teal;
 }
 
 #hero a {
@@ -1115,7 +1116,7 @@ figure{
 }
 #reset1-section form {
   padding-top: 2em;
-  background: rgba(0,0,0,0.1);
+  background: rgba(0, 0, 0, 0.1);
   width: 40%;
   margin: 0 auto;
   display: flex;
@@ -1134,7 +1135,7 @@ figure{
   outline: none;
   border: none;
   font-size: 1.2em;
-  background:#ffffffc2;
+  background: #ffffffc2;
   border-left: 4px solid teal;
   color: teal;
 }
@@ -1216,7 +1217,6 @@ figure{
 ***********************************************************/
 #site-options {
   padding-top: 7em;
-  
 }
 
 #option-article {
@@ -1230,25 +1230,27 @@ figure{
   text-align: center;
 }
 
-#option-article h1{
-  font-size:2.5em;
-  color:teal;
-  margin-bottom:.6em;
+#option-article h1 {
+  font-size: 2.5em;
+  color: teal;
+  margin-bottom: 0.6em;
 }
 
-#option-article li{
-  font-size:1.5em;
-  color:teal;
-  list-style-type:none;
-  padding:.4em;
+#option-article li {
+  font-size: 1.5em;
+  color: teal;
+  list-style-type: none;
+  padding: 0.4em;
 }
 
-#option-article li a{
-    color: inherit;
-    outline: none;
-    text-decoration: none;
-    background-image: linear-gradient(white, white);
-    background-size: 100% .6em;
-    background-repeat: no-repeat;
-    background-position: left 0 bottom -40%;
+a {
+  color: inherit;
+  outline: none;
+  text-decoration: none;
+}
+
+#option-article li a:hover {
+  color: white;
+  outline: none;
+  text-decoration: underline;
 }
