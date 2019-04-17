@@ -1,4 +1,4 @@
-import mockData from '../models/mockData';
+import User from '../models/user.model';
 import helper from '../helpers/helper';
 
 /**
@@ -16,7 +16,7 @@ class UserValidation {
    * @returns {(function|Object)} function next() or an error response object
    * @memberof UserValidation
    */
-  static signUpCheck(req, res, next) {
+  static async signUpCheck(req, res, next) {
     let { email, firstName, lastName, password, confirmPassword } = req.body;
 
     const errors = UserValidation.inputCheck(email, firstName, lastName, password, confirmPassword);
@@ -61,24 +61,9 @@ class UserValidation {
       });
     }
 
-    /**
-     *
-     * Checks if an email address exists in the database
-     * @static
-     * @param {String} userEmail email to run a check against
-     * @returns {Boolean} Boolean depending on success or failure of the check
-     * @memberof UserValidation
-     */
-    const checkEMail = userEmail => {
-      const existingEmails = mockData.users.reduce((emailArray, userDetail) => {
-        return emailArray.concat(userDetail.email);
-      }, []);
-      return existingEmails.includes(userEmail);
-    };
+    const result = await User.findEmail(email);
 
-    const emailExists = checkEMail(email);
-
-    if (emailExists) {
+    if (result > 0) {
       return res.status(409).json({
         status: 409,
         error: 'Email already in use',
@@ -156,9 +141,6 @@ class UserValidation {
     isEmpty = helper.checkFieldEmpty(password, 'password');
     if (isEmpty) errors.push(isEmpty);
 
-    isEmpty = helper.checkFieldEmpty(confirmPassword, 'confirmPassword');
-    if (isEmpty) errors.push(isEmpty);
-
     let hasWhiteSpace;
     hasWhiteSpace = helper.checkFieldWhiteSpace(firstName, 'firstname');
     if (hasWhiteSpace) errors.push(hasWhiteSpace);
@@ -178,6 +160,9 @@ class UserValidation {
 
     isNotAlpha = helper.checkFieldAlpha(lastName, 'lastName');
     if (isNotAlpha) errors.push(isNotAlpha);
+
+    isEmpty = helper.checkFieldEmpty(confirmPassword, 'confirmPassword');
+    if (isEmpty) errors.push(isEmpty);
 
     return errors;
   }

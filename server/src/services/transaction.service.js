@@ -1,6 +1,6 @@
 /* eslint-disable default-case */
 import Transaction from '../models/transaction.model';
-import mockData from '../models/mockData';
+import Account from '../models/account.model';
 
 /**
  * @exports TransactionService
@@ -20,10 +20,8 @@ class TransactionService {
    * @returns {object} API response object
    * @memberof TransactionService
    */
-  static makeTransaction(accountNumber, amount, cashier, transactionType) {
-    const foundAccount = mockData.accounts.find(
-      account => account.accountNumber === parseInt(accountNumber, 10)
-    );
+  static async makeTransaction(accountNumber, amount, cashier, transactionType) {
+    const foundAccount = await Account.find(accountNumber);
 
     if (foundAccount) {
       const oldBalance = parseFloat(foundAccount.balance);
@@ -60,26 +58,15 @@ class TransactionService {
           newBalance = (oldBalance - parseFloat(amount)).toFixed(2);
           break;
       }
-      const id = mockData.transactions.length + 1;
-      const createdOn = new Date();
 
-      const transactionInstance = new Transaction(
-        id,
-        createdOn,
-        transactionType,
-        accountNumber,
-        cashier,
-        amount,
-        oldBalance,
-        newBalance
-      );
+      const txObj = { transactionType, accountNumber, cashier, amount, oldBalance, newBalance };
+
       // save new transaction
-      mockData.transactions.push(transactionInstance);
+      const newTransaction = await Transaction.create(txObj);
+      const { id } = newTransaction;
 
       // update account with new balance
-      const accountIndex = mockData.accounts.indexOf(foundAccount);
-      foundAccount.balance = parseFloat(newBalance);
-      mockData.accounts.splice(accountIndex, 1, foundAccount);
+      await Account.update(accountNumber, newBalance, 'balance');
 
       return {
         status: 201,

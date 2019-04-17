@@ -27,6 +27,19 @@ describe('Tests for all transaction Endpoints', () => {
       });
   });
 
+  before(done => {
+    chai
+      .request(app)
+      .patch('/api/v1/accounts/1029704416')
+      .set('Authorization', `Bearer ${staffToken}`)
+      .send({
+        status: 'activate'
+      })
+      .end(() => {
+        done();
+      });
+  });
+
   describe('POST api/v1/transactions/<account-number>/credit', () => {
     it('Should successfully credit a bank account on provision of valid details', done => {
       chai

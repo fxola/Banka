@@ -28,7 +28,8 @@ const createTableSchema = () => {
             lastname varchar(128) NOT NULL,
             email varchar(128) NOT NULL UNIQUE,
             password varchar(128) NOT NULL,
-            type TEXT NOT NULL DEFAULT 'client'
+            type TEXT NOT NULL DEFAULT 'client',
+            isadmin BOOLEAN NOT NULL DEFAULT FALSE
             );
 
     CREATE TABLE accounts (
