@@ -30,7 +30,7 @@ class Account {
    * @returns {object} details of the found account
    * @memberof Account
    */
-  static async find(accountNumber) {
+  static async findAccount(accountNumber) {
     const query = `select * from accounts where accountnumber = $1`;
     const { rows, rowCount } = await db.query(query, [accountNumber]);
     if (rowCount > 0) return rows[0];

@@ -67,7 +67,7 @@ class AccountService {
       };
     }
 
-    const foundAccount = await Account.find(accountNumber);
+    const foundAccount = await Account.findAccount(accountNumber);
 
     if (foundAccount) {
       await Account.update(accountNumber, status, 'status');
@@ -96,7 +96,7 @@ class AccountService {
    * @memberof AccountService
    */
   static async deleteBankAccount(accountNumber) {
-    const foundAccount = await Account.find(accountNumber);
+    const foundAccount = await Account.findAccount(accountNumber);
 
     if (foundAccount) {
       const deleted = await Account.delete(accountNumber);

@@ -16,14 +16,18 @@ class TransactionController {
    * @returns {object} JSON API Response
    * @memberof TransactionController
    */
-  static makeTransaction(req, res) {
-    const response = TransactionService.makeTransaction(
-      req.params.acctNumber,
-      req.body.amount,
-      req.userId,
-      req.body.type
-    );
-    return res.status(response.status).json(response);
+  static async makeTransaction(req, res, next) {
+    try {
+      const response = await TransactionService.makeTransaction(
+        req.params.acctNumber,
+        req.body.amount,
+        req.userId,
+        req.body.type
+      );
+      return res.status(response.status).json(response);
+    } catch (e) {
+      return next(e);
+    }
   }
 }
 

@@ -1,3 +1,4 @@
+import db from './db';
 /**
  * e@exports Transaction
  *
@@ -5,26 +6,36 @@
  */
 class Transaction {
   /**
-   *Creates an instance of Transaction.
-   * @param {integer} id
-   * @param {string} createdOn
-   * @param {string} type
-   * @param {integer} accountNumber
-   * @param {type} cashier
-   * @param {float} amount
-   * @param {float} oldBalance
-   * @param {float} newBalance
+   *
+   * Handles the storage of the newly created transaction in the database
+   * @static
+   * @param {object} transactionDetails details of the newly created transaction
+   * @returns {object} result of stored data in database
    * @memberof Transaction
    */
-  constructor(id, createdOn, type, accountNumber, cashier, amount, oldBalance, newBalance) {
-    this.id = id;
-    this.createdOn = createdOn;
-    this.type = type;
-    this.accountNumber = parseInt(accountNumber, 10);
-    this.cashier = cashier;
-    this.amount = parseFloat(amount).toFixed(2);
-    this.oldBalance = parseFloat(oldBalance);
-    this.newBalance = parseFloat(newBalance);
+  static async create(transactionDetails) {
+    const {
+      transactionType,
+      accountNumber,
+      cashier,
+      amount,
+      oldBalance,
+      newBalance
+    } = transactionDetails;
+
+    const query = `insert into transactions (type,accountnumber,cashier,amount,oldbalance,newbalance)
+                              values($1,$2,$3,$4,$5,$6) returning *`;
+
+    const { rows } = await db.query(query, [
+      transactionType,
+      accountNumber,
+      cashier,
+      amount,
+      oldBalance,
+      newBalance
+    ]);
+
+    return rows[0];
   }
 }
 
