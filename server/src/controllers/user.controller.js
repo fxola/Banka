@@ -14,9 +14,13 @@ class UserController {
    * @returns {Object} JSON API Response
    * @memberof UserController
    */
-  static createUser(req, res) {
-    const response = UserService.createUser(req.body);
-    return res.status(response.status).json(response);
+  static async createUser(req, res, next) {
+    try {
+      const response = await UserService.createUser(req.body);
+      return res.status(response.status).json(response);
+    } catch (e) {
+      return next(e);
+    }
   }
 
   /**
@@ -28,9 +32,13 @@ class UserController {
    * @returns {Object} JSON API Response
    * @memberof UserController
    */
-  static logUserIn(req, res) {
-    const response = UserService.logUserIn(req.body);
-    return res.status(response.status).json(response);
+  static async logUserIn(req, res, next) {
+    try {
+      const response = await UserService.logUserIn(req.body);
+      return res.status(response.status).json(response);
+    } catch (e) {
+      return next(e);
+    }
   }
 
   /**
@@ -42,9 +50,13 @@ class UserController {
    * @returns {Object} JSON API Response
    * @memberof UserController
    */
-  static makeStaff(req, res) {
-    const response = UserService.makeStaff(req.body.email);
-    return res.status(response.status).json(response);
+  static async makeStaff(req, res, next) {
+    try {
+      const response = await UserService.makeStaff(req.body.email);
+      return res.status(response.status).json(response);
+    } catch (e) {
+      return next(e);
+    }
   }
 }
 

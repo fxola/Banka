@@ -15,21 +15,22 @@ class UserService {
    * @returns {Object} API Response Object
    * @memberof UserService
    */
-  static createUser(newUser) {
-    const { email, firstName, lastName, password } = newUser;
+  static async createUser(newUser) {
+    const { password } = newUser;
     const hashedpassword = Helper.hashPassword(password);
+    const userObj = {
+      ...newUser,
+      hashedpassword
+    };
+    const user = await User.create(userObj);
 
-    const id = mockData.users.length + 1;
-    const userInstance = new User(id, email, firstName, lastName, hashedpassword);
-    mockData.users.push(userInstance);
-
-    const { isAdmin, type } = userInstance;
+    const { id, firstname, lastname, email, isAdmin, type } = user;
     const payLoad = { id, email, isAdmin, type };
     const token = Helper.getToken(payLoad);
     return {
       status: 201,
       success: true,
-      data: { id, firstName, lastName, email, token },
+      data: { id, firstName: firstname, lastName: lastname, email, type, token },
       message: `New Account created successfully`
     };
   }
@@ -42,9 +43,9 @@ class UserService {
    * @returns {Object} API Response Object
    * @memberof UserService
    */
-  static logUserIn(userCredentials) {
+  static async logUserIn(userCredentials) {
     const { email, password } = userCredentials;
-    const foundUser = mockData.users.find(user => user.email === email);
+    const foundUser = await User.findByEmail(email);
     if (!foundUser)
       return {
         status: 401,
@@ -54,13 +55,13 @@ class UserService {
 
     const hash = foundUser.password;
     if (Helper.comparePassword(password, hash) === true) {
-      const { id, firstName, lastName, isAdmin, type } = foundUser;
-      const payLoad = { id, firstName, lastName, email, isAdmin, type };
+      const { id, firstname, lastname, isAdmin, type } = foundUser;
+      const payLoad = { id, firstName: firstname, lastName: lastname, email, isAdmin, type };
       const token = Helper.getToken(payLoad);
       return {
         status: 200,
         success: true,
-        data: { id, firstName, lastName, email, token },
+        data: { id, firstName: firstname, lastName: lastname, email, type, token },
         message: `User Log In Successful`
       };
     }
