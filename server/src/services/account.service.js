@@ -1,5 +1,4 @@
 import Account from '../models/account.model';
-import mockData from '../models/mockData';
 
 /**
  * @exports AccountService
@@ -17,7 +16,7 @@ class AccountService {
    * @returns {Object} API response
    * @memberof AccountService
    */
-  static createBankAccount(accountDetails, userEmail, userId) {
+  static async createBankAccount(accountDetails, userEmail, userId) {
     const { firstName, lastName, email, type } = accountDetails;
     if (email !== userEmail)
       return {
@@ -27,18 +26,13 @@ class AccountService {
         message: 'You can only create a bank account with your registered e-mail'
       };
 
-    const id = mockData.accounts.length + 1;
-    const createdOn = new Date();
-
-    const accountInstance = new Account(id, createdOn, userId, type);
-    mockData.accounts.push(accountInstance);
-
-    const { accountNumber, balance, status } = accountInstance;
+    const newAccount = await Account.create(accountDetails, userId);
+    const { accountnumber, balance, status } = newAccount;
 
     return {
       status: 201,
       success: true,
-      data: { accountNumber, firstName, lastName, email, type, balance, status },
+      data: { accountNumber: accountnumber, firstName, lastName, email, type, balance, status },
       message: `New ${type} account created successfully`
     };
   }
@@ -52,7 +46,7 @@ class AccountService {
    * @returns {object} API Response Object
    * @memberof AccountService
    */
-  static updateAccountStatus(validStatus, accountNumber) {
+  static async updateAccountStatus(validStatus, accountNumber) {
     let status;
     switch (validStatus) {
       case 'activate':
@@ -73,14 +67,11 @@ class AccountService {
       };
     }
 
-    const foundAccount = mockData.accounts.find(
-      account => account.accountNumber === parseInt(accountNumber, 10)
-    );
+    const foundAccount = await Account.find(accountNumber);
 
     if (foundAccount) {
-      const accountIndex = mockData.accounts.indexOf(foundAccount);
-      foundAccount.status = status;
-      mockData.accounts.splice(accountIndex, 1, foundAccount);
+      await Account.update(accountNumber, status, 'status');
+
       return {
         status: 202,
         success: true,
@@ -104,15 +95,12 @@ class AccountService {
    * @returns {object} API Response Object
    * @memberof AccountService
    */
-  static deleteBankAccount(accountNumber) {
-    const foundAccount = mockData.accounts.find(
-      account => account.accountNumber === parseInt(accountNumber, 10)
-    );
+  static async deleteBankAccount(accountNumber) {
+    const foundAccount = await Account.find(accountNumber);
 
     if (foundAccount) {
-      const accountIndex = mockData.accounts.indexOf(foundAccount);
-      mockData.accounts.splice(accountIndex, 1);
-      return { status: 200, success: true, message: `Account sucessfully deleted` };
+      const deleted = await Account.delete(accountNumber);
+      if (deleted) return { status: 200, success: true, message: `Account sucessfully deleted` };
     }
     return { status: 404, success: false, error: `Not found`, message: `Account does not exist` };
   }
