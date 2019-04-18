@@ -56,7 +56,6 @@ describe('Tests for all accounts Endpoints', () => {
           firstName: 'jon',
           lastName: 'bellion',
           email: 'bellion@gmail.com',
-          password: 'simpleandweet',
           type: 'savings'
         })
         .end((err, res) => {

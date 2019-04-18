@@ -15,9 +15,13 @@ class AccountController {
    * @returns {Object} JSON API Response
    * @memberof AccountController
    */
-  static createBankAccount(req, res) {
-    const response = AccountService.createBankAccount(req.body, req.userEmail, req.userId);
-    return res.status(response.status).json(response);
+  static async createBankAccount(req, res, next) {
+    try {
+      const response = await AccountService.createBankAccount(req.body, req.userEmail, req.userId);
+      return res.status(response.status).json(response);
+    } catch (e) {
+      return next(e);
+    }
   }
 
   /**
@@ -29,9 +33,16 @@ class AccountController {
    * @returns {Object} JSON API Response
    * @memberof AccountController
    */
-  static updateAccountStatus(req, res) {
-    const response = AccountService.updateAccountStatus(req.body.status, req.params.acctNumber);
-    return res.status(response.status).json(response);
+  static async updateAccountStatus(req, res, next) {
+    try {
+      const response = await AccountService.updateAccountStatus(
+        req.body.status,
+        req.params.acctNumber
+      );
+      return res.status(response.status).json(response);
+    } catch (e) {
+      return next(e);
+    }
   }
 
   /**
@@ -43,9 +54,13 @@ class AccountController {
    * @returns {Object} JSON API Response
    * @memberof AccountController
    */
-  static deleteBankAccount(req, res) {
-    const response = AccountService.deleteBankAccount(req.params.acctNumber);
-    return res.status(response.status).json(response);
+  static async deleteBankAccount(req, res, next) {
+    try {
+      const response = await AccountService.deleteBankAccount(req.params.acctNumber);
+      return res.status(response.status).json(response);
+    } catch (e) {
+      return next(e);
+    }
   }
 }
 

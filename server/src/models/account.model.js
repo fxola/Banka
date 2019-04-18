@@ -1,3 +1,4 @@
+import db from './db';
 /**
  * @exports Account
  *
@@ -5,23 +6,64 @@
  */
 class Account {
   /**
-   *Creates an instance of Account.
-   * @param {integer} id
-   * @param {string} createdOn
-   * @param {integer} owner
-   * @param {string} type
-   * @param {string} [status='draft']
-   * @param {float} [balance=0.0]
+   *
+   * Handles the storage of the details of a newly created bank account in the database
+   * @static
+   * @param {object} accountDetails details of the account to be newly saved
+   * @param {number} userid id of the user creating the account
+   * @returns {object} result of stored data in database
    * @memberof Account
    */
-  constructor(id, createdOn, owner, type, status = 'draft', balance = 0.0) {
-    this.id = id;
-    this.createdOn = createdOn;
-    this.owner = owner;
-    this.type = type;
-    this.status = status;
-    this.balance = parseFloat(balance).toFixed(2);
-    this.accountNumber = Account.generateAccountNumber();
+  static async create(accountDetails, userid) {
+    const { type } = accountDetails;
+    const accountnumber = Account.generateAccountNumber();
+    const query = `insert into accounts(type,accountnumber,owner) values ($1,$2,$3) returning *`;
+    const { rows } = await db.query(query, [type, accountnumber, userid]);
+    return rows[0];
+  }
+
+  /**
+   *
+   * Queries the database to find an account, using the provided account number
+   * @static
+   * @param {number} accountNumber
+   * @returns {object} details of the found account
+   * @memberof Account
+   */
+  static async find(accountNumber) {
+    const query = `select * from accounts where accountnumber = $1`;
+    const { rows, rowCount } = await db.query(query, [accountNumber]);
+    if (rowCount > 0) return rows[0];
+    return false;
+  }
+
+  /**
+   *
+   * Handles the update of an account record in the database
+   * @static
+   * @param {number} accountNumber
+   * @param {string} value new updated value
+   * @param {string} column column to be updated
+   * @memberof Account
+   */
+  static async update(accountNumber, value, column) {
+    const query = `update accounts set ${column} = $1 where accountnumber = $2`;
+    await db.query(query, [value, accountNumber]);
+  }
+
+  /**
+   *
+   * Handles the deletion of an account record in the database
+   * @static
+   * @param {number} accountNumber account number of account to be deleted
+   * @returns {boolean}
+   * @memberof Account
+   */
+  static async delete(accountNumber) {
+    const query = `delete from accounts where accountnumber = $1`;
+    const { rowCount } = await db.query(query, [accountNumber]);
+    if (rowCount > 0) return true;
+    return false;
   }
 
   /**
