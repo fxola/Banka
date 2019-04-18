@@ -28,9 +28,9 @@ const createTableSchema = () => {
             lastname varchar(128) NOT NULL,
             email varchar(128) NOT NULL UNIQUE,
             password varchar(128) NOT NULL,
-            type TEXT NOT NULL DEFAULT 'client'
+            type TEXT NOT NULL DEFAULT 'client',
+            isadmin BOOLEAN NOT NULL DEFAULT FALSE
             );
-
     CREATE TABLE accounts (
         id serial primary key NOT NULL,
         owner integer NOT NULL REFERENCES users(id) ON DELETE CASCADE,
@@ -41,7 +41,6 @@ const createTableSchema = () => {
         createdon TIMESTAMP WITH TIME ZONE DEFAULT now(),
         updatedon TIMESTAMP WITH TIME ZONE DEFAULT now()
         );
-
     CREATE TABLE transactions (
         id serial primary key NOT NULL,
         accountnumber integer NOT NULL REFERENCES accounts(accountnumber) ON DELETE CASCADE,
@@ -52,7 +51,6 @@ const createTableSchema = () => {
         newbalance NUMERIC(15,2) NOT NULL,
         createdon TIMESTAMP WITH TIME ZONE DEFAULT now()
         );
-
         `;
   pool
     .query(sqlDump)
