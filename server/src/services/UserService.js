@@ -1,6 +1,6 @@
 import mockData from '../models/mockData';
 import Helper from '../helpers/helper';
-import User from '../models/user.model';
+import User from '../models/UserModel';
 /**
  *
  * @exports

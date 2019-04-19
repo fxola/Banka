@@ -11,6 +11,7 @@ chai.use(chaiHttp);
 
 describe('Tests for all transaction Endpoints', () => {
   let staffToken;
+  let secondUserToken;
 
   before(done => {
     chai
@@ -23,6 +24,21 @@ describe('Tests for all transaction Endpoints', () => {
       .end((err, res) => {
         const { token } = res.body.data;
         staffToken = token;
+        done(err);
+      });
+  });
+
+  before(done => {
+    chai
+      .request(app)
+      .post('/api/v1/auth/signin')
+      .send({
+        email: 'second@user.com',
+        password: 'seconduser'
+      })
+      .end((err, res) => {
+        const { token } = res.body.data;
+        secondUserToken = token;
         done(err);
       });
   });
@@ -306,6 +322,75 @@ describe('Tests for all transaction Endpoints', () => {
           expect(res.body).to.be.an('object');
           expect(res.body).to.have.key('status', 'error');
           expect(res.body.error).to.include('You do not have access to this page');
+          done(err);
+        });
+    });
+  });
+  describe('POST api/v1/transactions/<transaction-id>', () => {
+    it('Should fetch a single transaction if authorized', done => {
+      chai
+        .request(app)
+        .get('/api/v1/transactions/1')
+        .set('Authorization', `Bearer ${staffToken}`)
+        .end((err, res) => {
+          expect(res).to.have.status(200);
+          expect(res.body.status).to.be.equal(200);
+          expect(res.body).to.be.an('object');
+          expect(res.body).to.have.key('status', 'data', 'success');
+          expect(res.body.data).to.have.key(
+            'transactionId',
+            'amount',
+            'oldBalance',
+            'newBalance',
+            'amount',
+            'transactionType',
+            'createdOn',
+            'cashier'
+          );
+          done(err);
+        });
+    });
+    it('Should return an error of a user tries to view a transaction is not related to their account', done => {
+      chai
+        .request(app)
+        .get('/api/v1/transactions/1')
+        .set('Authorization', `Bearer ${secondUserToken}`)
+        .end((err, res) => {
+          expect(res).to.have.status(403);
+          expect(res.body.status).to.be.equal(403);
+          expect(res.body).to.be.an('object');
+          expect(res.body).to.have.key('status', 'error', 'success', 'message');
+          expect(res.body.message).to.be.equal(
+            `You don't have permission to view this transaction`
+          );
+          done(err);
+        });
+    });
+    it('Should return an error of a user tries to view a transaction with an invalid ID', done => {
+      chai
+        .request(app)
+        .get('/api/v1/transactions/hey')
+        .set('Authorization', `Bearer ${staffToken}`)
+        .end((err, res) => {
+          expect(res).to.have.status(403);
+          expect(res.body.status).to.be.equal(403);
+          expect(res.body).to.be.an('object');
+          expect(res.body).to.have.key('status', 'error', 'success', 'message');
+          expect(res.body.message).to.be.equal(`Transaction ID must be a number`);
+          done(err);
+        });
+    });
+    it('Should return an error of a user tries to view a transaction that does not exist', done => {
+      chai
+        .request(app)
+        .get('/api/v1/transactions/9999')
+        .set('Authorization', `Bearer ${staffToken}`)
+        .end((err, res) => {
+          expect(res).to.have.status(404);
+          expect(res.body.status).to.be.equal(404);
+          expect(res.body).to.be.an('object');
+          expect(res.body).to.have.key('status', 'error', 'success', 'message');
+          expect(res.body.message).to.be.equal(`Transaction does not exist`);
           done(err);
         });
     });

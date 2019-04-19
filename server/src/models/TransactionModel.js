@@ -37,6 +37,22 @@ class Transaction {
 
     return rows[0];
   }
+
+  /**
+   *
+   * Queries the database for a single transaction
+   * @static
+   * @param {number} accountNumber
+   * @param {number} id
+   * @returns {object|boolean} result of found transaction
+   * @memberof Transaction
+   */
+  static async findOneTransaction(id) {
+    const query = `select * from transactions where id =$1`;
+    const { rows, rowCount } = await db.query(query, [id]);
+    if (rowCount > 0) return rows[0];
+    return false;
+  }
 }
 
 export default Transaction;
