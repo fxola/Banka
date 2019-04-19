@@ -52,8 +52,24 @@ const createAccounts = async (type, accountnumber, owner) => {
     'staff',
     false
   );
+  await createUsers(
+    'first@user.com',
+    'first',
+    'user',
+    '$2b$10$KDkzDOJz9VXq5CmoisAuweLjoj5yb1h9kpoDxxAX3CXfEUkebNOcG',
+    'client',
+    false
+  );
+  await createUsers(
+    'second@user.com',
+    'second',
+    'user',
+    '$2b$10$tTkGOLEmkbBYUNCvgN7PDu0AQwbQh8Mu3AJATrCz7nn0ek1pqDKhi',
+    'client',
+    false
+  );
 
-  await createAccounts('savings', 1029705319, 1);
-  await createAccounts('savings', 1029704415, 2);
-  await createAccounts('savings', 1029704416, 3); // active
+  await createAccounts('savings', 1029705319, 4);
+  await createAccounts('savings', 1029704415, 4);
+  await createAccounts('savings', 1029704416, 4); // active
 })();
