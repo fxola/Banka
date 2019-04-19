@@ -117,8 +117,8 @@ describe('Tests for all transaction Endpoints', () => {
           type: 'credit'
         })
         .end((err, res) => {
-          expect(res).to.have.status(422);
-          expect(res.body.status).to.be.equal(422);
+          expect(res).to.have.status(400);
+          expect(res.body.status).to.be.equal(400);
           expect(res.body).to.be.an('object');
           expect(res.body).to.have.keys('status', 'error', 'message', 'success');
           expect(res.body.message).to.be.equal('transaction amount cannot be empty');
@@ -135,8 +135,8 @@ describe('Tests for all transaction Endpoints', () => {
           type: 'credit'
         })
         .end((err, res) => {
-          expect(res).to.have.status(422);
-          expect(res.body.status).to.be.equal(422);
+          expect(res).to.have.status(400);
+          expect(res.body.status).to.be.equal(400);
           expect(res.body).to.be.an('object');
           expect(res.body).to.have.keys('status', 'error', 'message', 'success');
           expect(res.body.message).to.be.equal('No whitespaces allowed in transaction amount');
@@ -153,8 +153,8 @@ describe('Tests for all transaction Endpoints', () => {
           type: 'cred it'
         })
         .end((err, res) => {
-          expect(res).to.have.status(422);
-          expect(res.body.status).to.be.equal(422);
+          expect(res).to.have.status(400);
+          expect(res.body.status).to.be.equal(400);
           expect(res.body).to.be.an('object');
           expect(res.body).to.have.keys('status', 'error', 'message', 'success');
           expect(res.body.message).to.be.equal('No whitespaces allowed in transaction type');
@@ -171,8 +171,8 @@ describe('Tests for all transaction Endpoints', () => {
           type: ''
         })
         .end((err, res) => {
-          expect(res).to.have.status(422);
-          expect(res.body.status).to.be.equal(422);
+          expect(res).to.have.status(400);
+          expect(res.body.status).to.be.equal(400);
           expect(res.body).to.be.an('object');
           expect(res.body).to.have.keys('status', 'error', 'message', 'success');
           expect(res.body.message).to.be.equal('transaction type cannot be empty');

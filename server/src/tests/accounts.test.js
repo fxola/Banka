@@ -111,8 +111,8 @@ describe('Tests for all accounts Endpoints', () => {
           type: 'savings'
         })
         .end((err, res) => {
-          expect(res).to.have.status(422);
-          expect(res.body.status).to.be.equal(422);
+          expect(res).to.have.status(400);
+          expect(res.body.status).to.be.equal(400);
           expect(res.body).to.have.keys('status', 'error', 'message', 'success');
           expect(res.body.message).to.be.equal('firstName cannot be empty');
           done();
@@ -131,8 +131,8 @@ describe('Tests for all accounts Endpoints', () => {
           type: 'savings'
         })
         .end((err, res) => {
-          expect(res).to.have.status(422);
-          expect(res.body.status).to.be.equal(422);
+          expect(res).to.have.status(400);
+          expect(res.body.status).to.be.equal(400);
           expect(res.body).to.have.keys('status', 'error', 'message', 'success');
           expect(res.body.message).to.be.equal('lastName cannot be empty');
           done();
@@ -150,8 +150,8 @@ describe('Tests for all accounts Endpoints', () => {
           type: 'savings'
         })
         .end((err, res) => {
-          expect(res).to.have.status(422);
-          expect(res.body.status).to.be.equal(422);
+          expect(res).to.have.status(400);
+          expect(res.body.status).to.be.equal(400);
           expect(res.body).to.have.keys('status', 'error', 'message', 'success');
           expect(res.body.message).to.be.equal('email cannot be empty');
           done();
@@ -169,8 +169,8 @@ describe('Tests for all accounts Endpoints', () => {
           type: ''
         })
         .end((err, res) => {
-          expect(res).to.have.status(422);
-          expect(res.body.status).to.be.equal(422);
+          expect(res).to.have.status(400);
+          expect(res.body.status).to.be.equal(400);
           expect(res.body).to.have.keys('status', 'error', 'message', 'success');
           expect(res.body.message).to.be.equal('account type cannot be empty');
           done();
@@ -246,8 +246,8 @@ describe('Tests for all accounts Endpoints', () => {
           status: 'deactivate'
         })
         .end((err, res) => {
-          expect(res).to.have.status(202);
-          expect(res.body.status).to.be.equal(202);
+          expect(res).to.have.status(200);
+          expect(res.body.status).to.be.equal(200);
           expect(res.body).to.have.keys('status', 'data', 'message', 'success');
           expect(res.body.data.status).to.be.equal('dormant');
           done();
@@ -262,8 +262,8 @@ describe('Tests for all accounts Endpoints', () => {
           status: 'activate'
         })
         .end((err, res) => {
-          expect(res).to.have.status(202);
-          expect(res.body.status).to.be.equal(202);
+          expect(res).to.have.status(200);
+          expect(res.body.status).to.be.equal(200);
           expect(res.body).to.have.keys('status', 'data', 'message', 'success');
           expect(res.body.data.status).to.be.equal('active');
           done();
@@ -344,8 +344,8 @@ describe('Tests for all accounts Endpoints', () => {
           status: ''
         })
         .end((err, res) => {
-          expect(res).to.have.status(422);
-          expect(res.body.status).to.be.equal(422);
+          expect(res).to.have.status(400);
+          expect(res.body.status).to.be.equal(400);
           expect(res.body).to.have.keys('status', 'error', 'message', 'success');
           expect(res.body.message).to.be.equal('status cannot be empty');
           done();
@@ -376,8 +376,8 @@ describe('Tests for all accounts Endpoints', () => {
           status: 'act ivate'
         })
         .end((err, res) => {
-          expect(res).to.have.status(422);
-          expect(res.body.status).to.be.equal(422);
+          expect(res).to.have.status(400);
+          expect(res.body.status).to.be.equal(400);
           expect(res.body).to.have.keys('status', 'error', 'message', 'success');
           expect(res.body.message).to.be.equal('No whitespaces allowed in status');
           done();

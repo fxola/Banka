@@ -59,7 +59,7 @@ class Helper {
   static checkFieldEmpty(value, field) {
     if (!value) {
       return {
-        status: 422,
+        status: 400,
         success: false,
         error: `Invalid ${field} provided`,
         message: `${field} cannot be empty`
@@ -78,7 +78,7 @@ class Helper {
   static checkFieldWhiteSpace(value, field) {
     if (/\s/.test(value)) {
       return {
-        status: 422,
+        status: 400,
         success: false,
         error: `Invalid ${field} provided`,
         message: `No whitespaces allowed in ${field}`

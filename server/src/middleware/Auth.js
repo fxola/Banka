@@ -21,7 +21,8 @@ class Auth {
    */
   static getUser(req, res, next) {
     try {
-      if (!req.headers.authorization) throw new Error('You do not have access to this page');
+      if (!req.headers.authorization)
+        throw new Error('Token is not provided. You do not have access to this page');
       const token = req.headers.authorization.split(' ')[1];
       const decoded = jwt.verify(token, process.env.SECRET);
 

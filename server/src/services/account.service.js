@@ -27,6 +27,23 @@ class AccountService {
         message: 'You can only create a bank account with your registered e-mail'
       };
 
+    let isValid;
+    switch (type) {
+      case 'savings':
+      case 'current':
+        isValid = true;
+        break;
+      default:
+        isValid = false;
+    }
+    if (!isValid)
+      return {
+        status: 403,
+        success: false,
+        error: `Invalid account type provided`,
+        message: `Type can only be 'savings' or 'current'`
+      };
+
     const id = mockData.accounts.length + 1;
     const createdOn = new Date();
 
@@ -82,7 +99,7 @@ class AccountService {
       foundAccount.status = status;
       mockData.accounts.splice(accountIndex, 1, foundAccount);
       return {
-        status: 202,
+        status: 200,
         success: true,
         data: { accountNumber, status },
         message: `Account ${validStatus}d succesfully`

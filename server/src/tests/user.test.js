@@ -42,8 +42,8 @@ describe('Tests for all Auth(signup and signin) Endpoints', () => {
           type: 'staff'
         })
         .end((err, res) => {
-          expect(res).to.have.status(422);
-          expect(res.body.status).to.be.equal(422);
+          expect(res).to.have.status(400);
+          expect(res.body.status).to.be.equal(400);
           expect(res.body).to.have.keys('status', 'error', 'message', 'success');
           expect(res.body.error).to.be.equal('Invalid firstName provided');
           done();
@@ -61,8 +61,8 @@ describe('Tests for all Auth(signup and signin) Endpoints', () => {
           type: 'staff'
         })
         .end((err, res) => {
-          expect(res).to.have.status(422);
-          expect(res.body.status).to.be.equal(422);
+          expect(res).to.have.status(400);
+          expect(res.body.status).to.be.equal(400);
           expect(res.body).to.have.keys('status', 'error', 'message', 'success');
           expect(res.body.error).to.be.equal('Invalid lastName provided');
           done();
@@ -80,8 +80,8 @@ describe('Tests for all Auth(signup and signin) Endpoints', () => {
           type: 'staff'
         })
         .end((err, res) => {
-          expect(res).to.have.status(422);
-          expect(res.body.status).to.be.equal(422);
+          expect(res).to.have.status(400);
+          expect(res.body.status).to.be.equal(400);
           expect(res.body).to.have.keys('status', 'error', 'message', 'success');
           expect(res.body.error).to.be.equal('Invalid email provided');
           done();
@@ -99,8 +99,8 @@ describe('Tests for all Auth(signup and signin) Endpoints', () => {
           type: 'staff'
         })
         .end((err, res) => {
-          expect(res).to.have.status(422);
-          expect(res.body.status).to.be.equal(422);
+          expect(res).to.have.status(400);
+          expect(res.body.status).to.be.equal(400);
           expect(res.body).to.have.keys('status', 'error', 'message', 'success');
           expect(res.body.error).to.be.equal('Invalid password provided');
           done();
@@ -266,8 +266,8 @@ describe('Tests for all Auth(signup and signin) Endpoints', () => {
           type: 'staff'
         })
         .end((err, res) => {
-          expect(res).to.have.status(422);
-          expect(res.body.status).to.be.equal(422);
+          expect(res).to.have.status(400);
+          expect(res.body.status).to.be.equal(400);
           expect(res.body).to.have.keys('status', 'error', 'message', 'success');
           expect(res.body.message).to.be.equal('email cannot be empty');
           done();
@@ -283,8 +283,8 @@ describe('Tests for all Auth(signup and signin) Endpoints', () => {
           type: 'staff'
         })
         .end((err, res) => {
-          expect(res).to.have.status(422);
-          expect(res.body.status).to.be.equal(422);
+          expect(res).to.have.status(400);
+          expect(res.body.status).to.be.equal(400);
           expect(res.body).to.have.keys('status', 'error', 'message', 'success');
           expect(res.body.message).to.be.equal('password cannot be empty');
           done();

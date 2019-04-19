@@ -89,16 +89,16 @@ class AccountValidation {
     }
 
     if (firstName) {
-      firstName = firstName.trim();
+      firstName = firstName.trim().toLowerCase();
     }
     if (lastName) {
-      lastName = lastName.trim();
+      lastName = lastName.trim().toLowerCase();
     }
     if (type) {
-      type = type.trim();
+      type = type.trim().toLowerCase();
     }
     if (email) {
-      email = email.trim();
+      email = email.trim().toLowerCase();
     }
 
     // cited from stackoverflow
