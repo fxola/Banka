@@ -82,6 +82,23 @@ class Account {
 
   /**
    *
+   * Queries the database for all accounts
+   * @static
+   * @returns {array|boolean} an array of all found accounts on the platform
+   * @memberof Account
+   */
+  static async findAllAccounts() {
+    const query = `select createdon,accountnumber,email,accounts.type as type, status, balance 
+                   from accounts 
+                   inner join users on accounts.owner = users.id 
+                   order by createdon desc limit 10`;
+    const { rows, rowCount } = await db.query(query);
+    if (rowCount > 0) return rows;
+    return false;
+  }
+
+  /**
+   *
    * Generates a new account number
    * @static
    * @returns {number} Account number

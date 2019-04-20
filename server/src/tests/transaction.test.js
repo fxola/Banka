@@ -402,7 +402,6 @@ describe('Tests for all transaction Endpoints', () => {
         .get('/api/v1/accounts/1029704416/transactions')
         .set('Authorization', `Bearer ${staffToken}`)
         .end((err, res) => {
-          console.log(res.body);
           expect(res).to.have.status(200);
           expect(res.body.status).to.be.equal(200);
           expect(res.body).to.be.an('object');

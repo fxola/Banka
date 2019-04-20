@@ -84,6 +84,24 @@ class AccountController {
       return next(e);
     }
   }
+
+  /**
+   *
+   * Handles the logic for fetching all accounts
+   * @static
+   * @param {Object} req
+   * @param {Object} res
+   * @returns {Object} JSON API Response
+   * @memberof AccountController
+   */
+  static async fetchAllAccounts(req, res, next) {
+    try {
+      const response = await AccountService.fetchAllAccounts();
+      return res.status(response.status).json(response);
+    } catch (e) {
+      return next(e);
+    }
+  }
 }
 
 export default AccountController;
