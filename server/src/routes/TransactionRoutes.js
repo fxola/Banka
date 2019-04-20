@@ -1,6 +1,6 @@
 import { Router } from 'express';
 
-import TransactionController from '../controllers/transaction.controller';
+import TransactionController from '../controllers/TransactionController';
 import Auth from '../middleware/Auth';
 import AccountValidation from '../middleware/AccountValidator';
 import TransactionValidation from '../middleware/TransactionValidator';
@@ -8,7 +8,7 @@ import TransactionValidation from '../middleware/TransactionValidator';
 const { getUser, staffCheck } = Auth;
 const { accountNumberCheck } = AccountValidation;
 const { transactionCheck } = TransactionValidation;
-const { makeTransaction } = TransactionController;
+const { makeTransaction, fetchSingleTransaction } = TransactionController;
 
 const transactionRouter = Router();
 
@@ -29,5 +29,7 @@ transactionRouter.post(
   transactionCheck,
   makeTransaction
 );
+
+transactionRouter.get('/:id', getUser, fetchSingleTransaction);
 
 export default transactionRouter;

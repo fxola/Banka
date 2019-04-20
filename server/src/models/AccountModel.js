@@ -68,6 +68,20 @@ class Account {
 
   /**
    *
+   * Queries the account table for an account owner
+   * @static
+   * @param {number} accountNumber
+   * @returns
+   * @memberof Account
+   */
+  static async getAccountOwner(accountNumber) {
+    const query = `select owner from accounts where accountnumber = $1`;
+    const { rows } = await db.query(query, [accountNumber]);
+    return rows[0].owner;
+  }
+
+  /**
+   *
    * Generates a new account number
    * @static
    * @returns {number} Account number

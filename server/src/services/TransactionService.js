@@ -1,6 +1,6 @@
 /* eslint-disable default-case */
-import Transaction from '../models/transaction.model';
-import Account from '../models/account.model';
+import Transaction from '../models/TransactionModel';
+import Account from '../models/AccountModel';
 
 /**
  * @exports TransactionService
@@ -83,6 +83,57 @@ class TransactionService {
       };
     }
     return { status: 404, success: false, error: `Not found`, message: `Account does not exist` };
+  }
+
+  /**
+   *
+   * Handles the logic for fetching a single transaction
+   * @static
+   * @param {number} id transaction ID
+   * @param {number} user ID if the currently logged in user
+   * @param {string} userType staff or client user
+   * @returns
+   * @memberof TransactionService
+   */
+  static async fetchSingleTransaction(id, user, userType) {
+    const transaction = await Transaction.findOneTransaction(id);
+    if (transaction) {
+      const owner = await Account.getAccountOwner(transaction.accountnumber);
+      let allowed = false;
+      if (owner === user || userType === 'staff') {
+        allowed = true;
+      }
+
+      if (!allowed) {
+        return {
+          status: 403,
+          success: false,
+          error: `Request forbidden`,
+          message: `You don't have permission to view this transaction`
+        };
+      }
+      return {
+        status: 200,
+        success: true,
+        data: {
+          transactionId: transaction.id,
+          accountNumber: parseInt(transaction.accountnumber, 10),
+          amount: transaction.amount,
+          cashier: transaction.cashier,
+          transactionType: transaction.type,
+          oldBalance: transaction.oldbalance,
+          newBalance: transaction.newbalance,
+          createdOn: transaction.createdon
+        }
+      };
+    }
+
+    return {
+      status: 404,
+      error: `Not found`,
+      message: `Transaction does not exist`,
+      success: false
+    };
   }
 }
 
