@@ -71,5 +71,6 @@ const createAccounts = async (type, accountnumber, owner) => {
 
   await createAccounts('savings', 1029705319, 4);
   await createAccounts('savings', 1029704415, 4);
+  await createAccounts('savings', 1029709922, 4);
   await createAccounts('savings', 1029704416, 4); // active
 })();

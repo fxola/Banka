@@ -62,6 +62,28 @@ class AccountController {
       return next(e);
     }
   }
+
+  /**
+   *
+   * Handles the logic for fetching all transactions relating to an account
+   * @static
+   * @param {Object} req
+   * @param {Object} res
+   * @returns {Object} JSON API Response
+   * @memberof AccountController
+   */
+  static async fetchAllTransactions(req, res, next) {
+    try {
+      const response = await AccountService.fetchAllTransactions(
+        req.params.acctNumber,
+        req.userId,
+        req.userType
+      );
+      return res.status(response.status).json(response);
+    } catch (e) {
+      return next(e);
+    }
+  }
 }
 
 export default AccountController;
