@@ -156,6 +156,31 @@ class AccountService {
       message: `There are no transactions for this account currently`
     };
   }
+
+  /**
+   *
+   * Handles the logic for fetching all accounts on the platform
+   * @static
+   * @returns {object} API Response Object
+   * @memberof AccountService
+   */
+  static async fetchAllAccounts() {
+    const foundAccounts = await Account.findAllAccounts();
+
+    const data = foundAccounts.map(foundAccount => {
+      const mappedresult = {
+        createdOn: foundAccount.createdon,
+        ownerEmail: foundAccount.email,
+        accountNumber: parseInt(foundAccount.accountnumber, 10),
+        status: foundAccount.status,
+        type: foundAccount.type,
+        balance: foundAccount.balance
+      };
+      return mappedresult;
+    });
+
+    return { status: 200, success: true, data };
+  }
 }
 
 export default AccountService;

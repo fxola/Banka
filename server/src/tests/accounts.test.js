@@ -427,4 +427,41 @@ describe('Tests for all accounts Endpoints', () => {
         });
     });
   });
+  describe('GET api/v1/accounts', () => {
+    it('Should fetch all existing bank accounts on the platform if authorized', done => {
+      chai
+        .request(app)
+        .get('/api/v1/accounts')
+        .set('Authorization', `Bearer ${staffToken}`)
+        .end((err, res) => {
+          expect(res).to.have.status(200);
+          expect(res.body.status).to.be.equal(200);
+          expect(res.body).to.be.an('object');
+          expect(res.body).to.have.key('status', 'data', 'success');
+          expect(res.body.data).to.be.an('array');
+          expect(res.body.data[0]).to.have.key(
+            'accountNumber',
+            'balance',
+            'type',
+            'status',
+            'createdOn',
+            'ownerEmail'
+          );
+          done(err);
+        });
+    });
+    it('Should return an error if a client user tries to view all accounts on the platform', done => {
+      chai
+        .request(app)
+        .get('/api/v1/accounts')
+        .set('Authorization', `Bearer ${clientToken}`)
+        .end((err, res) => {
+          expect(res).to.have.status(401);
+          expect(res.body.status).to.be.equal(401);
+          expect(res.body).to.have.keys('status', 'error', 'success');
+          expect(res.body.error).to.include('You are not Authorized to perform this Action');
+          done(err);
+        });
+    });
+  });
 });
