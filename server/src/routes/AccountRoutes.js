@@ -6,7 +6,12 @@ import AccountValidation from '../middleware/AccountValidator';
 
 const { getUser, staffCheck } = Auth;
 const { accountNumberCheck, accountStatusCheck, accountDetailsCheck } = AccountValidation;
-const { createBankAccount, updateAccountStatus, deleteBankAccount } = AccountController;
+const {
+  createBankAccount,
+  updateAccountStatus,
+  deleteBankAccount,
+  fetchAllTransactions
+} = AccountController;
 
 const accountRouter = Router();
 
@@ -19,6 +24,7 @@ accountRouter.patch(
   accountStatusCheck,
   updateAccountStatus
 );
+accountRouter.get('/:acctNumber/transactions', getUser, accountNumberCheck, fetchAllTransactions);
 accountRouter.delete('/:acctNumber', getUser, staffCheck, accountNumberCheck, deleteBankAccount);
 
 export default accountRouter;

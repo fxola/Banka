@@ -53,6 +53,21 @@ class Transaction {
     if (rowCount > 0) return rows[0];
     return false;
   }
+
+  /**
+   *
+   * Queries the database for all transactions related to an account
+   * @static
+   * @param {number} accountNumber
+   * @returns {array|boolean} array of transactions found or boolean if not found
+   * @memberof Transaction
+   */
+  static async findAllTransactions(accountNumber) {
+    const query = `select * from transactions where accountnumber = $1`;
+    const { rows, rowCount } = await db.query(query, [accountNumber]);
+    if (rowCount > 0) return rows;
+    return false;
+  }
 }
 
 export default Transaction;

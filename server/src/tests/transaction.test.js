@@ -395,4 +395,77 @@ describe('Tests for all transaction Endpoints', () => {
         });
     });
   });
+  describe('POST api/v1/accounts/<account-number>/transactions', () => {
+    it('Should fetch a list of transactions performed on an account if authorized', done => {
+      chai
+        .request(app)
+        .get('/api/v1/accounts/1029704416/transactions')
+        .set('Authorization', `Bearer ${staffToken}`)
+        .end((err, res) => {
+          console.log(res.body);
+          expect(res).to.have.status(200);
+          expect(res.body.status).to.be.equal(200);
+          expect(res.body).to.be.an('object');
+          expect(res.body).to.have.key('status', 'data', 'success');
+          expect(res.body.data).to.be.an('array');
+          expect(res.body.data[0]).to.have.key(
+            'transactionId',
+            'amount',
+            'oldBalance',
+            'newBalance',
+            'amount',
+            'transactionType',
+            'createdOn',
+            'cashier'
+          );
+          done(err);
+        });
+    });
+    it('Should return an error of a user tries to view transactions not related to their account', done => {
+      chai
+        .request(app)
+        .get('/api/v1/accounts/1029704416/transactions')
+        .set('Authorization', `Bearer ${secondUserToken}`)
+        .end((err, res) => {
+          expect(res).to.have.status(403);
+          expect(res.body.status).to.be.equal(403);
+          expect(res.body).to.be.an('object');
+          expect(res.body).to.have.key('status', 'error', 'success', 'message');
+          expect(res.body.message).to.be.equal(
+            `You don't have permission to view these transactions`
+          );
+          done(err);
+        });
+    });
+    it('Should return an error of a user tries to view a transaction of an invalid account', done => {
+      chai
+        .request(app)
+        .get('/api/v1/accounts/hey/transactions')
+        .set('Authorization', `Bearer ${staffToken}`)
+        .end((err, res) => {
+          expect(res).to.have.status(403);
+          expect(res.body.status).to.be.equal(403);
+          expect(res.body).to.be.an('object');
+          expect(res.body).to.have.key('status', 'error', 'success', 'message');
+          expect(res.body.message).to.be.equal(`Account Number must be a Number`);
+          done(err);
+        });
+    });
+    it("Should return an error of a user tries to view transactions when there aren't any", done => {
+      chai
+        .request(app)
+        .get('/api/v1/accounts/1029709922/transactions')
+        .set('Authorization', `Bearer ${staffToken}`)
+        .end((err, res) => {
+          expect(res).to.have.status(404);
+          expect(res.body.status).to.be.equal(404);
+          expect(res.body).to.be.an('object');
+          expect(res.body).to.have.key('status', 'error', 'success', 'message');
+          expect(res.body.message).to.be.equal(
+            `There are no transactions for this account currently`
+          );
+          done(err);
+        });
+    });
+  });
 });

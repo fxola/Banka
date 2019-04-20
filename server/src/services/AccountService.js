@@ -1,4 +1,5 @@
 import Account from '../models/AccountModel';
+import Transaction from '../models/TransactionModel';
 
 /**
  * @exports AccountService
@@ -103,6 +104,57 @@ class AccountService {
       if (deleted) return { status: 200, success: true, message: `Account sucessfully deleted` };
     }
     return { status: 404, success: false, error: `Not found`, message: `Account does not exist` };
+  }
+
+  /**
+   *
+   * Handles the logic for fetching all transactions related to an account
+   * @static
+   * @param {number} accountNumber
+   * @param {number} user
+   * @param {string} userType
+   * @returns {object} API Response Object
+   * @memberof AccountService
+   */
+  static async fetchAllTransactions(accountNumber, user, userType) {
+    const owner = await Account.getAccountOwner(accountNumber);
+    let allowed = false;
+    if (owner === user || userType === 'staff') {
+      allowed = true;
+    }
+
+    if (!allowed) {
+      return {
+        status: 403,
+        success: false,
+        error: `Request forbidden`,
+        message: `You don't have permission to view these transactions`
+      };
+    }
+    const transactions = await Transaction.findAllTransactions(accountNumber);
+    if (transactions) {
+      const data = transactions.map(transaction => {
+        const mappedresult = {
+          transactionId: transaction.id,
+          accountNumber: parseInt(transaction.accountnumber, 10),
+          amount: parseFloat(transaction.amount).toFixed(2),
+          cashier: transaction.cashier,
+          transactionType: transaction.type,
+          oldBalance: transaction.oldbalance,
+          newBalance: transaction.newbalance,
+          createdOn: transaction.createdon
+        };
+        return mappedresult;
+      });
+
+      return { status: 200, success: true, data };
+    }
+    return {
+      status: 404,
+      success: false,
+      error: `Not found`,
+      message: `There are no transactions for this account currently`
+    };
   }
 }
 
