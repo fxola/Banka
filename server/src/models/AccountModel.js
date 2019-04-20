@@ -31,7 +31,7 @@ class Account {
    * @memberof Account
    */
   static async findAccount(accountNumber) {
-    const query = `select * from accounts where accountnumber = $1`;
+    const query = `select * from accounts inner join users on accounts.owner = users.id where accountnumber = $1`;
     const { rows, rowCount } = await db.query(query, [accountNumber]);
     if (rowCount > 0) return rows[0];
     return false;
@@ -76,8 +76,9 @@ class Account {
    */
   static async getAccountOwner(accountNumber) {
     const query = `select owner from accounts where accountnumber = $1`;
-    const { rows } = await db.query(query, [accountNumber]);
-    return rows[0].owner;
+    const { rows, rowCount } = await db.query(query, [accountNumber]);
+    if (rowCount > 0) return rows[0].owner;
+    return false;
   }
 
   /**

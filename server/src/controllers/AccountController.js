@@ -102,6 +102,28 @@ class AccountController {
       return next(e);
     }
   }
+
+  /**
+   *
+   * Handles the logic for fetching a single account
+   * @static
+   * @param {Object} req
+   * @param {Object} res
+   * @returns {Object} JSON API Response
+   * @memberof AccountController
+   */
+  static async fetchOneAccount(req, res, next) {
+    try {
+      const response = await AccountService.fetchOneAccount(
+        req.params.acctNumber,
+        req.userId,
+        req.userType
+      );
+      return res.status(response.status).json(response);
+    } catch (e) {
+      return next(e);
+    }
+  }
 }
 
 export default AccountController;
