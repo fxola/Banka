@@ -11,11 +11,13 @@ const {
   updateAccountStatus,
   deleteBankAccount,
   fetchAllTransactions,
-  fetchAllAccounts
+  fetchAllAccounts,
+  fetchOneAccount
 } = AccountController;
 
 const accountRouter = Router();
 accountRouter.get('/', getUser, staffCheck, fetchAllAccounts);
+accountRouter.get('/:acctNumber', getUser, accountNumberCheck, fetchOneAccount);
 accountRouter.post('/', getUser, accountDetailsCheck, createBankAccount);
 accountRouter.patch(
   '/:acctNumber',

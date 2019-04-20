@@ -31,13 +31,10 @@ describe('Tests for all accounts Endpoints', () => {
   before(done => {
     chai
       .request(app)
-      .post('/api/v1/auth/signup')
+      .post('/api/v1/auth/signin')
       .send({
-        firstName: 'jon',
-        lastName: 'bellion',
-        email: 'bellion@gmail.com',
-        password: 'simpleandweet',
-        confirmPassword: 'simpleandweet'
+        email: 'second@user.com',
+        password: 'seconduser'
       })
       .end((err, res) => {
         const { token } = res.body.data;
@@ -55,7 +52,7 @@ describe('Tests for all accounts Endpoints', () => {
         .send({
           firstName: 'jon',
           lastName: 'bellion',
-          email: 'bellion@gmail.com',
+          email: 'second@user.com',
           type: 'savings'
         })
         .end((err, res) => {
@@ -460,6 +457,59 @@ describe('Tests for all accounts Endpoints', () => {
           expect(res.body.status).to.be.equal(401);
           expect(res.body).to.have.keys('status', 'error', 'success');
           expect(res.body.error).to.include('You are not Authorized to perform this Action');
+          done(err);
+        });
+    });
+  });
+  describe('GET api/v1/accounts/<account-number>', () => {
+    it('Should fetch details of a bank account specified if authorized', done => {
+      chai
+        .request(app)
+        .get('/api/v1/accounts/1029709922')
+        .set('Authorization', `Bearer ${staffToken}`)
+        .end((err, res) => {
+          expect(res).to.have.status(200);
+          expect(res.body.status).to.be.equal(200);
+          expect(res.body).to.be.an('object');
+          expect(res.body).to.have.key('status', 'data', 'success');
+          expect(res.body.data).to.be.an('object');
+          expect(res.body.data).to.have.key(
+            'accountNumber',
+            'balance',
+            'type',
+            'status',
+            'createdOn',
+            'ownerEmail'
+          );
+          done(err);
+        });
+    });
+    it('Should return an error if a user tries to view an account that does not exist on the platform', done => {
+      chai
+        .request(app)
+        .get('/api/v1/accounts/1020000000')
+        .set('Authorization', `Bearer ${staffToken}`)
+        .end((err, res) => {
+          expect(res).to.have.status(404);
+          expect(res.body.status).to.be.equal(404);
+          expect(res.body).to.have.keys('status', 'error', 'success', 'message');
+          expect(res.body.message).to.be.equal('Account does not exist');
+          done(err);
+        });
+    });
+    it('Should return an error of a user tries to view account details of an account other than their own', done => {
+      chai
+        .request(app)
+        .get('/api/v1/accounts/1029704416')
+        .set('Authorization', `Bearer ${clientToken}`)
+        .end((err, res) => {
+          expect(res).to.have.status(403);
+          expect(res.body.status).to.be.equal(403);
+          expect(res.body).to.be.an('object');
+          expect(res.body).to.have.key('status', 'error', 'success', 'message');
+          expect(res.body.message).to.be.equal(
+            `You don't have permission to view this account's details`
+          );
           done(err);
         });
     });

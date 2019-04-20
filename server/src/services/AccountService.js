@@ -1,3 +1,4 @@
+/* eslint-disable default-case */
 import Account from '../models/AccountModel';
 import Transaction from '../models/TransactionModel';
 
@@ -117,20 +118,14 @@ class AccountService {
    * @memberof AccountService
    */
   static async fetchAllTransactions(accountNumber, user, userType) {
-    const owner = await Account.getAccountOwner(accountNumber);
-    let allowed = false;
-    if (owner === user || userType === 'staff') {
-      allowed = true;
-    }
+    const notAllowed = await AccountService.checkPermission(
+      accountNumber,
+      user,
+      userType,
+      'transaction'
+    );
+    if (notAllowed) return notAllowed;
 
-    if (!allowed) {
-      return {
-        status: 403,
-        success: false,
-        error: `Request forbidden`,
-        message: `You don't have permission to view these transactions`
-      };
-    }
     const transactions = await Transaction.findAllTransactions(accountNumber);
     if (transactions) {
       const data = transactions.map(transaction => {
@@ -166,7 +161,6 @@ class AccountService {
    */
   static async fetchAllAccounts() {
     const foundAccounts = await Account.findAllAccounts();
-
     const data = foundAccounts.map(foundAccount => {
       const mappedresult = {
         createdOn: foundAccount.createdon,
@@ -180,6 +174,82 @@ class AccountService {
     });
 
     return { status: 200, success: true, data };
+  }
+
+  /**
+   *
+   * Handles the logic for fetching the details of a single account
+   * @static
+   * @param {number} accountNumber
+   * @returns {object} API Response Object
+   * @memberof AccountService
+   */
+  static async fetchOneAccount(accountNumber, user, userType) {
+    const notAllowed = await AccountService.checkPermission(
+      accountNumber,
+      user,
+      userType,
+      'account'
+    );
+    if (notAllowed) return notAllowed;
+
+    const foundAccount = await Account.findAccount(accountNumber);
+    const { email, status, type, balance, createdon } = foundAccount;
+    return {
+      status: 200,
+      success: true,
+      data: {
+        createdOn: createdon,
+        ownerEmail: email,
+        accountNumber,
+        status,
+        type,
+        balance
+      }
+    };
+  }
+
+  /**
+   *
+   * Restricts access of specified route to account owners and staff users
+   * @static
+   * @param {number} accountNumber
+   * @param {number} user user id
+   * @param {string} userType currently logged in user type(client or staff)
+   * @param {string} route route to guard
+   * @returns {object|boolean} error object or boolean if check passes
+   * @memberof AccountService
+   */
+  static async checkPermission(accountNumber, user, userType, route) {
+    const owner = await Account.getAccountOwner(accountNumber);
+    if (!owner) {
+      return { status: 404, success: false, error: `Not Found`, message: `Account does not exist` };
+    }
+
+    let allowed = false;
+    if (owner === user || userType === 'staff') {
+      allowed = true;
+    }
+
+    let message;
+    switch (route) {
+      case 'transaction':
+        message = `You don't have permission to view these transactions`;
+        break;
+      case 'account':
+        message = `You don't have permission to view this account's details`;
+        break;
+    }
+
+    if (!allowed) {
+      return {
+        status: 403,
+        success: false,
+        error: `Request forbidden`,
+        message
+      };
+    }
+    return false;
   }
 }
 
