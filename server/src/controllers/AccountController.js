@@ -1,3 +1,5 @@
+/* eslint-disable prefer-destructuring */
+/* eslint-disable default-case */
 import AccountService from '../services/AccountService';
 
 /**
@@ -94,9 +96,32 @@ class AccountController {
    * @returns {Object} JSON API Response
    * @memberof AccountController
    */
-  static async fetchAllAccounts(req, res, next) {
+  static async fetchAccounts(req, res, next) {
     try {
-      const response = await AccountService.fetchAllAccounts();
+      let status;
+      let route;
+
+      switch (Object.keys(req.query).length > 0) {
+        case true:
+          switch (req.query.status) {
+            case 'active':
+              status = req.query.status;
+              route = 'active';
+              break;
+            case 'dormant':
+              status = req.query.status;
+              route = 'dormant';
+              break;
+            default:
+              status = 'invalid';
+              break;
+          }
+          break;
+        case false:
+          route = 'all';
+          break;
+      }
+      const response = await AccountService.fetchAccounts(status, route);
       return res.status(response.status).json(response);
     } catch (e) {
       return next(e);

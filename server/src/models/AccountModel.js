@@ -1,3 +1,4 @@
+/* eslint-disable default-case */
 import db from './db';
 /**
  * @exports Account
@@ -88,11 +89,25 @@ class Account {
    * @returns {array|boolean} an array of all found accounts on the platform
    * @memberof Account
    */
-  static async findAllAccounts() {
-    const query = `select createdon,accountnumber,email,accounts.type as type, status, balance 
+  static async findAccounts(route) {
+    let query;
+    switch (route) {
+      case 'all':
+        query = `select createdon,accountnumber,email,accounts.type as type, status, balance 
                    from accounts 
                    inner join users on accounts.owner = users.id 
                    order by createdon desc limit 10`;
+        break;
+      case 'active':
+      case 'dormant':
+        query = `select createdon,accountnumber,email,accounts.type as type, status, balance 
+                  from accounts 
+                  inner join users on accounts.owner = users.id 
+                  where status = '${route}'
+                  order by createdon desc limit 10`;
+        break;
+    }
+
     const { rows, rowCount } = await db.query(query);
     if (rowCount > 0) return rows;
     return false;
