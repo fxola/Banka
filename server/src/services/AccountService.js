@@ -1,6 +1,7 @@
 /* eslint-disable default-case */
 import Account from '../models/AccountModel';
 import Transaction from '../models/TransactionModel';
+import Helper from '../helpers/helper';
 
 /**
  * @exports AccountService
@@ -118,12 +119,7 @@ class AccountService {
    * @memberof AccountService
    */
   static async fetchAllTransactions(accountNumber, user, userType) {
-    const notAllowed = await AccountService.checkPermission(
-      accountNumber,
-      user,
-      userType,
-      'transaction'
-    );
+    const notAllowed = await Helper.checkPermission(accountNumber, user, userType, 'transactions');
     if (notAllowed) return notAllowed;
 
     const transactions = await Transaction.findAllTransactions(accountNumber);
@@ -159,21 +155,48 @@ class AccountService {
    * @returns {object} API Response Object
    * @memberof AccountService
    */
-  static async fetchAllAccounts() {
-    const foundAccounts = await Account.findAllAccounts();
-    const data = foundAccounts.map(foundAccount => {
-      const mappedresult = {
-        createdOn: foundAccount.createdon,
-        ownerEmail: foundAccount.email,
-        accountNumber: parseInt(foundAccount.accountnumber, 10),
-        status: foundAccount.status,
-        type: foundAccount.type,
-        balance: foundAccount.balance
+  static async fetchAccounts(status, route) {
+    if (status && status !== 'active' && status !== 'dormant') {
+      return {
+        status: 403,
+        success: false,
+        error: `Invalid status provided`,
+        message: `status can only be 'active' or 'dormant'`
       };
-      return mappedresult;
-    });
+    }
 
-    return { status: 200, success: true, data };
+    const foundAccounts = await Account.findAccounts(route);
+    if (foundAccounts) {
+      const data = foundAccounts.map(foundAccount => {
+        const mappedresult = {
+          createdOn: foundAccount.createdon,
+          ownerEmail: foundAccount.email,
+          accountNumber: parseInt(foundAccount.accountnumber, 10),
+          status: foundAccount.status,
+          type: foundAccount.type,
+          balance: foundAccount.balance
+        };
+        return mappedresult;
+      });
+
+      return { status: 200, success: true, data };
+    }
+    let message;
+    switch (route) {
+      case 'all':
+        message = `There are no accounts on the platform currently`;
+        break;
+      case 'active':
+      case 'dormant':
+        message = `There are no ${route} accounts on the platform currently`;
+        break;
+    }
+    return {
+      status: 404,
+      success: false,
+      error: `Not found`,
+      message
+    };
   }
 
   /**
@@ -185,12 +208,7 @@ class AccountService {
    * @memberof AccountService
    */
   static async fetchOneAccount(accountNumber, user, userType) {
-    const notAllowed = await AccountService.checkPermission(
-      accountNumber,
-      user,
-      userType,
-      'account'
-    );
+    const notAllowed = await Helper.checkPermission(accountNumber, user, userType, 'account');
     if (notAllowed) return notAllowed;
 
     const foundAccount = await Account.findAccount(accountNumber);
@@ -207,49 +225,6 @@ class AccountService {
         balance
       }
     };
-  }
-
-  /**
-   *
-   * Restricts access of specified route to account owners and staff users
-   * @static
-   * @param {number} accountNumber
-   * @param {number} user user id
-   * @param {string} userType currently logged in user type(client or staff)
-   * @param {string} route route to guard
-   * @returns {object|boolean} error object or boolean if check passes
-   * @memberof AccountService
-   */
-  static async checkPermission(accountNumber, user, userType, route) {
-    const owner = await Account.getAccountOwner(accountNumber);
-    if (!owner) {
-      return { status: 404, success: false, error: `Not Found`, message: `Account does not exist` };
-    }
-
-    let allowed = false;
-    if (owner === user || userType === 'staff') {
-      allowed = true;
-    }
-
-    let message;
-    switch (route) {
-      case 'transaction':
-        message = `You don't have permission to view these transactions`;
-        break;
-      case 'account':
-        message = `You don't have permission to view this account's details`;
-        break;
-    }
-
-    if (!allowed) {
-      return {
-        status: 403,
-        success: false,
-        error: `Request forbidden`,
-        message
-      };
-    }
-    return false;
   }
 }
 

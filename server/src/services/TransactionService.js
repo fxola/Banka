@@ -1,7 +1,7 @@
 /* eslint-disable default-case */
 import Transaction from '../models/TransactionModel';
 import Account from '../models/AccountModel';
-
+import Helper from '../helpers/helper';
 /**
  * @exports TransactionService
  *
@@ -98,20 +98,13 @@ class TransactionService {
   static async fetchSingleTransaction(id, user, userType) {
     const transaction = await Transaction.findOneTransaction(id);
     if (transaction) {
-      const owner = await Account.getAccountOwner(transaction.accountnumber);
-      let allowed = false;
-      if (owner === user || userType === 'staff') {
-        allowed = true;
-      }
-
-      if (!allowed) {
-        return {
-          status: 403,
-          success: false,
-          error: `Request forbidden`,
-          message: `You don't have permission to view this transaction`
-        };
-      }
+      const notAllowed = await Helper.checkPermission(
+        transaction.accountnumber,
+        user,
+        userType,
+        'transaction'
+      );
+      if (notAllowed) return notAllowed;
       return {
         status: 200,
         success: true,

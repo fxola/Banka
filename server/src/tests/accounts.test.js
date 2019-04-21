@@ -43,6 +43,19 @@ describe('Tests for all accounts Endpoints', () => {
       });
   });
 
+  before(done => {
+    chai
+      .request(app)
+      .patch('/api/v1/accounts/1029704123')
+      .set('Authorization', `Bearer ${staffToken}`)
+      .send({
+        status: 'activate'
+      })
+      .end(() => {
+        done();
+      });
+  });
+
   describe('POST api/v1/accounts', () => {
     it('Should successfully create a new bank account on provision of valid details', done => {
       chai
@@ -460,7 +473,58 @@ describe('Tests for all accounts Endpoints', () => {
           done(err);
         });
     });
+    it('Should fetch all existing active bank accounts on the platform if authorized', done => {
+      chai
+        .request(app)
+        .get('/api/v1/accounts?status=active')
+        .set('Authorization', `Bearer ${staffToken}`)
+        .end((err, res) => {
+          expect(res).to.have.status(200);
+          expect(res.body.status).to.be.equal(200);
+          expect(res.body).to.be.an('object');
+          expect(res.body).to.have.key('status', 'data', 'success');
+          expect(res.body.data).to.be.an('array');
+          expect(res.body.data[0]).to.have.key(
+            'accountNumber',
+            'balance',
+            'type',
+            'status',
+            'createdOn',
+            'ownerEmail'
+          );
+          done(err);
+        });
+    });
+    it('Should return an error if a client user tries to view all active accounts on the platform', done => {
+      chai
+        .request(app)
+        .get('/api/v1/accounts?status=active')
+        .set('Authorization', `Bearer ${clientToken}`)
+        .end((err, res) => {
+          expect(res).to.have.status(401);
+          expect(res.body.status).to.be.equal(401);
+          expect(res.body).to.have.keys('status', 'error', 'success');
+          expect(res.body.error).to.include('You are not Authorized to perform this Action');
+          done(err);
+        });
+    });
+    it("Should return an error if a user tries to view all dormant accounts on the platform when there aren't any", done => {
+      chai
+        .request(app)
+        .get('/api/v1/accounts?status=dormant')
+        .set('Authorization', `Bearer ${staffToken}`)
+        .end((err, res) => {
+          expect(res).to.have.status(404);
+          expect(res.body.status).to.be.equal(404);
+          expect(res.body).to.have.keys('status', 'error', 'success', 'message');
+          expect(res.body.message).to.include(
+            'There are no dormant accounts on the platform currently'
+          );
+          done(err);
+        });
+    });
   });
+
   describe('GET api/v1/accounts/<account-number>', () => {
     it('Should fetch details of a bank account specified if authorized', done => {
       chai

@@ -1,6 +1,8 @@
+/* eslint-disable default-case */
 import dotenv from 'dotenv';
 import jwt from 'jsonwebtoken';
 import bcrypt from 'bcrypt';
+import Account from '../models/AccountModel';
 
 dotenv.config();
 
@@ -102,6 +104,52 @@ class Helper {
         success: false,
         error: `Invalid ${field} provided`,
         message: `${field} must be Alphabetical`
+      };
+    }
+    return false;
+  }
+
+  /**
+   *
+   * Restricts access of specified route to account owners and staff users
+   * @static
+   * @param {number} accountNumber
+   * @param {number} user user id
+   * @param {string} userType currently logged in user type(client or staff)
+   * @param {string} route route to guard
+   * @returns {object|boolean} error object or boolean if check passes
+   * @memberof AccountService
+   */
+  static async checkPermission(accountNumber, user, userType, route) {
+    const owner = await Account.getAccountOwner(accountNumber);
+    if (!owner) {
+      return { status: 404, success: false, error: `Not Found`, message: `Account does not exist` };
+    }
+
+    let allowed = false;
+    if (owner === user || userType === 'staff') {
+      allowed = true;
+    }
+
+    let message;
+    switch (route) {
+      case 'transactions':
+        message = `You don't have permission to view these transactions`;
+        break;
+      case 'transaction':
+        message = `You don't have permission to view this transaction`;
+        break;
+      case 'account':
+        message = `You don't have permission to view this account's details`;
+        break;
+    }
+
+    if (!allowed) {
+      return {
+        status: 403,
+        success: false,
+        error: `Request forbidden`,
+        message
       };
     }
     return false;
