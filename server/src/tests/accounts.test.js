@@ -12,6 +12,8 @@ chai.use(chaiHttp);
 describe('Tests for all accounts Endpoints', () => {
   let staffToken;
   let clientToken;
+  let firstUserToken;
+  let newUserToken;
 
   before(done => {
     chai
@@ -39,6 +41,36 @@ describe('Tests for all accounts Endpoints', () => {
       .end((err, res) => {
         const { token } = res.body.data;
         clientToken = token;
+        done(err);
+      });
+  });
+
+  before(done => {
+    chai
+      .request(app)
+      .post('/api/v1/auth/signin')
+      .send({
+        email: 'first@user.com',
+        password: 'firstuser'
+      })
+      .end((err, res) => {
+        const { token } = res.body.data;
+        firstUserToken = token;
+        done(err);
+      });
+  });
+
+  before(done => {
+    chai
+      .request(app)
+      .post('/api/v1/auth/signin')
+      .send({
+        email: 'new@user.com',
+        password: 'firstuser'
+      })
+      .end((err, res) => {
+        const { token } = res.body.data;
+        newUserToken = token;
         done(err);
       });
   });
@@ -575,6 +607,73 @@ describe('Tests for all accounts Endpoints', () => {
             `You don't have permission to view this account's details`
           );
           done(err);
+        });
+    });
+  });
+  describe('GET api/v1/users/<email>/accounts', () => {
+    it('Should fetch all bank accounts of a user if authorized', done => {
+      chai
+        .request(app)
+        .get('/api/v1/user/first@user.com/accounts')
+        .set('Authorization', `Bearer ${firstUserToken}`)
+        .end((err, res) => {
+          expect(res).to.have.status(200);
+          expect(res.body.status).to.be.equal(200);
+          expect(res.body).to.be.an('object');
+          expect(res.body).to.have.key('status', 'data', 'success');
+          expect(res.body.data).to.be.an('array');
+          expect(res.body.data[0]).to.have.key(
+            'accountNumber',
+            'balance',
+            'type',
+            'status',
+            'createdOn',
+            'ownerEmail'
+          );
+          done(err);
+        });
+    });
+    it('Should return an error of a user tries to view account details of an account other than their own', done => {
+      chai
+        .request(app)
+        .get('/api/v1/user/first@user.com/accounts')
+        .set('Authorization', `Bearer ${clientToken}`)
+        .end((err, res) => {
+          expect(res).to.have.status(403);
+          expect(res.body.status).to.be.equal(403);
+          expect(res.body).to.be.an('object');
+          expect(res.body).to.have.key('status', 'error', 'success', 'message');
+          expect(res.body.message).to.be.equal(`You don't have permission to view these accounts`);
+          done(err);
+        });
+    });
+    it('Should return an error of a user tries to view all their  accounts when there are none', done => {
+      chai
+        .request(app)
+        .get('/api/v1/user/new@user.com/accounts')
+        .set('Authorization', `Bearer ${newUserToken}`)
+        .end((err, res) => {
+          expect(res).to.have.status(404);
+          expect(res.body.status).to.be.equal(404);
+          expect(res.body).to.be.an('object');
+          expect(res.body).to.have.key('status', 'error', 'success', 'message');
+          expect(res.body.message).to.be.equal(
+            `You do not have any accounts on the platform currently`
+          );
+          done(err);
+        });
+    });
+    it('Should return an error if a user tries to view all their accounts providing an invalid email address', done => {
+      chai
+        .request(app)
+        .get('/api/v1/user/firstuser.com/accounts')
+        .set('Authorization', `Bearer ${firstUserToken}`)
+        .end((err, res) => {
+          expect(res).to.have.status(422);
+          expect(res.body.status).to.be.equal(422);
+          expect(res.body).to.have.keys('status', 'error', 'message', 'success');
+          expect(res.body.message).to.be.equal('Please provide a valid email address');
+          done();
         });
     });
   });

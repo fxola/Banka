@@ -68,7 +68,14 @@ const createAccounts = async (type, accountnumber, owner) => {
     'client',
     false
   );
-
+  await createUsers(
+    'new@user.com',
+    'new',
+    'user',
+    '$2b$10$KDkzDOJz9VXq5CmoisAuweLjoj5yb1h9kpoDxxAX3CXfEUkebNOcG',
+    'client',
+    false
+  );
   await createAccounts('savings', 1029705319, 4);
   await createAccounts('savings', 1029704415, 4);
   await createAccounts('savings', 1029709922, 4);

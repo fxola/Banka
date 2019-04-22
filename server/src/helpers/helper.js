@@ -109,6 +109,22 @@ class Helper {
     return false;
   }
 
+  static validateEmail(email) {
+    // cited from stackoverflow
+    // eslint-disable-next-line no-useless-escape
+    const emailPattern = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+
+    if (!emailPattern.test(email)) {
+      return {
+        status: 422,
+        error: 'Invalid email address',
+        message: 'Please provide a valid email address',
+        success: false
+      };
+    }
+    return false;
+  }
+
   /**
    *
    * Restricts access of specified route to account owners and staff users
@@ -123,7 +139,12 @@ class Helper {
   static async checkPermission(accountNumber, user, userType, route) {
     const owner = await Account.getAccountOwner(accountNumber);
     if (!owner) {
-      return { status: 404, success: false, error: `Not Found`, message: `Account does not exist` };
+      let message = `Account does not exist`;
+      if (route === 'user') {
+        message = `You do not have any accounts on the platform currently`;
+      }
+
+      return { status: 404, success: false, error: `Not Found`, message };
     }
 
     let allowed = false;
@@ -141,6 +162,9 @@ class Helper {
         break;
       case 'account':
         message = `You don't have permission to view this account's details`;
+        break;
+      case 'user':
+        message = `You don't have permission to view these accounts`;
         break;
     }
 

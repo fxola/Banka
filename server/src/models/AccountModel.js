@@ -31,9 +31,9 @@ class Account {
    * @returns {object} details of the found account
    * @memberof Account
    */
-  static async findAccount(accountNumber) {
-    const query = `select * from accounts inner join users on accounts.owner = users.id where accountnumber = $1`;
-    const { rows, rowCount } = await db.query(query, [accountNumber]);
+  static async findAccount(value, column) {
+    const query = `select * from accounts inner join users on accounts.owner = users.id where ${column} = $1`;
+    const { rows, rowCount } = await db.query(query, [value]);
     if (rowCount > 0) return rows[0];
     return false;
   }
@@ -89,7 +89,7 @@ class Account {
    * @returns {array|boolean} an array of all found accounts on the platform
    * @memberof Account
    */
-  static async findAccounts(route) {
+  static async findAccounts(route, email) {
     let query;
     switch (route) {
       case 'all':
@@ -106,6 +106,12 @@ class Account {
                   where status = '${route}'
                   order by createdon desc limit 10`;
         break;
+      case 'user':
+        query = `select createdon,accountnumber,email,accounts.type as type, status, balance 
+                  from accounts 
+                  inner join users on accounts.owner = users.id 
+                  where email = '${email}'
+                  order by createdon desc limit 10`;
     }
 
     const { rows, rowCount } = await db.query(query);

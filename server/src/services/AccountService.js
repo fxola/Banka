@@ -70,7 +70,7 @@ class AccountService {
       };
     }
 
-    const foundAccount = await Account.findAccount(accountNumber);
+    const foundAccount = await Account.findAccount(accountNumber, 'accountnumber');
 
     if (foundAccount) {
       await Account.update(accountNumber, status, 'status');
@@ -99,7 +99,7 @@ class AccountService {
    * @memberof AccountService
    */
   static async deleteBankAccount(accountNumber) {
-    const foundAccount = await Account.findAccount(accountNumber);
+    const foundAccount = await Account.findAccount(accountNumber, 'accountnumber');
 
     if (foundAccount) {
       const deleted = await Account.delete(accountNumber);
@@ -155,7 +155,7 @@ class AccountService {
    * @returns {object} API Response Object
    * @memberof AccountService
    */
-  static async fetchAccounts(status, route) {
+  static async fetchAccounts(status, route, email) {
     if (status && status !== 'active' && status !== 'dormant') {
       return {
         status: 403,
@@ -165,7 +165,7 @@ class AccountService {
       };
     }
 
-    const foundAccounts = await Account.findAccounts(route);
+    const foundAccounts = await Account.findAccounts(route, email);
     if (foundAccounts) {
       const data = foundAccounts.map(foundAccount => {
         const mappedresult = {
@@ -211,7 +211,7 @@ class AccountService {
     const notAllowed = await Helper.checkPermission(accountNumber, user, userType, 'account');
     if (notAllowed) return notAllowed;
 
-    const foundAccount = await Account.findAccount(accountNumber);
+    const foundAccount = await Account.findAccount(accountNumber, 'accountnumber');
     const { email, status, type, balance, createdon } = foundAccount;
     return {
       status: 200,
