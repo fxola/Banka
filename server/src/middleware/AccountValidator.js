@@ -101,18 +101,8 @@ class AccountValidation {
       email = email.trim();
     }
 
-    // cited from stackoverflow
-    // eslint-disable-next-line no-useless-escape
-    const emailPattern = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-
-    if (!emailPattern.test(email)) {
-      return res.status(422).json({
-        status: 422,
-        success: false,
-        error: 'Invalid email address',
-        message: 'Please provide a valid email address'
-      });
-    }
+    const isInvalid = helper.validateEmail(email);
+    if (isInvalid) return res.status(isInvalid.status).json(isInvalid);
 
     req.body.firstName = firstName;
     req.body.lastName = lastName;

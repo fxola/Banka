@@ -21,7 +21,7 @@ class TransactionService {
    * @memberof TransactionService
    */
   static async makeTransaction(accountNumber, amount, cashier, transactionType) {
-    const foundAccount = await Account.findAccount(accountNumber);
+    const foundAccount = await Account.findAccount(accountNumber, 'accountnumber');
 
     if (foundAccount) {
       const oldBalance = parseFloat(foundAccount.balance);
