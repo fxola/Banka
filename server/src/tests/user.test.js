@@ -10,6 +10,38 @@ const { expect } = chai;
 chai.use(chaiHttp);
 
 describe('Tests for all Auth(signup and signin) Endpoints', () => {
+  let adminToken;
+  let staffToken;
+
+  before(done => {
+    chai
+      .request(app)
+      .post('/api/v1/auth/signin')
+      .send({
+        email: 'user@admin.com',
+        password: 'adminuser'
+      })
+      .end((err, res) => {
+        const { token } = res.body.data;
+        adminToken = token;
+        done(err);
+      });
+  });
+  before(done => {
+    chai
+      .request(app)
+      .post('/api/v1/auth/signin')
+      .send({
+        email: 'user@staff.com',
+        password: 'staffuser'
+      })
+      .end((err, res) => {
+        const { token } = res.body.data;
+        staffToken = token;
+        done(err);
+      });
+  });
+
   describe('POST api/v1/auth/signup', () => {
     it('Should successfully sign up a user and return a token', done => {
       chai
@@ -301,6 +333,64 @@ describe('Tests for all Auth(signup and signin) Endpoints', () => {
           expect(res.body.status).to.be.equal(422);
           expect(res.body).to.have.keys('status', 'error', 'message', 'success');
           expect(res.body.message).to.be.equal('password cannot be empty');
+          done();
+        });
+    });
+  });
+  describe('PUT api/v1/auth/makestaff', () => {
+    it('should update the role of a client to staff if authorized', done => {
+      chai
+        .request(app)
+        .put('/api/v1/auth/makestaff')
+        .set('Authorization', `Bearer ${adminToken}`)
+        .send({
+          email: 'new@user.com'
+        })
+        .end((err, res) => {
+          expect(res).to.have.status(200);
+          expect(res.body.status).to.be.equal(200);
+          expect(res.body).to.have.keys('status', 'data', 'success', 'message');
+          expect(res.body.data).to.have.key(
+            'id',
+            'firstname',
+            'lastname',
+            'email',
+            'type',
+            'isadmin'
+          );
+          expect(res.body.data.type).to.be.equal('staff');
+          done();
+        });
+    });
+    it('Should return an error if an unauthorized user tries to update the role/type of a user', done => {
+      chai
+        .request(app)
+        .put('/api/v1/auth/makestaff')
+        .set('Authorization', `Bearer ${staffToken}`)
+        .send({
+          email: 'new@user.com'
+        })
+        .end((err, res) => {
+          expect(res).to.have.status(401);
+          expect(res.body.status).to.be.equal(401);
+          expect(res.body).to.have.keys('status', 'error', 'success');
+          expect(res.body.error).to.be.equal('You are not Authorized to perform this Action');
+          done();
+        });
+    });
+    it('Should return an error if a user tries to update the role/type of a user that does not exist', done => {
+      chai
+        .request(app)
+        .put('/api/v1/auth/makestaff')
+        .set('Authorization', `Bearer ${adminToken}`)
+        .send({
+          email: 'nonexistent@user.com'
+        })
+        .end((err, res) => {
+          expect(res).to.have.status(404);
+          expect(res.body.status).to.be.equal(404);
+          expect(res.body).to.have.keys('status', 'error', 'success', 'message');
+          expect(res.body.message).to.be.equal('User does not exist');
           done();
         });
     });

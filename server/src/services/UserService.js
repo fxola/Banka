@@ -1,4 +1,3 @@
-import mockData from '../models/mockData';
 import Helper from '../helpers/helper';
 import User from '../models/UserModel';
 /**
@@ -55,8 +54,15 @@ class UserService {
 
     const hash = foundUser.password;
     if (Helper.comparePassword(password, hash) === true) {
-      const { id, firstname, lastname, isAdmin, type } = foundUser;
-      const payLoad = { id, firstName: firstname, lastName: lastname, email, isAdmin, type };
+      const { id, firstname, lastname, isadmin, type } = foundUser;
+      const payLoad = {
+        id,
+        firstName: firstname,
+        lastName: lastname,
+        email,
+        isAdmin: isadmin,
+        type
+      };
       const token = Helper.getToken(payLoad);
       return {
         status: 200,
@@ -81,16 +87,15 @@ class UserService {
    * @returns
    * @memberof UserService
    */
-  static makeStaff(staffEmail) {
-    const foundUser = mockData.users.find(user => user.email === staffEmail);
+  static async makeStaff(staffEmail) {
+    const foundUser = await User.findByEmail(staffEmail);
     if (foundUser) {
-      const userIndex = mockData.accounts.indexOf(foundUser);
-      foundUser.type = 'staff';
-      mockData.accounts.splice(userIndex, 1, foundUser);
+      const type = 'staff';
+      const { password, ...updatedUser } = await User.updateRole(staffEmail, type);
       return {
-        status: 202,
+        status: 200,
         success: true,
-        data: foundUser,
+        data: updatedUser,
         message: `User type updated succesfully`
       };
     }

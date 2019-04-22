@@ -49,6 +49,21 @@ class User {
     const { rowCount } = await db.query(query, [email]);
     return rowCount;
   }
+
+  /**
+   *
+   * Handles the update of a user role in the database
+   * @static
+   * @param {number} accountNumber
+   * @param {string} value new updated value
+   * @param {string} column column to be updated
+   * @memberof Account
+   */
+  static async updateRole(email, type) {
+    const query = `update users set type = $1 where email = $2 returning *`;
+    const { rows } = await db.query(query, [type, email]);
+    return rows[0];
+  }
 }
 
 export default User;
