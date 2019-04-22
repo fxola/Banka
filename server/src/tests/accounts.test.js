@@ -257,6 +257,25 @@ describe('Tests for all accounts Endpoints', () => {
           done();
         });
     });
+    it('Should return an error if a client tries to create an account with an invalid account type', done => {
+      chai
+        .request(app)
+        .post('/api/v1/accounts')
+        .set('Authorization', `Bearer ${clientToken}`)
+        .send({
+          firstName: 'jon',
+          lastName: 'bellion',
+          email: 'second@user.com',
+          type: 'neithersavingsnorcurrent'
+        })
+        .end((err, res) => {
+          expect(res).to.have.status(403);
+          expect(res.body.status).to.be.equal(403);
+          expect(res.body).to.have.keys('status', 'error', 'message', 'success');
+          expect(res.body.message).to.be.equal(`Type can only be 'savings' or 'current'`);
+          done();
+        });
+    });
     it('Should return an error if a client tries to create an account with an invalid email address', done => {
       chai
         .request(app)

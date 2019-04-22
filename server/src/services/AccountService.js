@@ -28,6 +28,22 @@ class AccountService {
         error: 'Request Forbidden',
         message: 'You can only create a bank account with your registered e-mail'
       };
+    let isValid;
+    switch (type) {
+      case 'savings':
+      case 'current':
+        isValid = true;
+        break;
+      default:
+        isValid = false;
+    }
+    if (!isValid)
+      return {
+        status: 403,
+        success: false,
+        error: `Invalid account type provided`,
+        message: `Type can only be 'savings' or 'current'`
+      };
 
     const newAccount = await Account.create(accountDetails, userId);
     const { accountnumber, balance, status } = newAccount;
