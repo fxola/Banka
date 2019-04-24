@@ -121,6 +121,21 @@ class Account {
 
   /**
    *
+   * finds the owner of an account using the provided account number
+   * @static
+   * @param {number} accountNumber
+   * @returns {string} email of the account owner
+   * @memberof Account
+   */
+  static async findAccountOwner(accountNumber) {
+    const query = `select email, accountnumber from accounts inner join users
+                    on accounts.owner = users.id where accountnumber = $1`;
+    const { rows } = await db.query(query, [accountNumber]);
+    return rows[0].email;
+  }
+
+  /**
+   *
    * Generates a new account number
    * @static
    * @returns {number} Account number
