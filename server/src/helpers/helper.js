@@ -1,7 +1,7 @@
 /* eslint-disable default-case */
 import dotenv from 'dotenv';
 import jwt from 'jsonwebtoken';
-import bcrypt from 'bcrypt';
+import bcrypt from 'bcryptjs';
 import Account from '../models/AccountModel';
 
 dotenv.config();
