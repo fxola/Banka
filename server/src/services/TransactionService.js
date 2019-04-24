@@ -1,4 +1,5 @@
 /* eslint-disable default-case */
+import sgMail from '@sendgrid/mail';
 import Transaction from '../models/TransactionModel';
 import Account from '../models/AccountModel';
 import Helper from '../helpers/helper';
@@ -68,6 +69,14 @@ class TransactionService {
       // update account with new balance
       await Account.update(accountNumber, newBalance, 'balance');
 
+      // send transaction notification
+      await TransactionService.sendEmailNotification(
+        transactionType,
+        amount,
+        newBalance,
+        accountNumber
+      );
+
       return {
         status: 201,
         success: true,
@@ -127,6 +136,43 @@ class TransactionService {
       message: `Transaction does not exist`,
       success: false
     };
+  }
+
+  /**
+   *
+   * Sends e-mail notification on transactions made on an account
+   * @static
+   * @param {string} type
+   * @param {number} amount
+   * @param {number} balance
+   * @param {number} acctNumber
+   * @memberof TransactionService
+   */
+  static async sendEmailNotification(type, amount, balance, acctNumber) {
+    sgMail.setApiKey(process.env.SENDGRID_API_KEY);
+    const ownerEmail = await Account.findAccountOwner(acctNumber);
+    const msg = {
+      to: ownerEmail,
+      from: 'Banka@operations.com',
+      subject: `${type.toUpperCase()} ALERT FROM BANKA`,
+      text: `Account Number:${acctNumber}
+             Amount:${amount}
+             Description: This is a ${type} transaction of ${amount} Naira.
+             Available Balance:${balance}`,
+      html: `<strong>
+                Account Number:</strong>${acctNumber}
+                <br/>
+              <strong>
+                Amount:</strong>${amount}
+                <br/>
+                <strong>
+                Description:</strong> This is a ${type} transaction of ${amount} Naira.
+                <br/>
+                <strong>
+                Available Balance:</strong>${balance}
+            `
+    };
+    sgMail.send(msg);
   }
 }
 
