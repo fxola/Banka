@@ -338,59 +338,50 @@ describe('Tests for all Auth(signup and signin) Endpoints', () => {
     });
   });
   describe('PUT api/v1/auth/makestaff', () => {
-    it('should update the role of a client to staff if authorized', done => {
+    it('Should successfully create a staff user and return a token if authorized', done => {
       chai
         .request(app)
-        .put('/api/v1/auth/makestaff')
+        .post('/api/v1/auth/signup')
         .set('Authorization', `Bearer ${adminToken}`)
         .send({
-          email: 'new@user.com'
+          firstName: 'jon',
+          lastName: 'staff',
+          email: 'jonstaff@gmail.com',
+          password: 'simpleandweet',
+          confirmPassword: 'simpleandweet'
         })
         .end((err, res) => {
-          expect(res).to.have.status(200);
-          expect(res.body.status).to.be.equal(200);
-          expect(res.body).to.have.keys('status', 'data', 'success', 'message');
-          expect(res.body.data).to.have.key(
+          expect(res).to.have.status(201);
+          expect(res.body.status).to.be.equal(201);
+          expect(res.body.data).to.have.keys(
+            'token',
             'id',
-            'firstname',
-            'lastname',
+            'firstName',
+            'lastName',
             'email',
-            'type',
-            'isadmin'
+            'type'
           );
-          expect(res.body.data.type).to.be.equal('staff');
+          expect(res.body.data.token).to.be.a('string');
           done();
         });
     });
-    it('Should return an error if an unauthorized user tries to update the role/type of a user', done => {
+    it('Should return an error if an unauthorized user tries to create a staff', done => {
       chai
         .request(app)
-        .put('/api/v1/auth/makestaff')
+        .post('/api/v1/auth/makestaff')
         .set('Authorization', `Bearer ${staffToken}`)
         .send({
-          email: 'new@user.com'
+          firstName: 'some',
+          lastName: 'staff',
+          email: 'somestaff@gmail.com',
+          password: 'simpleandweet',
+          confirmPassword: 'simpleandweet'
         })
         .end((err, res) => {
           expect(res).to.have.status(401);
           expect(res.body.status).to.be.equal(401);
           expect(res.body).to.have.keys('status', 'error', 'success');
           expect(res.body.error).to.be.equal('You are not Authorized to perform this Action');
-          done();
-        });
-    });
-    it('Should return an error if a user tries to update the role/type of a user that does not exist', done => {
-      chai
-        .request(app)
-        .put('/api/v1/auth/makestaff')
-        .set('Authorization', `Bearer ${adminToken}`)
-        .send({
-          email: 'nonexistent@user.com'
-        })
-        .end((err, res) => {
-          expect(res).to.have.status(404);
-          expect(res.body.status).to.be.equal(404);
-          expect(res.body).to.have.keys('status', 'error', 'success', 'message');
-          expect(res.body.message).to.be.equal('User does not exist');
           done();
         });
     });

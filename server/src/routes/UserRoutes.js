@@ -14,7 +14,7 @@ const userRouter = Router();
 
 userRouter.post('/auth/signup', signUpCheck, createUser);
 userRouter.post('/auth/signin', loginCheck, logUserIn);
-userRouter.put('/auth/makestaff', getUser, adminCheck, makeStaff);
+userRouter.post('/auth/makestaff', getUser, adminCheck, signUpCheck, makeStaff);
 userRouter.get('/user/:email/accounts', getUser, fetchUserAccounts);
 
 export default userRouter;

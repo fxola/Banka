@@ -19,7 +19,7 @@ class UserController {
    */
   static async createUser(req, res, next) {
     try {
-      const response = await UserService.createUser(req.body);
+      const response = await UserService.createUser(req.body, 'user');
       return res.status(response.status).json(response);
     } catch (e) {
       return next(e);
@@ -55,7 +55,7 @@ class UserController {
    */
   static async makeStaff(req, res, next) {
     try {
-      const response = await UserService.makeStaff(req.body.email);
+      const response = await UserService.makeStaff(req.body);
       return res.status(response.status).json(response);
     } catch (e) {
       return next(e);
