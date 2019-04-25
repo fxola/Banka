@@ -1,5 +1,6 @@
 /* eslint-disable default-case */
 import Account from '../models/AccountModel';
+import User from '../models/UserModel';
 import Transaction from '../models/TransactionModel';
 import Helper from '../helpers/helper';
 
@@ -19,15 +20,10 @@ class AccountService {
    * @returns {Object} API response
    * @memberof AccountService
    */
-  static async createBankAccount(accountDetails, userEmail, userId) {
-    const { firstName, lastName, email, type } = accountDetails;
-    if (email !== userEmail)
-      return {
-        status: 403,
-        success: false,
-        error: 'Request Forbidden',
-        message: 'You can only create a bank account with your registered e-mail'
-      };
+  static async createBankAccount(accountDetails, email, userId) {
+    const { type } = accountDetails;
+
+    const { firstname, lastname } = await User.findByEmail(email);
     let isValid;
     switch (type) {
       case 'savings':
@@ -51,7 +47,15 @@ class AccountService {
     return {
       status: 201,
       success: true,
-      data: { accountNumber: accountnumber, firstName, lastName, email, type, balance, status },
+      data: {
+        accountNumber: accountnumber,
+        firstName: firstname,
+        lastName: lastname,
+        email,
+        type,
+        balance,
+        status
+      },
       message: `New ${type} account created successfully`
     };
   }

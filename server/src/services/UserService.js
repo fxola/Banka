@@ -1,3 +1,4 @@
+/* eslint-disable default-case */
 import Helper from '../helpers/helper';
 import User from '../models/UserModel';
 /**
@@ -14,14 +15,22 @@ class UserService {
    * @returns {Object} API Response Object
    * @memberof UserService
    */
-  static async createUser(newUser) {
+  static async createUser(newUser, isStaff) {
     const { password } = newUser;
     const hashedpassword = Helper.hashPassword(password);
     const userObj = {
       ...newUser,
       hashedpassword
     };
-    const user = await User.create(userObj);
+    let user;
+    switch (isStaff) {
+      case 'staff':
+        user = await User.create(userObj, isStaff);
+        break;
+      case 'user':
+        user = await User.create(userObj, isStaff);
+        break;
+    }
 
     const { id, firstname, lastname, email, isAdmin, type } = user;
     const payLoad = { id, email, isAdmin, type };
@@ -81,25 +90,15 @@ class UserService {
 
   /**
    *
-   * Updates the role of a current user to a staff role
+   * Creates a new staff user
    * @static
    * @param {string} staffEmail
    * @returns
    * @memberof UserService
    */
-  static async makeStaff(staffEmail) {
-    const foundUser = await User.findByEmail(staffEmail);
-    if (foundUser) {
-      const type = 'staff';
-      const { password, ...updatedUser } = await User.updateRole(staffEmail, type);
-      return {
-        status: 200,
-        success: true,
-        data: updatedUser,
-        message: `User type updated succesfully`
-      };
-    }
-    return { status: 404, success: false, error: `Not found`, message: `User does not exist` };
+  static async makeStaff(staffDetails) {
+    const newStaff = await UserService.createUser(staffDetails, 'staff');
+    return newStaff;
   }
 }
 

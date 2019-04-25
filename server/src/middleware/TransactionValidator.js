@@ -11,16 +11,13 @@ class TransactionValidation {
    * @memberof TransactionValidation
    */
   static transactionCheck(req, res, next) {
-    let { amount, type } = req.body;
+    let { amount } = req.body;
 
-    const errors = TransactionValidation.inputCheck(amount, type);
+    const errors = TransactionValidation.inputCheck(amount);
     if (errors.length > 0) return res.status(errors[0].status).json(errors[0]);
 
     if (amount && typeof amount === 'string') {
       amount = amount.trim();
-    }
-    if (type) {
-      type = type.trim().toLowerCase();
     }
 
     if (!Number(amount)) {
@@ -41,27 +38,6 @@ class TransactionValidation {
       });
     }
 
-    let transactionType;
-    switch (type) {
-      case 'credit':
-        transactionType = type;
-        break;
-      case 'debit':
-        transactionType = type;
-        break;
-      default:
-        transactionType = 'invalid';
-    }
-
-    if (transactionType === 'invalid') {
-      return res.status(403).json({
-        status: 403,
-        success: false,
-        error: `request forbidden`,
-        message: `Transaction type can only be 'debit' or 'credit'`
-      });
-    }
-
     let urltype;
     if (req.url.endsWith('/credit')) {
       urltype = 'credit';
@@ -70,17 +46,8 @@ class TransactionValidation {
       urltype = 'debit';
     }
 
-    if (urltype !== type) {
-      return res.status(403).json({
-        status: 403,
-        success: false,
-        error: `Request forbidden`,
-        message: `Please confirm that the url matches the transaction type`
-      });
-    }
-
     req.body.amount = amount;
-    req.body.type = type;
+    req.body.type = urltype;
 
     return next();
   }
@@ -94,24 +61,14 @@ class TransactionValidation {
    * @returns {Array} an array of error(s)
    * @memberof TransactionValidation
    */
-  static inputCheck(amount, type) {
+  static inputCheck(amount) {
     const errors = [];
-    let isEmpty;
-    isEmpty = helper.checkFieldEmpty(amount, 'transaction amount');
+
+    const isEmpty = helper.checkFieldEmpty(amount, 'transaction amount');
     if (isEmpty) errors.push(isEmpty);
 
-    isEmpty = helper.checkFieldEmpty(type, 'transaction type');
-    if (isEmpty) errors.push(isEmpty);
-
-    let hasWhiteSpace;
-    hasWhiteSpace = helper.checkFieldWhiteSpace(amount, 'transaction amount');
+    const hasWhiteSpace = helper.checkFieldWhiteSpace(amount, 'transaction amount');
     if (hasWhiteSpace) errors.push(hasWhiteSpace);
-
-    hasWhiteSpace = helper.checkFieldWhiteSpace(type, 'transaction type');
-    if (hasWhiteSpace) errors.push(hasWhiteSpace);
-
-    const isNotAlpha = helper.checkFieldAlpha(type, 'transaction type');
-    if (isNotAlpha) errors.push(isNotAlpha);
 
     return errors;
   }

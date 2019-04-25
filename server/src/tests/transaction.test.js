@@ -172,42 +172,6 @@ describe('Tests for all transaction Endpoints', () => {
           done(err);
         });
     });
-    it('Should return an error if user tries to make a credit transaction specifying the transaction type with whitespace in between', done => {
-      chai
-        .request(app)
-        .post('/api/v1/transactions/1029704416/credit')
-        .set('Authorization', `Bearer ${staffToken}`)
-        .send({
-          amount: '5000',
-          type: 'cred it'
-        })
-        .end((err, res) => {
-          expect(res).to.have.status(422);
-          expect(res.body.status).to.be.equal(422);
-          expect(res.body).to.be.an('object');
-          expect(res.body).to.have.keys('status', 'error', 'message', 'success');
-          expect(res.body.message).to.be.equal('No whitespaces allowed in transaction type');
-          done(err);
-        });
-    });
-    it('Should return an error if user tries to make a credit transaction without specifying the transaction type', done => {
-      chai
-        .request(app)
-        .post('/api/v1/transactions/1029704416/credit')
-        .set('Authorization', `Bearer ${staffToken}`)
-        .send({
-          amount: '13000.00',
-          type: ''
-        })
-        .end((err, res) => {
-          expect(res).to.have.status(422);
-          expect(res.body.status).to.be.equal(422);
-          expect(res.body).to.be.an('object');
-          expect(res.body).to.have.keys('status', 'error', 'message', 'success');
-          expect(res.body.message).to.be.equal('transaction type cannot be empty');
-          done(err);
-        });
-    });
   });
   describe('POST api/v1/transactions/<account-number>/debit', () => {
     it('Should successfully debit a bank account on provision of valid details', done => {
@@ -216,8 +180,7 @@ describe('Tests for all transaction Endpoints', () => {
         .post('/api/v1/transactions/1029704416/debit')
         .set('Authorization', `Bearer ${staffToken}`)
         .send({
-          amount: '100000',
-          type: 'debit'
+          amount: '100000'
         })
         .end((err, res) => {
           expect(res).to.have.status(201);
@@ -234,44 +197,7 @@ describe('Tests for all transaction Endpoints', () => {
           done(err);
         });
     });
-    it('Should return an error if user tries to make a debit transaction specifying an invalid transaction type', done => {
-      chai
-        .request(app)
-        .post('/api/v1/transactions/1029704416/debit')
-        .set('Authorization', `Bearer ${staffToken}`)
-        .send({
-          amount: '5000',
-          type: 'notdebit'
-        })
-        .end((err, res) => {
-          expect(res).to.have.status(403);
-          expect(res.body.status).to.be.equal(403);
-          expect(res.body).to.be.an('object');
-          expect(res.body).to.have.keys('status', 'error', 'message', 'success');
-          expect(res.body.message).to.be.equal(`Transaction type can only be 'debit' or 'credit'`);
-          done(err);
-        });
-    });
-    it('Should return an error if user tries to make a debit transaction while hitting the credit endpoint', done => {
-      chai
-        .request(app)
-        .post('/api/v1/transactions/1029704416/credit')
-        .set('Authorization', `Bearer ${staffToken}`)
-        .send({
-          amount: '5000',
-          type: 'debit'
-        })
-        .end((err, res) => {
-          expect(res).to.have.status(403);
-          expect(res.body.status).to.be.equal(403);
-          expect(res.body).to.be.an('object');
-          expect(res.body).to.have.keys('status', 'error', 'message', 'success');
-          expect(res.body.message).to.be.equal(
-            `Please confirm that the url matches the transaction type`
-          );
-          done(err);
-        });
-    });
+
     it('Should return an error if user tries to make a debit transaction of an amount more than the account balance ', done => {
       chai
         .request(app)

@@ -117,96 +117,12 @@ describe('Tests for all accounts Endpoints', () => {
         });
     });
 
-    it('Should return an error if a client tries to create an account with a non registered email', done => {
-      chai
-        .request(app)
-        .post('/api/v1/accounts')
-        .set('Authorization', `Bearer ${clientToken}`)
-        .send({
-          firstName: 'jon',
-          lastName: 'bellion',
-          email: 'another@gmail.com',
-          password: 'simpleandweet',
-          type: 'savings'
-        })
-        .end((err, res) => {
-          expect(res).to.have.status(403);
-          expect(res.body.status).to.be.equal(403);
-          expect(res.body).to.have.keys('status', 'error', 'message', 'success');
-          expect(res.body.message).to.be.equal(
-            'You can only create a bank account with your registered e-mail'
-          );
-          done();
-        });
-    });
-
-    it('Should return an error if a client tries to create an account without providing a firstname', done => {
-      chai
-        .request(app)
-        .post('/api/v1/accounts')
-        .set('Authorization', `Bearer ${clientToken}`)
-        .send({
-          firstName: '',
-          lastName: 'bellion',
-          email: 'bellion@gmail.com',
-          type: 'savings'
-        })
-        .end((err, res) => {
-          expect(res).to.have.status(422);
-          expect(res.body.status).to.be.equal(422);
-          expect(res.body).to.have.keys('status', 'error', 'message', 'success');
-          expect(res.body.message).to.be.equal('firstName cannot be empty');
-          done();
-        });
-    });
-
-    it('Should return an error if a client tries to create an account without providing a lastname', done => {
-      chai
-        .request(app)
-        .post('/api/v1/accounts')
-        .set('Authorization', `Bearer ${clientToken}`)
-        .send({
-          firstName: 'jon',
-          lastName: '',
-          email: 'bellion@gmail.com',
-          type: 'savings'
-        })
-        .end((err, res) => {
-          expect(res).to.have.status(422);
-          expect(res.body.status).to.be.equal(422);
-          expect(res.body).to.have.keys('status', 'error', 'message', 'success');
-          expect(res.body.message).to.be.equal('lastName cannot be empty');
-          done();
-        });
-    });
-    it('Should return an error if a client tries to create an account without providing an email', done => {
-      chai
-        .request(app)
-        .post('/api/v1/accounts')
-        .set('Authorization', `Bearer ${clientToken}`)
-        .send({
-          firstName: 'jon',
-          lastName: 'bellion',
-          email: '',
-          type: 'savings'
-        })
-        .end((err, res) => {
-          expect(res).to.have.status(422);
-          expect(res.body.status).to.be.equal(422);
-          expect(res.body).to.have.keys('status', 'error', 'message', 'success');
-          expect(res.body.message).to.be.equal('email cannot be empty');
-          done();
-        });
-    });
     it('Should return an error if a client tries to create an account without specifying an account type', done => {
       chai
         .request(app)
         .post('/api/v1/accounts')
         .set('Authorization', `Bearer ${clientToken}`)
         .send({
-          firstName: 'jon',
-          lastName: 'bellion',
-          email: 'bellion@gmail.com',
           type: ''
         })
         .end((err, res) => {
@@ -218,54 +134,12 @@ describe('Tests for all accounts Endpoints', () => {
         });
     });
 
-    it('Should return an error if a client tries to create an account with a non alphabetic firstname', done => {
-      chai
-        .request(app)
-        .post('/api/v1/accounts')
-        .set('Authorization', `Bearer ${clientToken}`)
-        .send({
-          firstName: 'j34r',
-          lastName: 'bellion',
-          email: 'bellion@gmail.com',
-          type: 'savings'
-        })
-        .end((err, res) => {
-          expect(res).to.have.status(422);
-          expect(res.body.status).to.be.equal(422);
-          expect(res.body).to.have.keys('status', 'error', 'message', 'success');
-          expect(res.body.message).to.be.equal('firstName must be Alphabetical');
-          done();
-        });
-    });
-
-    it('Should return an error if a client tries to create an account with a non alphabetic lastname', done => {
-      chai
-        .request(app)
-        .post('/api/v1/accounts')
-        .set('Authorization', `Bearer ${clientToken}`)
-        .send({
-          firstName: 'jon',
-          lastName: '25r2',
-          email: 'bellion@gmail.com',
-          type: 'savings'
-        })
-        .end((err, res) => {
-          expect(res).to.have.status(422);
-          expect(res.body.status).to.be.equal(422);
-          expect(res.body).to.have.keys('status', 'error', 'message', 'success');
-          expect(res.body.message).to.be.equal('lastName must be Alphabetical');
-          done();
-        });
-    });
     it('Should return an error if a client tries to create an account with an invalid account type', done => {
       chai
         .request(app)
         .post('/api/v1/accounts')
         .set('Authorization', `Bearer ${clientToken}`)
         .send({
-          firstName: 'jon',
-          lastName: 'bellion',
-          email: 'second@user.com',
           type: 'neithersavingsnorcurrent'
         })
         .end((err, res) => {
@@ -273,25 +147,6 @@ describe('Tests for all accounts Endpoints', () => {
           expect(res.body.status).to.be.equal(403);
           expect(res.body).to.have.keys('status', 'error', 'message', 'success');
           expect(res.body.message).to.be.equal(`Type can only be 'savings' or 'current'`);
-          done();
-        });
-    });
-    it('Should return an error if a client tries to create an account with an invalid email address', done => {
-      chai
-        .request(app)
-        .post('/api/v1/accounts')
-        .set('Authorization', `Bearer ${clientToken}`)
-        .send({
-          firstName: 'jon',
-          lastName: 'bellion',
-          email: 'bellion.com',
-          type: 'savings'
-        })
-        .end((err, res) => {
-          expect(res).to.have.status(422);
-          expect(res.body.status).to.be.equal(422);
-          expect(res.body).to.have.keys('status', 'error', 'message', 'success');
-          expect(res.body.message).to.be.equal('Please provide a valid email address');
           done();
         });
     });

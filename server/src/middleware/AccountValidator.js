@@ -81,33 +81,16 @@ class AccountValidation {
    * @memberof AccountValidation
    */
   static accountDetailsCheck(req, res, next) {
-    let { firstName, lastName, email, type } = req.body;
+    let { type } = req.body;
 
-    const errors = AccountValidation.inputCheck(firstName, lastName, email, type);
+    const errors = AccountValidation.inputCheck(type);
     if (errors.length > 0) {
       return res.status(errors[0].status).json(errors[0]);
     }
 
-    if (firstName) {
-      firstName = firstName.trim();
-    }
-    if (lastName) {
-      lastName = lastName.trim();
-    }
-    if (type) {
-      type = type.trim();
-    }
-    if (email) {
-      email = email.trim();
-    }
+    type = type.trim();
 
-    const isInvalid = helper.validateEmail(email);
-    if (isInvalid) return res.status(isInvalid.status).json(isInvalid);
-
-    req.body.firstName = firstName;
-    req.body.lastName = lastName;
     req.body.type = type;
-    req.body.email = email;
 
     return next();
   }
@@ -123,42 +106,16 @@ class AccountValidation {
    * @returns {Array} an array of error(s)
    * @memberof AccountValidation
    */
-  static inputCheck(firstName, lastName, email, type) {
+  static inputCheck(type) {
     const errors = [];
-    let isEmpty;
-    isEmpty = helper.checkFieldEmpty(firstName, 'firstName');
+
+    const isEmpty = helper.checkFieldEmpty(type, 'account type');
     if (isEmpty) errors.push(isEmpty);
 
-    isEmpty = helper.checkFieldEmpty(lastName, 'lastName');
-    if (isEmpty) errors.push(isEmpty);
-
-    isEmpty = helper.checkFieldEmpty(email, 'email');
-    if (isEmpty) errors.push(isEmpty);
-
-    isEmpty = helper.checkFieldEmpty(type, 'account type');
-    if (isEmpty) errors.push(isEmpty);
-
-    let hasWhiteSpace;
-    hasWhiteSpace = helper.checkFieldWhiteSpace(firstName, 'firstName');
+    const hasWhiteSpace = helper.checkFieldWhiteSpace(type, 'account type');
     if (hasWhiteSpace) errors.push(hasWhiteSpace);
 
-    hasWhiteSpace = helper.checkFieldWhiteSpace(lastName, 'lastName');
-    if (hasWhiteSpace) errors.push(hasWhiteSpace);
-
-    hasWhiteSpace = helper.checkFieldWhiteSpace(email, 'email');
-    if (hasWhiteSpace) errors.push(hasWhiteSpace);
-
-    hasWhiteSpace = helper.checkFieldWhiteSpace(type, 'account type');
-    if (hasWhiteSpace) errors.push(hasWhiteSpace);
-
-    let isNotAlpha;
-    isNotAlpha = helper.checkFieldAlpha(firstName, 'firstName');
-    if (isNotAlpha) errors.push(isNotAlpha);
-
-    isNotAlpha = helper.checkFieldAlpha(lastName, 'lastName');
-    if (isNotAlpha) errors.push(isNotAlpha);
-
-    isNotAlpha = helper.checkFieldAlpha(type, 'account type');
+    const isNotAlpha = helper.checkFieldAlpha(type, 'account type');
     if (isNotAlpha) errors.push(isNotAlpha);
 
     return errors;
