@@ -1,0 +1,259 @@
+FORMAT: 1A
+HOST: http://bank-a.herokuapp.com/api/v1
+
+# Banka
+
+Banka is a light-weight core banking application that powers 
+banking operations like account creation,
+customer deposit and withdrawals.
+
+## User Collection [/auth]
+
+### Log In An Existing User [POST/auth/signin]
+
++ Request (application/json)
+
+   + Attributes
+        + email: `user@admin.com` (string) - user email address
+        + password: `adminuser` (string) - user password
+
++ Response 200 (application/json)
+
+   + Attributes (User response)
+
+### Register a new user [POST/auth/signup]
+
++ Request (application/json)
+
+   + Attributes
+        + firstName: `jon` (string) - user firstname
+        + lastName: `bellion` (string) - user lastname
+        + email: `jon@bellion.com` (string) - user email address
+        + password: `simpleandsweet` (string) - user password
+        + confirmPassword: `simpleandsweet` (string) - confirm user password
+
++ Response 201 (application/json)
+
+    + Attributes (User response)
+            
+            
+
+## Accounts Collection [/accounts]
+
+### Create A Bank Account [POST/accounts]
+
++ Request (application/json)
+
+   + Attributes
+        + type: `savings` (string) - account type(savings or current)
+
++ Response 201 (application/json)
+
+   + Attributes (Accounts create)
+        
+        
+
+
+### Activate or Deactivate A Bank Account [PATCH /accounts/{accountnumber}]  
+
+    
++ Parameter 
+
+    + accountnumber: `0123456789` (number) - account number of account to be deleted
+    
++ Attributes
+    + status: `activate` (string) - new status ( activate or deactivate )
+        
++ Response 200 (application/json)
+
+    + Attributes (Account Activate)
+
+
+
+
+    
+            
+
+
+### Delete A Bank Account [DELETE/accounts/{accountnumber}]  
+
+- Parameter 
+
+    - accountnumber: `0123456789` (number) - account number of account to be deleted
+        
++ Response 200 (application/json)
+
+
+    + Attributes (Account Deleted)
+            
+ 
+
+            
+### Get All Bank Accounts For a User [GET /user/{useremail}/accounts]  
+- Parameter 
+
+    - useremail: `jon@gmail.com` (string) - email of the user
+        
++ Response 200 (application/json)
+
+
+    + Attributes (array [Accounts])
+
+
+### Get A Specific Bank Account Record [GET /accounts/{accountnumber}]  
+- Parameter 
+
+    - accountnumber: `1023456789` (number) - account number of the account record
+        
++ Response 200 (application/json)
+
+    + Attributes (Accounts)
+            
+
+### Get All Bank Accounts [GET /accounts]  
+
++ Response 200 (application/json)
+
+
+    + Attributes (array [Accounts])
+
+            
+            
+### Get All Active Bank Accounts [GET /accounts?status=active]  
+
++ Response 200 (application/json)
+
+
+    + Attributes (array [Accounts])
+            
+ 
+ 
+### Get All Dormant Bank Accounts [GET /accounts?status=dormant]  
+
++ Response 200 (application/json)
+
+
+    + Attributes (array [Accounts dormant])
+            
+            
+## Transactions Collection [/transactions]
+
+### Get All Transactions For An Account [GET /accounts/{accountnumber}/transactions]
+- Parameter 
+
+    - accountnumber: `1023456789` (number) - account number of the account record
+
+
++ Response 200 (application/json)
+
+
+    + Attributes (array [Transaction credit])
+            
+
+### Get Details of A Specific Transaction Record [GET /transactions/{transactionid}]
+- Parameter 
+
+    - transactionid: `1` (number) - transaction id 
+
+
++ Response 200 (application/json)
+
+
+    + Attributes (Transaction credit)
+            
+
+### Make a Credit Transaction  [POST /transactions/{accountnumber}/credit]
+- Parameter 
+
+    - accountnumber: `10233456789` (number) - account number of account to be credited 
+
+
++ Response 201 (application/json)
+
+
+    + Attributes (Transaction credit)
+            
+
+
+### Make a Debit Transaction  [POST /transactions/{accountnumber}/debit]
+- Parameter 
+
+    - accountnumber: `10233456789` (number) - account number of account to be credited 
+
+
++ Response 201 (application/json)
+
+
+    + Attributes (Transaction debit)
+            
+
+
+# Data Structures
+
+## User response 
+
++ id: `1` (number) - The ID of the newly registered user
++ firstName: `john` (string)
++ lastName: `bellion` (string)
++ email: `jon@bellion.com` (string)
++ token: `544yiu4y090939849rl;kfliuwruy` (string) 
+
+## Account Deleted (object)
++ message: `Account Deleted Successfully` (string)
+
+## Account Deactivate (object)
++ accountNumber: `1023456789` (number) 
++ status: `dromant` (string) 
++ message: `Account Deactivated Successfully` (string)
+
+## Account Activate (object)
+
++ accountNumber: `1023456789` (number) 
++ status: `active` (string) 
++ message: `Account Activated Successfully` (string)
+
+## Accounts create (object)
++ accountNumber: `1023456789` (number) - Account number for  the newly created account
++ firstName: `john` (string)
++ lastName: `bellion` (string)
++ email: `jon@bellion.com` (string)
++ type: `savings` (string) - savings or current
++ openingBalance: `0.00` (number) 
+
+## Accounts (object)
+            
++ createdOn: `2019:24:09:16:14:09` (string)
++ accountNumber: `1023456789` (number)
++ type: `savings` (string)
++ status: `active` (string)
++ balance: `1000.00` (number)
+
+
+## Accounts dormant (object)
+            
++ createdOn: `2019:24:09:16:14:09` (string)
++ accountNumber: `1023456789` (number)
++ type: `savings` (string)
++ status: `dormant` (string)
++ balance: `1000.00` (number)
+
+
+## Transaction credit  (object)
+
++ transactionID: `1` (number) 
++ accountNumber: `1023456789` (number)
++ transactionType: `credit` (string)
++ amount: `15000.00` (number)
++ cashier: `1` (number)  - cashier that performed the transaction
++ accountBalance: `16000.00` (number) 
+
+
+## Transaction debit  (object)
+
++ transactionID: `1` (number) 
++ accountNumber: `1023456789` (number)
++ transactionType: `debit` (string)
++ amount: `15000.00` (number)
++ cashier: `1` (number)  - cashier that performed the transaction
++ accountBalance: `16000.00` (number) 
+    
