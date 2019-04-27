@@ -72,6 +72,32 @@ class AccountValidation {
   }
 
   /**
+   * Restricts access of specified route to owners and staff
+   *
+   * @static
+   * @param {Object} req
+   * @param {Object} res
+   * @returns {(function|Object)} function next() or an error response object
+   * @memberof AccountValidation
+   */
+  static async accountPermission(req, res, next) {
+    let route;
+    route = 'account';
+    if (req.url.endsWith('/transactions')) {
+      route = 'transactions';
+    }
+    const notAllowed = await helper.checkPermission(
+      req.params.acctNumber,
+      req.userId,
+      req.userType,
+      route
+    );
+    if (notAllowed) return res.status(notAllowed.status).json(notAllowed);
+
+    return next();
+  }
+
+  /**
    * Handles User input validation on creating a new account
    *
    * @static

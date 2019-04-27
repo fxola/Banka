@@ -19,6 +19,10 @@ app.get('/', (req, res) => {
   return res.send({ status: 200, message: 'Welcome To Banka. No More Insufficient Funds' });
 });
 
+app.get('/documentation', (req, res) => {
+  return res.redirect('https://bankadocumentation.docs.apiary.io');
+});
+
 // Handles
 app.use('/api/v1', userRoutes);
 app.use('/api/v1/accounts', accountRoutes);

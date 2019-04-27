@@ -15,22 +15,15 @@ class UserService {
    * @returns {Object} API Response Object
    * @memberof UserService
    */
-  static async createUser(newUser, isStaff) {
+  static async createUser(newUser, userType) {
     const { password } = newUser;
     const hashedpassword = Helper.hashPassword(password);
     const userObj = {
       ...newUser,
       hashedpassword
     };
-    let user;
-    switch (isStaff) {
-      case 'staff':
-        user = await User.create(userObj, isStaff);
-        break;
-      case 'user':
-        user = await User.create(userObj, isStaff);
-        break;
-    }
+
+    const user = await User.create(userObj, userType);
 
     const { id, firstname, lastname, email, isAdmin, type } = user;
     const payLoad = { id, email, isAdmin, type };
@@ -97,7 +90,15 @@ class UserService {
    * @memberof UserService
    */
   static async makeStaff(staffDetails) {
-    const newStaff = await UserService.createUser(staffDetails, 'staff');
+    if (staffDetails.type !== 'admin' && staffDetails.type !== 'staff') {
+      return {
+        status: 403,
+        success: false,
+        error: `Invalid staff type provided`,
+        message: `Staff type must be 'staff' or 'admin'`
+      };
+    }
+    const newStaff = await UserService.createUser(staffDetails, staffDetails.type);
     return newStaff;
   }
 }

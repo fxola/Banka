@@ -2,7 +2,6 @@
 import sgMail from '@sendgrid/mail';
 import Transaction from '../models/TransactionModel';
 import Account from '../models/AccountModel';
-import Helper from '../helpers/helper';
 /**
  * @exports TransactionService
  *
@@ -104,37 +103,22 @@ class TransactionService {
    * @returns
    * @memberof TransactionService
    */
-  static async fetchSingleTransaction(id, user, userType) {
+  static async fetchSingleTransaction(id) {
     const transaction = await Transaction.findOneTransaction(id);
-    if (transaction) {
-      const notAllowed = await Helper.checkPermission(
-        transaction.accountnumber,
-        user,
-        userType,
-        'transaction'
-      );
-      if (notAllowed) return notAllowed;
-      return {
-        status: 200,
-        success: true,
-        data: {
-          transactionId: transaction.id,
-          accountNumber: parseInt(transaction.accountnumber, 10),
-          amount: transaction.amount,
-          cashier: transaction.cashier,
-          transactionType: transaction.type,
-          oldBalance: transaction.oldbalance,
-          newBalance: transaction.newbalance,
-          createdOn: transaction.createdon
-        }
-      };
-    }
 
     return {
-      status: 404,
-      error: `Not found`,
-      message: `Transaction does not exist`,
-      success: false
+      status: 200,
+      success: true,
+      data: {
+        transactionId: transaction.id,
+        accountNumber: parseInt(transaction.accountnumber, 10),
+        amount: transaction.amount,
+        cashier: transaction.cashier,
+        transactionType: transaction.type,
+        oldBalance: transaction.oldbalance,
+        newBalance: transaction.newbalance,
+        createdOn: transaction.createdon
+      }
     };
   }
 

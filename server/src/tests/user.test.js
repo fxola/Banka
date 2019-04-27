@@ -348,7 +348,8 @@ describe('Tests for all Auth(signup and signin) Endpoints', () => {
           lastName: 'staff',
           email: 'jonstaff@gmail.com',
           password: 'simpleandweet',
-          confirmPassword: 'simpleandweet'
+          confirmPassword: 'simpleandweet',
+          type: 'staff'
         })
         .end((err, res) => {
           expect(res).to.have.status(201);
@@ -362,6 +363,55 @@ describe('Tests for all Auth(signup and signin) Endpoints', () => {
             'type'
           );
           expect(res.body.data.token).to.be.a('string');
+          done();
+        });
+    });
+    it('Should successfully create an admin user and return a token if authorized', done => {
+      chai
+        .request(app)
+        .post('/api/v1/auth/signup')
+        .set('Authorization', `Bearer ${adminToken}`)
+        .send({
+          firstName: 'jon',
+          lastName: 'staff',
+          email: 'jonadmin@gmail.com',
+          password: 'simpleandweet',
+          confirmPassword: 'simpleandweet',
+          type: 'admin'
+        })
+        .end((err, res) => {
+          expect(res).to.have.status(201);
+          expect(res.body.status).to.be.equal(201);
+          expect(res.body.data).to.have.keys(
+            'token',
+            'id',
+            'firstName',
+            'lastName',
+            'email',
+            'type'
+          );
+          expect(res.body.data.token).to.be.a('string');
+          done();
+        });
+    });
+    it('Should return an error if an admin tries to create a staff user not providing the specific staff types', done => {
+      chai
+        .request(app)
+        .post('/api/v1/auth/makestaff')
+        .set('Authorization', `Bearer ${adminToken}`)
+        .send({
+          firstName: 'jon',
+          lastName: 'staff',
+          email: 'jonadmin2@gmail.com',
+          password: 'simpleandweet',
+          confirmPassword: 'simpleandweet',
+          type: 'randominput'
+        })
+        .end((err, res) => {
+          expect(res).to.have.status(403);
+          expect(res.body.status).to.be.equal(403);
+          expect(res.body).to.have.keys('status', 'error', 'success', 'message');
+          expect(res.body.message).to.be.equal(`Staff type must be 'staff' or 'admin'`);
           done();
         });
     });

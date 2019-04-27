@@ -40,20 +40,8 @@ class TransactionController {
    * @memberof TransactionController
    */
   static async fetchSingleTransaction(req, res, next) {
-    if (!Number(req.params.id)) {
-      return res.status(403).json({
-        status: 403,
-        success: false,
-        error: `Request Forbidden`,
-        message: `Transaction ID must be a number`
-      });
-    }
     try {
-      const response = await TransactionService.fetchSingleTransaction(
-        req.params.id,
-        req.userId,
-        req.userType
-      );
+      const response = await TransactionService.fetchSingleTransaction(req.params.id);
       return res.status(response.status).json(response);
     } catch (e) {
       return next(e);
