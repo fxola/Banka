@@ -7,7 +7,7 @@ import TransactionValidation from '../middleware/TransactionValidator';
 
 const { getUser, staffCheck } = Auth;
 const { accountNumberCheck } = AccountValidation;
-const { transactionCheck } = TransactionValidation;
+const { transactionCheck, transactionPermission } = TransactionValidation;
 const { makeTransaction, fetchSingleTransaction } = TransactionController;
 
 const transactionRouter = Router();
@@ -30,6 +30,6 @@ transactionRouter.post(
   makeTransaction
 );
 
-transactionRouter.get('/:id', getUser, fetchSingleTransaction);
+transactionRouter.get('/:id', getUser, transactionPermission, fetchSingleTransaction);
 
 export default transactionRouter;

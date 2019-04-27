@@ -14,15 +14,20 @@ class User {
    * @returns {object} result of stored data in database
    * @memberof User
    */
-  static async create(newUser, isStaff) {
+  static async create(newUser, userType) {
     const { email, firstName, lastName, hashedpassword } = newUser;
     let query;
     let result;
-    switch (isStaff) {
+    switch (userType) {
       case 'staff':
         query = `insert into users(email,firstname,lastname,password,type) 
       VALUES ($1,$2,$3,$4,$5) returning *`;
         result = await db.query(query, [email, firstName, lastName, hashedpassword, 'staff']);
+        break;
+      case 'admin':
+        query = `insert into users(email,firstname,lastname,password,type,isadmin) 
+      VALUES ($1,$2,$3,$4,$5,$6) returning *`;
+        result = await db.query(query, [email, firstName, lastName, hashedpassword, 'staff', true]);
         break;
       case 'user':
         query = `insert into users(email,firstname,lastname,password) 

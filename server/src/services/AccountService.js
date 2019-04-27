@@ -2,7 +2,6 @@
 import Account from '../models/AccountModel';
 import User from '../models/UserModel';
 import Transaction from '../models/TransactionModel';
-import Helper from '../helpers/helper';
 
 /**
  * @exports AccountService
@@ -138,10 +137,7 @@ class AccountService {
    * @returns {object} API Response Object
    * @memberof AccountService
    */
-  static async fetchAllTransactions(accountNumber, user, userType) {
-    const notAllowed = await Helper.checkPermission(accountNumber, user, userType, 'transactions');
-    if (notAllowed) return notAllowed;
-
+  static async fetchAllTransactions(accountNumber) {
     const transactions = await Transaction.findAllTransactions(accountNumber);
     if (transactions) {
       const data = transactions.map(transaction => {
@@ -227,10 +223,7 @@ class AccountService {
    * @returns {object} API Response Object
    * @memberof AccountService
    */
-  static async fetchOneAccount(accountNumber, user, userType) {
-    const notAllowed = await Helper.checkPermission(accountNumber, user, userType, 'account');
-    if (notAllowed) return notAllowed;
-
+  static async fetchOneAccount(accountNumber) {
     const foundAccount = await Account.findAccount(accountNumber, 'accountnumber');
     const { email, status, type, balance, createdon } = foundAccount;
     return {

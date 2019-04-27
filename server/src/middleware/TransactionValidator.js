@@ -1,4 +1,5 @@
 import helper from '../helpers/helper';
+import Transaction from '../models/TransactionModel';
 
 class TransactionValidation {
   /**
@@ -50,6 +51,47 @@ class TransactionValidation {
     req.body.type = urltype;
 
     return next();
+  }
+
+  /**
+   * Restricts access of transaction route to owners and staff
+   *
+   * @static
+   * @param {Object} req
+   * @param {Object} res
+   * @returns {(function|Object)} function next() or an error response object
+   * @memberof TransactionValidation
+   */
+  static async transactionPermission(req, res, next) {
+    if (!Number(req.params.id)) {
+      return res.status(403).json({
+        status: 403,
+        success: false,
+        error: `Request Forbidden`,
+        message: `Transaction ID must be a number`
+      });
+    }
+
+    const transaction = await Transaction.findOneTransaction(req.params.id);
+
+    if (transaction) {
+      const notAllowed = await helper.checkPermission(
+        transaction.accountnumber,
+        req.userId,
+        req.userType,
+        'transaction'
+      );
+      if (notAllowed) return res.status(notAllowed.status).json(notAllowed);
+
+      return next();
+    }
+
+    return res.status(404).json({
+      status: 404,
+      error: `Not found`,
+      message: `Transaction does not exist`,
+      success: false
+    });
   }
 
   /**

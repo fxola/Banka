@@ -252,7 +252,7 @@ describe('Tests for all transaction Endpoints', () => {
         });
     });
   });
-  describe('POST api/v1/transactions/<transaction-id>', () => {
+  describe('GET api/v1/transactions/<transaction-id>', () => {
     it('Should fetch a single transaction if authorized', done => {
       chai
         .request(app)

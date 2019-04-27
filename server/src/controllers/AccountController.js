@@ -139,11 +139,7 @@ class AccountController {
    */
   static async fetchOneAccount(req, res, next) {
     try {
-      const response = await AccountService.fetchOneAccount(
-        req.params.acctNumber,
-        req.userId,
-        req.userType
-      );
+      const response = await AccountService.fetchOneAccount(req.params.acctNumber);
       return res.status(response.status).json(response);
     } catch (e) {
       return next(e);
