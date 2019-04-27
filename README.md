@@ -16,14 +16,20 @@ Template is hosted at https://fxola.github.io/Banka/UI/index.html
 
 API is deployed at https://bank-a.herokuapp.com
 
+### API Documentation
+
+The documentation for the API is accessible via https://bank-a.herokuapp.com/documentation
+
 ## Built With
 
 <ul>
 <li><a href="https://nodejs.org/">NodeJS</a></li>
 <li><a href="https://expressjs.com/">ExpressJS</a></li>
+<li><a href="https://www.postgresql.org">Postgres</a></li>
 <li><a href="https://developer.mozilla.org/kab/docs/Web/HTML">HTML</a></li>
 <li><a href="https://developer.mozilla.org/en-US/docs/Web/CSS">CSS</a></li>
 <li><a href="https://developer.mozilla.org/bm/docs/Web/JavaScript">JavaScript</a></li>
+
 </ul>
 
 ## Getting Started
@@ -63,22 +69,30 @@ API is deployed at https://bank-a.herokuapp.com
 
 ### API Routes
 
-|        DESCRIPTION        | HTTP METHOD | ROUTES                               |
-| :-----------------------: | ----------- | ------------------------------------ |
-|       Sign up User        | POST        | /api/v1/auth/signup                  |
-|        Log in User        | POST        | /api/v1/auth/signin                  |
-|   Create a bank account   | POST        | /api/v1/accounts                     |
-|  Activate a bank account  | PATCH       | /api/v1/accounts/account-number      |
-| Deactivate a bank account | PATCH       | /api/v1/accounts/{account-number}    |
-|   Delete a bank account   | DELETE      | /api/v1/accounts/{account-number}    |
-|   Credit a bank account   | POST        | /api/v1/transactions/{account-number}|
-|   Debit a bank account    | POST        | /api/v1/transactions/{account-number}|
+|                DESCRIPTION                 | HTTP METHOD | ROUTES                                                     |
+| :----------------------------------------: | ----------- | ---------------------------------------------------------- |
+|                Sign up User                | POST        | /api/v1/auth/signup                                        |
+|                Log in User                 | POST        | /api/v1/auth/signin                                        |
+|           Create a bank account            | POST        | /api/v1/accounts                                           |
+|          Activate a bank account           | PATCH       | /api/v1/accounts/account-number                            |
+|         Deactivate a bank account          | PATCH       | /api/v1/accounts/{account-number}                          |
+|           Delete a bank account            | DELETE      | /api/v1/accounts/{account-number}                          |
+|           Credit a bank account            | POST        | /api/v1/transactions/{account-number}/credit               |
+|            Debit a bank account            | POST        | /api/v1/transactions/{account-number}/debit                |
+|      View account transaction history      | GET         | /api/v1/transactions/accounts/{account-number}/transaction |
+|        View a specific transaction         | GET         | /api/v1/transactions/{transaction-id}                      |
+| View all accounts owned by a specific user | GET         | /api/v1/user/{user-email}/accounts                         |
+|      View specific account's details       | GET         | /api/v1/accounts/{account-number}                          |
+|      View a list of all bank accounts      | GET         | /api/v1/accounts/                                          |
+|  View a list of all active bank accounts   | GET         | /api/v1/accounts?status=active                             |
+|  View a list of all dormant bank accounts  | GET         | /api/v1/accounts?status=dormant                            |
 
 ## Project References
 
 - I learnt how to build and structure my project backend with this tutorial by Bolaji Olajide - https://www.youtube.com/watch?v=WLIqvJzD9DE
 - I learnt how to implement Authentication with JWT with this tutorial by Academind - https://www.youtube.com/watch?v=0D5EEKH97NA
 - Huge Appreciation to Ekunola Ezekiel for letting me use his project for reference - https://github.com/Easybuoy/storemanager
+- I found this article by Olawale Aladeusi very helpful while setting up my database - https://www.codementor.io/olawalealadeusi896/building-a-simple-api-with-nodejs-expressjs-and-postgresql-db-masuu56t7
 - StackOverflow
 
 ## License

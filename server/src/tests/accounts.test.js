@@ -111,7 +111,8 @@ describe('Tests for all accounts Endpoints', () => {
             'email',
             'type',
             'status',
-            'balance'
+            'balance',
+            'avatar'
           );
           done(err);
         });
@@ -361,7 +362,8 @@ describe('Tests for all accounts Endpoints', () => {
             'type',
             'status',
             'createdOn',
-            'ownerEmail'
+            'ownerEmail',
+            'avatar'
           );
           done(err);
         });
@@ -396,7 +398,8 @@ describe('Tests for all accounts Endpoints', () => {
             'type',
             'status',
             'createdOn',
-            'ownerEmail'
+            'ownerEmail',
+            'avatar'
           );
           done(err);
         });
@@ -449,7 +452,8 @@ describe('Tests for all accounts Endpoints', () => {
             'type',
             'status',
             'createdOn',
-            'ownerEmail'
+            'ownerEmail',
+            'avatar'
           );
           done(err);
         });
@@ -502,7 +506,8 @@ describe('Tests for all accounts Endpoints', () => {
             'type',
             'status',
             'createdOn',
-            'ownerEmail'
+            'ownerEmail',
+            'avatar'
           );
           done(err);
         });

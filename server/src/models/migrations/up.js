@@ -38,6 +38,7 @@ const createTableSchema = () => {
         balance NUMERIC(15,2) NOT NULL DEFAULT '0.00',
         type TEXT NOT NULL,
         status TEXT NOT NULL DEFAULT 'draft',
+        avatar TEXT NOT NULL,
         createdon TIMESTAMP WITH TIME ZONE DEFAULT now(),
         updatedon TIMESTAMP WITH TIME ZONE DEFAULT now()
         );

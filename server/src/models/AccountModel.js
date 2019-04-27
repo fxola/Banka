@@ -16,10 +16,10 @@ class Account {
    * @memberof Account
    */
   static async create(accountDetails, userid) {
-    const { type } = accountDetails;
+    const { type, avatar } = accountDetails;
     const accountnumber = Account.generateAccountNumber();
-    const query = `insert into accounts(type,accountnumber,owner) values ($1,$2,$3) returning *`;
-    const { rows } = await db.query(query, [type, accountnumber, userid]);
+    const query = `insert into accounts(type,accountnumber,owner,avatar) values ($1,$2,$3,$4) returning *`;
+    const { rows } = await db.query(query, [type, accountnumber, userid, avatar]);
     return rows[0];
   }
 
@@ -93,21 +93,21 @@ class Account {
     let query;
     switch (route) {
       case 'all':
-        query = `select createdon,accountnumber,email,accounts.type as type, status, balance 
+        query = `select avatar,createdon,accountnumber,email,accounts.type as type, status, balance 
                    from accounts 
                    inner join users on accounts.owner = users.id 
                    order by createdon desc limit 10`;
         break;
       case 'active':
       case 'dormant':
-        query = `select createdon,accountnumber,email,accounts.type as type, status, balance 
+        query = `select avatar,createdon,accountnumber,email,accounts.type as type, status, balance 
                   from accounts 
                   inner join users on accounts.owner = users.id 
                   where status = '${route}'
                   order by createdon desc limit 10`;
         break;
       case 'user':
-        query = `select createdon,accountnumber,email,accounts.type as type, status, balance 
+        query = `select avatar,createdon,accountnumber,email,accounts.type as type, status, balance 
                   from accounts 
                   inner join users on accounts.owner = users.id 
                   where email = '${email}'
