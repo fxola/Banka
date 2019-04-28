@@ -61,15 +61,23 @@
       </header>
       <main id="signin-main">
         <section id="signin-section">
-          <form action="site_options.html" id="signin-form">
-            <input type="email" name="email" id="email" placeholder="Email" />
+          <form id="signin-form">
+            <article id="alert"></article>
+            <input
+              type="email"
+              name="email"
+              id="email"
+              placeholder="Email"
+              required
+            />
             <input
               type="password"
               placeholder="password"
               name="password"
               id="password"
+              required
             />
-            <button>Log in</button>
+            <button id="login-button">Log in</button>
             <p><a href="reset1.html">Forgot Password ?</a></p>
             <h3>
               Don't have an account?
@@ -83,5 +91,6 @@
       </footer>
     </section>
     <script src="js/script.js"></script>
+    <script src="js/app.js"></script>
   </body>
 </html>
