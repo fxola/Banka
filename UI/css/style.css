@@ -1254,3 +1254,23 @@ a {
   outline: none;
   text-decoration: underline;
 }
+
+#alert {
+  text-align: center;
+  padding: 10px;
+  color: white;
+  border-radius: 4px;
+  width: 20%;
+  top: 10%;
+  right: 3%;
+  position: absolute;
+  display: none;
+}
+
+@media (max-width: 769px) {
+  #alert {
+    top: 13%;
+    width: 88%;
+    margin: 0 auto;
+  }
+}
