@@ -3,6 +3,7 @@ import { Router } from 'express';
 import AccountController from '../controllers/AccountController';
 import Auth from '../middleware/Auth';
 import AccountValidation from '../middleware/AccountValidator';
+import upload from '../middleware/imageUpload';
 
 const { getUser, staffCheck } = Auth;
 
@@ -33,7 +34,7 @@ accountRouter.get(
   accountPermission,
   fetchAllTransactions
 );
-accountRouter.post('/', getUser, accountDetailsCheck, createBankAccount);
+accountRouter.post('/', getUser, upload.single('avatar'), accountDetailsCheck, createBankAccount);
 accountRouter.patch(
   '/:acctNumber',
   getUser,

@@ -20,7 +20,7 @@ class AccountService {
    * @memberof AccountService
    */
   static async createBankAccount(accountDetails, email, userId) {
-    const { type } = accountDetails;
+    const { type, avatar } = accountDetails;
 
     const { firstname, lastname } = await User.findByEmail(email);
     let isValid;
@@ -53,7 +53,8 @@ class AccountService {
         email,
         type,
         balance,
-        status
+        status,
+        avatar
       },
       message: `New ${type} account created successfully`
     };
@@ -190,7 +191,8 @@ class AccountService {
           accountNumber: parseInt(foundAccount.accountnumber, 10),
           status: foundAccount.status,
           type: foundAccount.type,
-          balance: foundAccount.balance
+          balance: foundAccount.balance,
+          avatar: foundAccount.avatar
         };
         return mappedresult;
       });
@@ -225,7 +227,7 @@ class AccountService {
    */
   static async fetchOneAccount(accountNumber) {
     const foundAccount = await Account.findAccount(accountNumber, 'accountnumber');
-    const { email, status, type, balance, createdon } = foundAccount;
+    const { email, status, type, balance, createdon, avatar } = foundAccount;
     return {
       status: 200,
       success: true,
@@ -235,7 +237,8 @@ class AccountService {
         accountNumber,
         status,
         type,
-        balance
+        balance,
+        avatar
       }
     };
   }

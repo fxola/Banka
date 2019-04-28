@@ -19,6 +19,10 @@ class AccountController {
    */
   static async createBankAccount(req, res, next) {
     try {
+      req.body.avatar = process.env.USER_AVATAR;
+      if (req.file) {
+        req.body.avatar = req.file.path;
+      }
       const response = await AccountService.createBankAccount(req.body, req.userEmail, req.userId);
       return res.status(response.status).json(response);
     } catch (e) {

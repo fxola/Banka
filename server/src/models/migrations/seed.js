@@ -14,9 +14,9 @@ VALUES ($1,$2,$3,$4,$5,$6)`;
     });
 };
 
-const createAccounts = async (type, accountnumber, owner) => {
-  const query = `insert into accounts(type,accountnumber,owner) values ($1,$2,$3)`;
-  const values = [type, accountnumber, owner];
+const createAccounts = async (type, accountnumber, owner, avatar) => {
+  const query = `insert into accounts(type,accountnumber,owner,avatar) values ($1,$2,$3,$4)`;
+  const values = [type, accountnumber, owner, avatar];
   await db
     .query(query, values)
     .then(() => {
@@ -76,9 +76,9 @@ const createAccounts = async (type, accountnumber, owner) => {
     'client',
     false
   );
-  await createAccounts('savings', 1029705319, 4);
-  await createAccounts('savings', 1029704415, 4);
-  await createAccounts('savings', 1029709922, 4);
-  await createAccounts('savings', 1029704123, 4);
-  await createAccounts('savings', 1029704416, 4); // active
+  await createAccounts('savings', 1029705319, 4, 'uploads/avatar.png');
+  await createAccounts('savings', 1029704415, 4, 'uploads/avatar.png');
+  await createAccounts('savings', 1029709922, 4, 'uploads/avatar.png');
+  await createAccounts('savings', 1029704123, 4, 'uploads/avatar.png');
+  await createAccounts('savings', 1029704416, 4, 'uploads/avatar.png'); // active
 })();
