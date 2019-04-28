@@ -81,11 +81,14 @@ if (signInButton) {
 }
 
 const toast = response => {
+  console.log(response);
   let alertBox = load("alert");
   alertBox.style.display = "block";
   alertBox.style.backgroundColor = "red";
   if (response.success === true) alertBox.style.backgroundColor = "green";
   alertBox.innerHTML = `<p>${response.message}</p>`;
+  if (!response.message) alertBox.innerHTML = `<p>${response.error}</p>`;
+
   setTimeout(() => {
     alertBox.style.display = "none";
   }, 2000);
