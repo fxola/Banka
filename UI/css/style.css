@@ -663,7 +663,7 @@ td {
 }
 .account-details {
   width: 60vw;
-  margin: 0.4em auto;
+  margin: 0.1em auto;
   background: #ffffffc2;
   color: teal;
   font-weight: bolder;
@@ -672,10 +672,10 @@ td {
 }
 
 .account-details article {
-  padding: 0.4em;
+  padding: 0.2em;
   display: flex;
   justify-content: space-between;
-  border-bottom: 0.3px solid;
+  border-bottom: 0.1px solid;
 }
 
 article.buttons {
