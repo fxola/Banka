@@ -321,7 +321,7 @@ describe('Tests for all transaction Endpoints', () => {
         });
     });
   });
-  describe('POST api/v1/accounts/<account-number>/transactions', () => {
+  describe('GET api/v1/accounts/<account-number>/transactions', () => {
     it('Should fetch a list of transactions performed on an account if authorized', done => {
       chai
         .request(app)
@@ -382,10 +382,10 @@ describe('Tests for all transaction Endpoints', () => {
         .get('/api/v1/accounts/1029709922/transactions')
         .set('Authorization', `Bearer ${staffToken}`)
         .end((err, res) => {
-          expect(res).to.have.status(404);
-          expect(res.body.status).to.be.equal(404);
+          expect(res).to.have.status(200);
+          expect(res.body.status).to.be.equal(200);
           expect(res.body).to.be.an('object');
-          expect(res.body).to.have.key('status', 'error', 'success', 'message');
+          expect(res.body).to.have.key('status', 'success', 'message');
           expect(res.body.message).to.be.equal(
             `There are no transactions for this account currently`
           );

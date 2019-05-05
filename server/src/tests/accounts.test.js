@@ -363,7 +363,8 @@ describe('Tests for all accounts Endpoints', () => {
             'status',
             'createdOn',
             'ownerEmail',
-            'avatar'
+            'avatar',
+            'fullName'
           );
           done(err);
         });
@@ -399,7 +400,8 @@ describe('Tests for all accounts Endpoints', () => {
             'status',
             'createdOn',
             'ownerEmail',
-            'avatar'
+            'avatar',
+            'fullName'
           );
           done(err);
         });
@@ -423,9 +425,9 @@ describe('Tests for all accounts Endpoints', () => {
         .get('/api/v1/accounts?status=dormant')
         .set('Authorization', `Bearer ${staffToken}`)
         .end((err, res) => {
-          expect(res).to.have.status(404);
-          expect(res.body.status).to.be.equal(404);
-          expect(res.body).to.have.keys('status', 'error', 'success', 'message');
+          expect(res).to.have.status(200);
+          expect(res.body.status).to.be.equal(200);
+          expect(res.body).to.have.keys('status', 'success', 'message');
           expect(res.body.message).to.include(
             'There are no dormant accounts on the platform currently'
           );
@@ -453,7 +455,8 @@ describe('Tests for all accounts Endpoints', () => {
             'status',
             'createdOn',
             'ownerEmail',
-            'avatar'
+            'avatar',
+            'fullName'
           );
           done(err);
         });
@@ -507,7 +510,8 @@ describe('Tests for all accounts Endpoints', () => {
             'status',
             'createdOn',
             'ownerEmail',
-            'avatar'
+            'avatar',
+            'fullName'
           );
           done(err);
         });
@@ -526,22 +530,7 @@ describe('Tests for all accounts Endpoints', () => {
           done(err);
         });
     });
-    it('Should return an error of a user tries to view all their  accounts when there are none', done => {
-      chai
-        .request(app)
-        .get('/api/v1/user/new@user.com/accounts')
-        .set('Authorization', `Bearer ${newUserToken}`)
-        .end((err, res) => {
-          expect(res).to.have.status(404);
-          expect(res.body.status).to.be.equal(404);
-          expect(res.body).to.be.an('object');
-          expect(res.body).to.have.key('status', 'error', 'success', 'message');
-          expect(res.body.message).to.be.equal(
-            `You do not have any accounts on the platform currently`
-          );
-          done(err);
-        });
-    });
+
     it('Should return an error if a user tries to view all their accounts providing an invalid email address', done => {
       chai
         .request(app)

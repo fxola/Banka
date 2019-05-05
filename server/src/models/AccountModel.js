@@ -32,7 +32,7 @@ class Account {
    * @memberof Account
    */
   static async findAccount(value, column) {
-    const query = `select * from accounts inner join users on accounts.owner = users.id where ${column} = $1`;
+    const query = `select concat_ws(' ',firstname,lastname) as fullname, * from accounts inner join users on accounts.owner = users.id where ${column} = $1`;
     const { rows, rowCount } = await db.query(query, [value]);
     if (rowCount > 0) return rows[0];
     return false;
@@ -93,21 +93,21 @@ class Account {
     let query;
     switch (route) {
       case 'all':
-        query = `select avatar,createdon,accountnumber,email,accounts.type as type, status, balance 
+        query = `select concat_ws(' ',firstname,lastname) as fullname, avatar,createdon,accountnumber,email,accounts.type as type, status, balance 
                    from accounts 
                    inner join users on accounts.owner = users.id 
                    order by createdon desc limit 10`;
         break;
       case 'active':
       case 'dormant':
-        query = `select avatar,createdon,accountnumber,email,accounts.type as type, status, balance 
+        query = `select concat_ws(' ',firstname,lastname) as fullname, avatar,createdon,accountnumber,email,accounts.type as type, status, balance 
                   from accounts 
                   inner join users on accounts.owner = users.id 
                   where status = '${route}'
                   order by createdon desc limit 10`;
         break;
       case 'user':
-        query = `select avatar,createdon,accountnumber,email,accounts.type as type, status, balance 
+        query = `select concat_ws(' ',firstname,lastname) as fullname, avatar,createdon,accountnumber,email,accounts.type as type, status, balance 
                   from accounts 
                   inner join users on accounts.owner = users.id 
                   where email = '${email}'

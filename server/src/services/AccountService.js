@@ -158,9 +158,8 @@ class AccountService {
       return { status: 200, success: true, data };
     }
     return {
-      status: 404,
-      success: false,
-      error: `Not found`,
+      status: 200,
+      success: true,
       message: `There are no transactions for this account currently`
     };
   }
@@ -192,7 +191,8 @@ class AccountService {
           status: foundAccount.status,
           type: foundAccount.type,
           balance: foundAccount.balance,
-          avatar: foundAccount.avatar
+          avatar: foundAccount.avatar,
+          fullName: foundAccount.fullname
         };
         return mappedresult;
       });
@@ -210,9 +210,8 @@ class AccountService {
         break;
     }
     return {
-      status: 404,
-      success: false,
-      error: `Not found`,
+      status: 200,
+      success: true,
       message
     };
   }
@@ -227,7 +226,7 @@ class AccountService {
    */
   static async fetchOneAccount(accountNumber) {
     const foundAccount = await Account.findAccount(accountNumber, 'accountnumber');
-    const { email, status, type, balance, createdon, avatar } = foundAccount;
+    const { email, status, type, balance, createdon, avatar, fullname } = foundAccount;
     return {
       status: 200,
       success: true,
@@ -238,7 +237,8 @@ class AccountService {
         status,
         type,
         balance,
-        avatar
+        avatar,
+        fullName: fullname
       }
     };
   }
