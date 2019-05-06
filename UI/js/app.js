@@ -1,6 +1,7 @@
 const api = "https://bank-a.herokuapp.com/api/v1/";
 
 let load = element => document.getElementById(`${element}`);
+let grab = element => document.querySelectorAll(`${element}`);
 
 class Api {
   static async makeRequest(api, endpoint, options) {
@@ -90,7 +91,7 @@ if (signInButton) {
 
 const AccountsSection = load("admin-dashboard-section");
 if (AccountsSection) {
-  AccountsSection.innerHTML = `<h1>Getting Accounts...</h1>`;
+  AccountsSection.innerHTML = `<h1 class="loader">Getting Accounts...</h1>`;
   const token = localStorage.getItem("token");
   if (!token) window.location.href = "index.html";
   const options = {
@@ -120,7 +121,7 @@ if (AccountsSection) {
                         </article>
                           <article>
                             <p>Account Number</p>
-                            <p>${account.accountNumber}</p>
+                            <p id="account-number">${account.accountNumber}</p>
                           </article>
                           <article>
                             <p>Account Status</p>
@@ -131,8 +132,8 @@ if (AccountsSection) {
                             <p>&#8358; ${account.balance}</p>
                           </article>
                           <article class="buttons">
-                            <a href="accounts.html">
-                              <button>View Account</button>
+                            <a>
+                              <button id="view-account">View Account</button>
                             </a>
                             <button class="cancel">Delete Account</button>
                           </article>
@@ -141,11 +142,109 @@ if (AccountsSection) {
         });
 
         AccountsSection.innerHTML = template;
+        const viewAccountButtons = grab("#view-account");
+        if (viewAccountButtons) {
+          for (button of viewAccountButtons) {
+            button.addEventListener("click", async e => {
+              e.preventDefault();
+              const acctNumber =
+                e.target.parentElement.parentElement.parentElement.childNodes[5]
+                  .lastElementChild.innerText;
+              localStorage.setItem("accountnumber", acctNumber);
+              window.location.href = "accounts.html";
+            });
+          }
+        }
         return;
       }
-      AccountsSection.innerHTML = `<h1>${response.message}</h1>`;
+      AccountsSection.innerHTML = `<h1 class="loader">${response.message}</h1>`;
     } catch (e) {
-      AccountsSection.innerHTML = `<h1>Something Went Wrong. Please Try Again</h1>`;
+      AccountsSection.innerHTML = `<h1 class="loader">Something Went Wrong. Please Try Again</h1>`;
+    }
+  })();
+}
+
+const singleAccount = load("accounts-section");
+if (singleAccount) {
+  singleAccount.innerHTML = `<h1 class="loader">Fetching Account Details...<h1>`;
+  const acctNumber = localStorage.getItem("accountnumber");
+  const token = localStorage.getItem("token");
+  if (!token) window.location.href = "index.html";
+  const options = {
+    method: "GET",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${token}`
+    }
+  };
+
+  (async () => {
+    try {
+      const response = await Api.makeRequest(
+        api,
+        `accounts/${acctNumber}`,
+        options
+      );
+      if (response.status === 401) window.location.href = "index.html";
+      const userAccountDetails = response.data;
+
+      const template = `<article class="account-record">
+                      <article class="record-details">
+                        <figure>
+                          <img
+                            height="100px"
+                            width="100px"
+                            src= "img/avatar.png"
+                            alt="profile photo"
+                          />
+                        </figure>
+
+                        <article>
+                          <p>Fullname</p> <p>${userAccountDetails.fullName}</p>
+                        </article>
+                        <article>
+                          <p>Account Number</p> <p>${
+                            userAccountDetails.accountNumber
+                          }</p>
+                        </article>
+                        <article>
+                          <p>Account Status</p> <p>${
+                            userAccountDetails.status
+                          }</p>
+                        </article>
+                        <article>
+                          <p>Account Balance</p> <p>&#8358; ${
+                            userAccountDetails.balance
+                          }</p>
+                        </article>
+                      </article>
+                      <article class="actions">
+                        <h1>Actions</h1>
+                        <article class="action-buttons">
+                          <a href="#transaction-modal"><button>Make Transaction</button></a>
+                          <button class="activate">Activate</button>
+                          <button class="cancel">Deactivate</button>
+                        </article>
+                      </article>
+                      <article id="transaction-modal">
+                              <article class="transaction-modal-content" id="transaction-modal">
+                                  <form action="#" id="transaction-form">
+                                      <article class="fields">
+                                              <input  id="transaction-type" list="type" placeholder="Select Transaction Type (credit or debit)">
+                                              <datalist id="type">
+                                                      <option>credit</option>
+                                                      <option>debit</option>
+                                              </datalist>
+                                              <input type="amount"  placeholder="Transaction Amount">
+                                      </article>
+                                          <a href="#"><button class="confirm" >Make Transaction</button><a/>
+                                          <a href="#"><button class="cancel" >Cancel</button><a/>
+                                      </form>
+                              </article>
+                    </article>`;
+      singleAccount.innerHTML = template;
+    } catch (e) {
+      singleAccount.innerHTML = `<h1 class="loader">Something Went Wrong. Please Try Again</h1>`;
     }
   })();
 }
