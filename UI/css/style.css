@@ -843,17 +843,20 @@ figure {
   z-index: 10;
   opacity: 0;
   visibility: hidden;
+  display: none;
   transition: ease-in-out 1s;
 }
 
 #transaction-modal:target {
   opacity: 1;
   visibility: visible;
+  display: block;
 }
 
 #transaction-modal:target .transaction-modal-content {
   opacity: 1;
   visibility: visible;
+  display: block;
 }
 
 #transaction-form {
@@ -886,7 +889,8 @@ figure {
   color: white;
 }
 
-.fields input {
+.fields input,
+.fields select {
   display: block;
   padding: 1em;
   width: 70%;
@@ -896,6 +900,10 @@ figure {
   border-left: 3px solid teal;
   background: #ffffffc2;
   color: teal;
+}
+
+.fields select {
+  width: 74.3%;
 }
 
 @media (max-width: 769px) {
@@ -931,6 +939,10 @@ figure {
 
   .fields input {
     width: 80%;
+  }
+
+  .fields select {
+    width: 88.3%;
   }
 
   #transaction-form {
