@@ -69,7 +69,15 @@ class UserService {
       return {
         status: 200,
         success: true,
-        data: { id, firstName: firstname, lastName: lastname, email, type, token },
+        data: {
+          id,
+          firstName: firstname,
+          lastName: lastname,
+          email,
+          type,
+          token,
+          isAdmin: isadmin
+        },
         message: `User Log In Successful`
       };
     }
