@@ -55,28 +55,30 @@
             <ul>
               <li><a href="admin_dashboard.html">Accounts</a></li>
               <li><a href="create_user.html">Add Staff</a></li>
-              <li><a href="index.html">Log Out</a></li>
+              <li><a id="logout"href="index.html">Log Out</a></li>
             </ul>
           </article>
         </nav>
       </header>
       <main id="create-user-main">
         <section id="create-user-section">
+            <article id="alert"></article>
             <h1>Create New Staff/Member</h1>
             <form id="user-form">
                 <article class="user-fields">
-                    <input type="text" name="firstname" placeholder="Firstname">
-                    <input type="text" name="lastname" placeholder="Lastname">
-                    <input type="email" name="email" placeholder="Email">
-                    <input type="password" name="paassword" placeholder="Password">
-                    <input name="user-type" id="user-type" list="user" placeholder="Select User Type (admin or staff)">
+                    <input type="text" id="firstname" placeholder="Firstname">
+                    <input type="text" id="lastname" placeholder="Lastname">
+                    <input type="email" id ="email" placeholder="Email">
+                    <input type="password" id ="password" placeholder="Password">
+                    <input type="password" id ="confirmPassword" placeholder="Password">
+                    <input name="user-type" id ="user-type" list="user" placeholder="Select User Type (admin or staff)">
                     <datalist id="user">
                             <option>admin</option>
                             <option>staff</option> 
                     </datalist>
                     
                 </article>
-                   <button  type="submit">Create User Account</button><a/>
+                   <button id="create_staff_user" type="submit">Create User Account</button><a/>
                 </form>
         </section>
       </main>
@@ -85,5 +87,6 @@
       </footer>
     </section>
     <script src="js/script.js"></script>
+    <script src="js/app.js"></script>
   </body>
 </html>

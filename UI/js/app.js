@@ -145,6 +145,7 @@ if (signInButton) {
         }, 3000);
         break;
       case "staff":
+        localStorage.setItem("isAdmin", response.data.isAdmin);
         setTimeout(() => {
           window.location.href = "admin_dashboard.html";
         }, 3000);
@@ -153,12 +154,24 @@ if (signInButton) {
   });
 }
 
+/****
+ * Handles logic for hiding create staff functionality for non-admin staffs
+ */
+const checkAdminRights = () => {
+  const createStaffLink = load("create_staff");
+  const hasRights = localStorage.getItem("isAdmin");
+  if (!hasRights) {
+    createStaffLink.style.display = "none";
+  }
+};
+
 /******************************************************************************
  * Handles Logic for displaying all accounts on the platform for a staff user
  *
  */
 const AccountsSection = load("admin-dashboard-section");
 if (AccountsSection) {
+  checkAdminRights();
   AccountsSection.innerHTML = `<h1 class="loader">Getting Accounts...</h1>`;
   const token = localStorage.getItem("token");
   if (!token) window.location.href = "index.html";
@@ -255,6 +268,7 @@ if (AccountsSection) {
  */
 const singleAccount = load("accounts-section");
 if (singleAccount) {
+  checkAdminRights();
   // set html content while waiting for response from  the server
   singleAccount.innerHTML = `<h1 class="loader">Fetching Account Details...<h1>`;
 
@@ -540,4 +554,70 @@ if (singleAccount) {
       singleAccount.innerHTML = `<h1 class="loader">Something Went Wrong. Please Try Again</h1>`;
     }
   })();
+}
+
+/**********************************
+ * Logic For creating a staff user
+ *
+ */
+const createStaffSection = load("create-user-section");
+if (createStaffSection) {
+  const createStaffButton = load("create_staff_user");
+  createStaffButton.addEventListener("click", async e => {
+    e.preventDefault();
+
+    // set button text to demonstrate initaiation of request
+    createStaffButton.innerText = `Loading...`;
+
+    // get form values
+    const firstName = load("firstname").value;
+    const lastName = load("lastname").value;
+    const email = load("email").value;
+    const password = load("password").value;
+    const confirmPassword = load("confirmPassword").value;
+    const type = load("user-type").value;
+
+    const data = {
+      firstName,
+      lastName,
+      email,
+      password,
+      confirmPassword,
+      type
+    };
+
+    const token = localStorage.getItem("token");
+
+    // set fetch API options
+    const options = {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`
+      },
+      body: JSON.stringify(data)
+    };
+
+    const response = await Api.makeRequest(api, "auth/makestaff", options);
+
+    if (response.success === false) {
+      // set button text to demonstrate conclusion of request
+      createStaffButton.innerText = `Create User Account`;
+      toast(response);
+      return;
+    }
+
+    createStaffButton.innerText = `Create User Account`;
+    toast(response);
+  });
+}
+
+/****
+ * Logic for clearing localstorage on logging out of the platform
+ */
+const logOutButtton = load("logout");
+if (logOutButtton) {
+  logOutButtton.addEventListener("click", () => {
+    localStorage.clear();
+  });
 }
