@@ -261,7 +261,8 @@ describe('Tests for all Auth(signup and signin) Endpoints', () => {
             'firstName',
             'lastName',
             'email',
-            'type'
+            'type',
+            'isAdmin'
           );
           done();
         });
