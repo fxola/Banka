@@ -408,12 +408,16 @@ td {
   .transaction-table th {
     font-size: 0.93em;
   }
-  .transaction-table td {
-    font-size: 0.9em;
-    width: 20%;
-  }
+
   .transaction-table td button {
     width: 100%;
+  }
+}
+
+@media (max-width: 600px) {
+  .transaction-table td {
+    font-size: 0.9em;
+    width: 80px;
   }
 }
 
@@ -1279,11 +1283,24 @@ a {
   display: none;
 }
 
+mark {
+  background-color: white;
+  padding: 1em;
+  display: block;
+  color: teal;
+  text-align: center;
+  margin: 15vh auto;
+  width: 50%;
+}
+
 @media (max-width: 769px) {
   #alert {
     top: 13%;
     width: 88%;
     margin: 0 auto;
+  }
+  mark {
+    width: auto;
   }
 }
 

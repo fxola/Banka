@@ -77,27 +77,34 @@ if (signUpButton) {
       },
       body: JSON.stringify(data)
     };
+    try {
+      const response = await Api.makeRequest(api, "auth/signup", options);
 
-    const response = await Api.makeRequest(api, "auth/signup", options);
+      if (response.success === false) {
+        // set button text to demonstrate conclusion of request
+        signUpButton.innerText = `Register`;
+        toast(response);
+        return;
+      }
 
-    if (response.success === false) {
       // set button text to demonstrate conclusion of request
       signUpButton.innerText = `Register`;
       toast(response);
-      return;
+
+      // save token for usage on subsequent requests
+      localStorage.setItem("token", response.data.token);
+
+      // redirect to transactions page
+      setTimeout(() => {
+        window.location.href = "transactions.html";
+      }, 3000);
+    } catch (e) {
+      signUpButton.innerText = `Register`;
+      toast({
+        success: false,
+        message: `Something went wrong, please check your connection and try again`
+      });
     }
-
-    // set button text to demonstrate conclusion of request
-    signUpButton.innerText = `Register`;
-    toast(response);
-
-    // save token for usage on subsequent requests
-    localStorage.setItem("token", response.data.token);
-
-    // redirect to transactions page
-    setTimeout(() => {
-      window.location.href = "transactions.html";
-    }, 3000);
   });
 }
 
@@ -124,32 +131,41 @@ if (signInButton) {
       },
       body: JSON.stringify(data)
     };
-    const response = await Api.makeRequest(api, "auth/signin", options);
+    try {
+      const response = await Api.makeRequest(api, "auth/signin", options);
 
-    if (response.success === false) {
+      if (response.success === false) {
+        signInButton.innerText = `Log in`;
+        toast(response);
+        return;
+      }
       signInButton.innerText = `Log in`;
       toast(response);
-      return;
-    }
-    signInButton.innerText = `Log in`;
-    toast(response);
 
-    // save token for usage on subsequent requests
-    localStorage.setItem("token", response.data.token);
+      // save token for usage on subsequent requests
+      localStorage.setItem("token", response.data.token);
 
-    // redirect successfully logged in user to appropraite pages based on roles
-    switch (response.data.type) {
-      case "client":
-        setTimeout(() => {
-          window.location.href = "transactions.html";
-        }, 3000);
-        break;
-      case "staff":
-        localStorage.setItem("isAdmin", response.data.isAdmin);
-        setTimeout(() => {
-          window.location.href = "admin_dashboard.html";
-        }, 3000);
-        break;
+      // redirect successfully logged in user to appropriate pages based on roles
+      switch (response.data.type) {
+        case "client":
+          localStorage.setItem("userDetails", JSON.stringify(response.data));
+          setTimeout(() => {
+            window.location.href = "transactions.html";
+          }, 3000);
+          break;
+        case "staff":
+          localStorage.setItem("isAdmin", response.data.isAdmin);
+          setTimeout(() => {
+            window.location.href = "admin_dashboard.html";
+          }, 3000);
+          break;
+      }
+    } catch (e) {
+      signInButton.innerText = `Log in`;
+      toast({
+        success: false,
+        message: `Something went wrong, please check your connection and try again`
+      });
     }
   });
 }
@@ -160,7 +176,7 @@ if (signInButton) {
 const checkAdminRights = () => {
   const createStaffLink = load("create_staff");
   const hasRights = localStorage.getItem("isAdmin");
-  if (!hasRights) {
+  if (hasRights == "false") {
     createStaffLink.style.display = "none";
   }
 };
@@ -189,7 +205,7 @@ if (AccountsSection) {
     try {
       const response = await Api.makeRequest(api, "accounts", options);
 
-      // redirect to hompage if token expires
+      // redirect to homepage if token expires
       if (response.status === 401) window.location.href = "index.html";
 
       // on event that there are accounts on the platform
@@ -296,7 +312,7 @@ if (singleAccount) {
         options
       );
 
-      // redirect to hompage if token expires
+      // redirect to homepage if token expires
       if (response.status === 401) window.location.href = "index.html";
 
       const userAccountDetails = response.data;
@@ -562,6 +578,9 @@ if (singleAccount) {
  */
 const createStaffSection = load("create-user-section");
 if (createStaffSection) {
+  const token = localStorage.getItem("token");
+  if (!token) window.location.href = "index.html";
+
   const createStaffButton = load("create_staff_user");
   createStaffButton.addEventListener("click", async e => {
     e.preventDefault();
@@ -586,8 +605,6 @@ if (createStaffSection) {
       type
     };
 
-    const token = localStorage.getItem("token");
-
     // set fetch API options
     const options = {
       method: "POST",
@@ -600,6 +617,8 @@ if (createStaffSection) {
 
     const response = await Api.makeRequest(api, "auth/makestaff", options);
 
+    if (response.status === 401) window.location.href = "index.html";
+
     if (response.success === false) {
       // set button text to demonstrate conclusion of request
       createStaffButton.innerText = `Create User Account`;
@@ -610,6 +629,117 @@ if (createStaffSection) {
     createStaffButton.innerText = `Create User Account`;
     toast(response);
   });
+}
+
+/***************************************************************************
+ * Handles Logic for displaying all transactions for a user's bank account
+ *
+ */
+const transactionSection = load("transaction-section");
+if (transactionSection) {
+  const client = JSON.parse(localStorage.getItem("userDetails"));
+  const welcomeMessage = load("welcome");
+  welcomeMessage.innerText = `Welcome, ${client.firstName}`;
+
+  // set fetch API options
+  const options = {
+    method: "GET",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${client.token}`
+    }
+  };
+
+  /*****
+   * Handles Logic for fetching client's account number
+   *  @param {string} email client email address
+   * @returns {number|boolean} client's account number or false if unsuccessful
+   */
+  const getClientAccountNumber = async email => {
+    const response = await Api.makeRequest(
+      api,
+      `user/${email}/accounts`,
+      options
+    );
+
+    // redirect to homepage if token expires
+    if (response.status === 401) window.location.href = "index.html";
+
+    // save client account details for subsequent usage
+    localStorage.setItem(
+      "clientAccountDetails",
+      JSON.stringify(response.data[0])
+    );
+
+    if (response.data) return response.data[0].accountNumber;
+    return false;
+  };
+
+  /*****
+   * Handles Logic for fetching a client's account transactions
+   *  @param {number} accountnumber client's account number
+   * @returns {array|boolean} client's account transactions or false if unsuccessful
+   */
+  const getClientTransactions = async accountnumber => {
+    const response = await Api.makeRequest(
+      api,
+      `accounts/${accountnumber}/transactions`,
+      options
+    );
+
+    // redirect to homepage if token expires
+    if (response.status === 401) window.location.href = "index.html";
+
+    if (response.data) return response.data;
+    return false;
+  };
+
+  (async () => {
+    const transactionTable = load("transaction-table");
+
+    transactionTable.innerHTML = "<h1><mark>Loading...</mark></h1>";
+    const acctNumber = await getClientAccountNumber(client.email);
+    if (acctNumber) {
+      const transactions = await getClientTransactions(acctNumber);
+      if (transactions) {
+        const tableHeaderTemplate = `<table class="transaction-table" cellspacing="0">
+                                    <thead>
+                                      <tr>
+                                        <th>View Transaction</th>
+                                        <th>Transaction Time</th>
+                                        <th>Transaction Type</th>
+                                        <th>&#8358; Amount</th>
+                                        <th>&#8358; Old Balance</th>
+                                        <th>&#8358; New Balance</th>
+                                      </tr>
+                                    </thead>
+                                  <tbody>`;
+
+        const tableFooterTemplate = `</tbody> </table>`;
+
+        const transactionTemplate = transactions
+          .map(transaction => {
+            const mapped = `<tr class=${transaction.transactionType}>
+                            <td><button>View</button></td>
+                            <td>${transaction.createdOn}</td>
+                            <td>${transaction.transactionType}</td>
+                            <td>&#8358;${transaction.amount}</td>
+                            <td>&#8358;${transaction.oldBalance}</td>
+                            <td>&#8358;${transaction.newBalance}</td>
+                         </tr>`;
+            return mapped;
+          })
+          .join("");
+
+        transactionTable.innerHTML =
+          tableHeaderTemplate + transactionTemplate + tableFooterTemplate;
+        return;
+      }
+      transactionTable.innerHTML = `<h1><mark>There are no transactions for this account yet</mark></h1>`;
+    }
+
+    transactionTable.innerHTML = `<h1><mark>You have no transactions yet, Try creating a bank account from your profile first</mark></h1>`;
+  })();
 }
 
 /****
