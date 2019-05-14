@@ -63,15 +63,9 @@
         </nav>
       </header>
       <main id="admin-dashboard-main">
+          <article id="alert"></article>
         <section id="admin-dashboard-section">
-          <!-- <section>
-            <select id="filter">
-              <option value="all" selected>All</option>
-              <option value="dormant">Dormant</option>
-              <option value="active">Active</option>
-            </select>
-          </section>
-          <h1>Accounts</h1>
+          <!-- <h1>Accounts</h1>
           <section id="accounts">
             <article class="account-details">
               <article>
@@ -92,7 +86,7 @@
               </article>
               <article class="buttons">
                 <a href="accounts.html"><button>View Account</button></a>
-                <button class="cancel">Delete Account</button>
+                <button id="delete" class="cancel">Delete Account</button>
               </article>
             </article>
             <article class="account-details">
@@ -180,11 +174,22 @@
               </article>
               <article class="buttons">
                 <a href="accounts.html"><button>View Account</button></a>
-                <button class="cancel">Delete Account</button>
+                <button id="delete-trigger" class="cancel">
+                  Delete Account
+                </button>
               </article>
             </article>
-          </section> -->
-        </section>
+            <article id="delete-modal">
+              <article id="delete-confirmation">
+                <p>Are you sure you want to delete this account?</p>
+                <article>
+                  <button id="delete-account" class="cancel">Yes</button>
+                  <button id="close">No</button>
+                </article>
+              </article>
+            </article> 
+          </section>
+        </section> -->
       </main>
       <footer>
         Hand-crafted By Afolabi &#x00A9; 2019
