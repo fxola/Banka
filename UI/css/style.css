@@ -673,6 +673,7 @@ td {
   font-weight: bolder;
   padding: 0.7em;
   border-radius: 0.5em;
+  margin-bottom: 1em;
 }
 
 .account-details article {

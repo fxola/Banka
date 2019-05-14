@@ -62,6 +62,7 @@
       </header>
       <main id="dashboard-main">
         <section id="dashboard-section">
+            <article id="alert"></article>
           <section id="profile">
             <article id="photo">
               <article class="card-img">
@@ -101,18 +102,14 @@
             <article class="account-modal-content" id="account-modal">
                 <form action="#" id="account-form">
                     <article class="fields">
-                        <input type="text" name="firstname" placeholder="Firstname">
-                        <input type="text" name="lastname" placeholder="Lastname">
-                        <input type="email" name="email" placeholder="Email">
-                        <input name="user-account" id="user-account" list="account-type" placeholder="Select account type (savings or current)" >
-                        <datalist id="account-type">
-                            <option>savings</option>
-                            <option>current</option> 
-                        </datalist>
-                        <label for="avata">Upload Profile Picture(Optional)</label>
-                        <input type="file" name="avatar" id="avatar">
+                        <select required id="type"  placeholder="Select Account Type (savings or current)">
+                            <option value = "savings">savings</option>
+                            <option value = "current">current</option>
+                    </select>
+                        <label for="avatar">Upload Profile Picture(Optional)</label>
+                        <input type="file"  id="avatar">
                     </article>
-                        <a href="#"><button class="confirm" type="submit">Create Account</button><a/>
+                        <a href="#"><button id="confirm" class="confirm" type="submit">Create Account</button><a/>
                         <a href="#"><button class="cancel" type="submit">Cancel</button><a/>
                     </form>
             </article>
@@ -124,5 +121,6 @@
       </footer>
     </section>
     <script src="js/script.js"></script>
+    <script src="js/app.js"></script>
   </body>
 </html>
