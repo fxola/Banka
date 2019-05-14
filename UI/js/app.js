@@ -94,6 +94,9 @@ if (signUpButton) {
       // save token for usage on subsequent requests
       localStorage.setItem("token", response.data.token);
 
+      // save user info
+      localStorage.setItem("userDetails", JSON.stringify(response.data));
+
       // redirect to transactions page
       setTimeout(() => {
         window.location.href = "transactions.html";
@@ -211,8 +214,9 @@ if (AccountsSection) {
       // on event that there are accounts on the platform
       if (response.data.length > 0) {
         // map all accounts on the platform to adhere to the template provided
-        const template = response.data.map(account => {
-          const mapped = `
+        const template = response.data
+          .map(account => {
+            const mapped = `
                     <article class="account-details">
                           <article>
                             <p>Fullname</p>
@@ -241,8 +245,9 @@ if (AccountsSection) {
                             <button class="cancel">Delete Account</button>
                           </article>
                         </article>`;
-          return mapped;
-        });
+            return mapped;
+          })
+          .join("");
 
         //attach mapped template to page
         AccountsSection.innerHTML = template;
@@ -637,6 +642,9 @@ if (createStaffSection) {
  */
 const transactionSection = load("transaction-section");
 if (transactionSection) {
+  const token = localStorage.getItem("token");
+  if (!token) window.location.href = "index.html";
+
   const client = JSON.parse(localStorage.getItem("userDetails"));
   const welcomeMessage = load("welcome");
   welcomeMessage.innerText = `Welcome, ${client.firstName}`;
@@ -666,18 +674,19 @@ if (transactionSection) {
     if (response.status === 401) window.location.href = "index.html";
 
     // save client account details for subsequent usage
-    localStorage.setItem(
-      "clientAccountDetails",
-      JSON.stringify(response.data[0])
-    );
-
+    if (response.status === 200) {
+      localStorage.setItem(
+        "clientAccountDetails",
+        JSON.stringify(response.data[0])
+      );
+    }
     if (response.data) return response.data[0].accountNumber;
     return false;
   };
 
   /*****
    * Handles Logic for fetching a client's account transactions
-   *  @param {number} accountnumber client's account number
+   * @param {number} accountnumber client's account number
    * @returns {array|boolean} client's account transactions or false if unsuccessful
    */
   const getClientTransactions = async accountnumber => {
@@ -696,13 +705,13 @@ if (transactionSection) {
 
   (async () => {
     const transactionTable = load("transaction-table");
-
-    transactionTable.innerHTML = "<h1><mark>Loading...</mark></h1>";
-    const acctNumber = await getClientAccountNumber(client.email);
-    if (acctNumber) {
-      const transactions = await getClientTransactions(acctNumber);
-      if (transactions) {
-        const tableHeaderTemplate = `<table class="transaction-table" cellspacing="0">
+    try {
+      transactionTable.innerHTML = "<h1><mark>Loading...</mark></h1>";
+      const acctNumber = await getClientAccountNumber(client.email);
+      if (acctNumber) {
+        const transactions = await getClientTransactions(acctNumber);
+        if (transactions) {
+          const tableHeaderTemplate = `<table class="transaction-table" cellspacing="0">
                                     <thead>
                                       <tr>
                                         <th>View Transaction</th>
@@ -715,11 +724,11 @@ if (transactionSection) {
                                     </thead>
                                   <tbody>`;
 
-        const tableFooterTemplate = `</tbody> </table>`;
+          const tableFooterTemplate = `</tbody> </table>`;
 
-        const transactionTemplate = transactions
-          .map(transaction => {
-            const mapped = `<tr class=${transaction.transactionType}>
+          const transactionTemplate = transactions
+            .map(transaction => {
+              const mapped = `<tr class=${transaction.transactionType}>
                             <td><button>View</button></td>
                             <td>${transaction.createdOn}</td>
                             <td>${transaction.transactionType}</td>
@@ -727,19 +736,165 @@ if (transactionSection) {
                             <td>&#8358;${transaction.oldBalance}</td>
                             <td>&#8358;${transaction.newBalance}</td>
                          </tr>`;
-            return mapped;
-          })
-          .join("");
+              return mapped;
+            })
+            .join("");
 
-        transactionTable.innerHTML =
-          tableHeaderTemplate + transactionTemplate + tableFooterTemplate;
+          transactionTable.innerHTML =
+            tableHeaderTemplate + transactionTemplate + tableFooterTemplate;
+          return;
+        }
+        transactionTable.innerHTML = `<h1><mark>There are no transactions for your bank account yet</mark></h1>`;
         return;
       }
-      transactionTable.innerHTML = `<h1><mark>There are no transactions for this account yet</mark></h1>`;
-    }
 
-    transactionTable.innerHTML = `<h1><mark>You have no transactions yet, Try creating a bank account from your profile first</mark></h1>`;
+      transactionTable.innerHTML = `<h1><mark>You have no transactions yet, Try creating a bank account from your profile first</mark></h1>`;
+    } catch (e) {
+      transactionTable.innerHTML = `<h1><mark>Something went wrong, Please Check your connection and try again</mark></h1>`;
+    }
   })();
+}
+
+const userProfile = load("dashboard-section");
+if (userProfile) {
+  const profileSection = load("profile");
+  const client = JSON.parse(localStorage.getItem("userDetails"));
+  if (!client) window.location.href = "index.html";
+  const accountDetails = JSON.parse(
+    localStorage.getItem("clientAccountDetails")
+  );
+  const createAccountButton = load("account");
+  let defaultTemplate;
+  defaultTemplate = `
+          <article id="photo">
+            <article class="card-img">
+              <img id="img" src="img/avatar.png" alt="profile photo" />
+            </article>
+            <article class="container">
+              <p id="name">${client.firstName} ${client.lastName}</p>
+            </article>
+          </article>
+          <article class="details">
+            <article>
+              <p>
+                Account Number
+              </p>
+              <p id="acct-num"class="account-number"> - </p>
+            </article>
+            <article>
+              <p>Account Balance</p>
+              <p id="profile-balance" class="account-balance">&#8358; 0.00</p>
+            </article>
+            <article>
+              <p>Account Status</p>
+              <p id="profile-status" class="account-status"> - </p>
+            </article>
+            <article>
+                <p>
+                  Email Address
+                </p>
+                <p id="profile-email" class="account-number">${client.email}</p>
+              </article>
+          </article>
+                      `;
+
+  if (accountDetails) {
+    defaultTemplate = `
+      <article id="photo">
+        <article class="card-img">
+          <img src="img/avatar.png" alt="profile photo" />
+        </article>
+        <article class="container">
+          <p id="name">${accountDetails.fullName}</p>
+        </article>
+      </article>
+      <article class="details">
+        <article>
+          <p>
+            Account Number
+          </p>
+          <p id="acct-num"class="account-number">${
+            accountDetails.accountNumber
+          }</p>
+        </article>
+        <article>
+          <p>Account Balance</p>
+          <p id="profile-balance" class="account-balance">&#8358; ${
+            accountDetails.balance
+          }</p>
+        </article>
+        <article>
+          <p>Account Status</p>
+          <p id="profile-status" class="account-status">${
+            accountDetails.status
+          }</p>
+        </article>
+        <article>
+            <p>
+              Email Address
+            </p>
+            <p id="profile-email" class="account-number">${
+              accountDetails.ownerEmail
+            }</p>
+          </article>
+      </article>
+      
+    `;
+
+    createAccountButton.style.display = "none";
+  }
+
+  profileSection.innerHTML = defaultTemplate;
+
+  const accountButton = load("confirm");
+  accountButton.addEventListener("click", async e => {
+    e.preventDefault();
+    accountButton.innerText = "Processing...";
+
+    const type = load("type").value;
+    const avatar = load("avatar").value;
+    const data = { type, avatar };
+
+    console.log(avatar);
+    // set fetch API options
+    const options = {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${client.token}`
+      },
+      body: JSON.stringify(data)
+    };
+
+    const response = await Api.makeRequest(api, `accounts`, options);
+
+    // redirect to homepage if token expires
+    if (response.status === 401) window.location.href = "index.html";
+
+    if (response.success === true) {
+      const accountStatus = load("profile-status");
+      const accountNumber = load("acct-num");
+      const fullName = load("name");
+      const email = load("profile-email");
+
+      accountStatus.innerText = response.data.status;
+      accountNumber.innerText = response.data.accountNumber;
+      fullName.innerText = `${response.data.firstName} ${
+        response.data.lastName
+      }`;
+      email.innerText = response.data.email;
+
+      window.location.href = "#";
+      accountButton.innerText = "Confirm";
+      createAccountButton.style.display = "none";
+      toast(response);
+
+      return;
+    }
+    window.location.href = "#";
+    toast(response);
+    accountButton.innerText = "Confirm";
+  });
 }
 
 /****
