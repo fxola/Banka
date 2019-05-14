@@ -212,7 +212,7 @@ if (AccountsSection) {
       if (response.status === 401) window.location.href = "index.html";
 
       // on event that there are accounts on the platform
-      if (response.data.length > 0) {
+      if (response.data) {
         // map all accounts on the platform to adhere to the template provided
         const template = response.data
           .map(account => {
@@ -242,15 +242,33 @@ if (AccountsSection) {
                             <a>
                               <button id="view-account">View Account</button>
                             </a>
-                            <button class="cancel">Delete Account</button>
+                            <button  id="delete-trigger" class="cancel">Delete Account</button>
                           </article>
                         </article>`;
             return mapped;
           })
           .join("");
 
+        const deleteModalTemplate = `<article id="delete-modal">
+                                      <article id="delete-confirmation">
+                                        <p>Are you sure you want to delete this account?</p>
+                                        <article>
+                                          <button id="delete-account" class="cancel">Yes</button>
+                                          <button id="close">No</button>
+                                        </article>
+                                      </article>
+                                    </article>            <article id="delete-modal">
+                                    <article id="delete-confirmation">
+                                      <p>Are you sure you want to delete this account?</p>
+                                      <article>
+                                        <button id="delete-account" class="cancel">Yes</button>
+                                        <button id="close">No</button>
+                                      </article>
+                                    </article>
+                                  </article>`;
+
         //attach mapped template to page
-        AccountsSection.innerHTML = template;
+        AccountsSection.innerHTML = template + deleteModalTemplate;
 
         // get all 'view accounts' button on page
         const viewAccountButtons = grab("#view-account");
@@ -272,10 +290,81 @@ if (AccountsSection) {
             });
           }
         }
-        return;
+
+        /*******************************************************
+         * Logic for deleting a specific account record
+         *
+         */
+        const deleteAccountModal = load("delete-modal");
+        const deleteAccountButton = load("delete-account");
+        const deleteTriggerButtons = grab("#delete-trigger");
+        const closebutton = load("close");
+        if (deleteTriggerButtons) {
+          let accountNumber;
+          let accountCard;
+          for (button of deleteTriggerButtons) {
+            // open  confirmation modal
+            button.addEventListener("click", e => {
+              deleteAccountModal.style.display = "block";
+
+              // retrieve account number value
+              accountNumber =
+                e.target.parentElement.parentElement.childNodes[5]
+                  .lastElementChild.innerText;
+
+              // retrieve account card for removal on successful deletion
+              accountCard = e.target.parentElement.parentElement;
+            });
+          }
+
+          deleteAccountButton.addEventListener("click", async e => {
+            deleteAccountModal.style.display = "none";
+            try {
+              const deleteOptions = {
+                method: "DELETE",
+                headers: {
+                  "Content-Type": "application/json",
+                  Authorization: `Bearer ${token}`
+                }
+              };
+
+              const response = await Api.makeRequest(
+                api,
+                `accounts/${accountNumber}`,
+                deleteOptions
+              );
+              toast(response);
+              if (response.status === 200) {
+                setTimeout(() => {
+                  accountCard.remove();
+                }, 1500);
+              }
+            } catch (e) {
+              toast({
+                success: false,
+                message: `Something went wrong, please check your connection and try again`
+              });
+            }
+          });
+
+          // close confirmation modal if user clicks outside modal
+          window.addEventListener("click", e => {
+            if (e.target == deleteAccountModal) {
+              deleteAccountModal.style.display = "none";
+            }
+          });
+
+          // close confirmation modal if user clicks close button
+          closebutton.addEventListener("click", () => {
+            deleteAccountModal.style.display = "none";
+          });
+
+          return;
+        }
       }
       // on event that there are no accounts on the platform
       AccountsSection.innerHTML = `<h1 class="loader">${response.message}</h1>`;
+      return;
     } catch (e) {
       // Handle unexpected error e.g slow network/server error
       AccountsSection.innerHTML = `<h1 class="loader">Something Went Wrong. Please Try Again</h1>`;
