@@ -1301,7 +1301,8 @@ mark {
   width: 50%;
 }
 
-#delete-modal {
+#delete-modal,
+#tx-modal {
   position: fixed;
   top: 0;
   left: 0;
@@ -1313,7 +1314,8 @@ mark {
   z-index: 99;
 }
 
-#delete-confirmation {
+#delete-confirmation,
+#tx-content {
   margin: 30vh auto;
   background: white;
   color: teal;
@@ -1322,6 +1324,47 @@ mark {
   text-align: center;
   position: relative;
   transition: ease-in-out 3s;
+}
+
+#tx-content {
+  margin: 10vh auto;
+  padding: 4em;
+  width: 60%;
+}
+
+#tx-content h1 {
+  font-size: 2em;
+  font-weight: bolder;
+  margin-bottom: 1em;
+}
+#tx-content span {
+  position: absolute;
+  top: 20px;
+  right: 50px;
+  font-size: 2em;
+  font-weight: bolder;
+  cursor: pointer;
+}
+#tx-content table {
+  width: 100%;
+  text-align: left;
+}
+
+#tx-content td {
+  padding: 0.5em;
+  font-size: 1.3em;
+  font-weight: bolder;
+  border-right: 1px dashed;
+  border-bottom: 1px dashed;
+}
+
+#tx-content #tag {
+  background: teal;
+  color: white;
+  font-weight: bolder;
+  padding: 0.5em;
+  font-size: 1.3em;
+  border: 2px solid;
 }
 
 #delete-confirmation p {
@@ -1356,9 +1399,14 @@ mark {
     width: auto;
   }
 
-  #delete-confirmation {
+  #delete-confirmation,
+  #tx-content {
     padding: 1em;
     width: 80%;
+  }
+
+  #tx-content {
+    margin: 20vh auto;
   }
 
   #delete-confirmation p {
@@ -1368,6 +1416,22 @@ mark {
   #delete-confirmation button {
     width: 25%;
     margin: 0.4em;
+  }
+
+  #tx-content td,
+  #tx-content #tag {
+    font-size: 0.8em;
+  }
+
+  #tx-content span {
+    position: absolute;
+    top: 10px;
+    right: 20px;
+    font-size: 1em;
+  }
+
+  #tx-content h1 {
+    font-size: 1em;
   }
 }
 
