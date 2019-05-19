@@ -818,7 +818,7 @@ if (transactionSection) {
           const transactionTemplate = transactions
             .map(transaction => {
               const mapped = `<tr class=${transaction.transactionType}>
-                            <td><button>View</button></td>
+                            <td><button id="view">View</button></td>
                             <td>${transaction.createdOn}</td>
                             <td>${transaction.transactionType}</td>
                             <td>&#8358;${transaction.amount}</td>
@@ -829,9 +829,85 @@ if (transactionSection) {
             })
             .join("");
 
+          const singleTxTemplate = `<article id="tx-modal">
+                                      <article id="tx-content">
+                                        <span id="close-tx">x</span>
+                                        <h1>Transaction details &#x1F4B0; &#x1F4B0;</h1>
+                                        <table>
+                                          <tr>
+                                            <td id="tag">Transaction Time</td>
+                                            <td id="tx-time">26-03-2019 15:55:01</td>
+                                          </tr>
+                                          <tr>
+                                            <td id="tag">Transaction type</td>
+                                            <td id="tx-type">Credit</td>
+                                          </tr>
+                                          <tr>
+                                            <td id="tag">Amount</td>
+                                            <td id ="tx-amount">&#8358;25,000</td>
+                                          </tr>
+                                          <tr>
+                                            <td id="tag">Old Balance</td>
+                                            <td id="tx-old">&#8358;25,000</td>
+                                          </tr>
+                                          <tr>
+                                            <td id="tag">New Balance</td>
+                                            <td id="tx-new">&#8358;25,000</td>
+                                          </tr>
+                                        </table>
+                                      </article>`;
+
           transactionTable.innerHTML =
-            tableHeaderTemplate + transactionTemplate + tableFooterTemplate;
-          return;
+            tableHeaderTemplate +
+            transactionTemplate +
+            tableFooterTemplate +
+            singleTxTemplate;
+          let txDetails;
+
+          const txModal = load("tx-modal");
+
+          // get all view transaction buttons form DOM
+          const viewButtons = grab("#view");
+          if (viewButtons) {
+            for (button of viewButtons) {
+              button.addEventListener("click", e => {
+                //open modal
+                txModal.style.display = "block";
+
+                //get row details of clicked transaction
+                txDetails = e.target.parentElement.parentElement.children;
+
+                // query DOM for transaction template
+                const txTime = load("tx-time");
+                const txType = load("tx-type");
+                const txAmount = load("tx-amount");
+                const txOld = load("tx-old");
+                const txNew = load("tx-new");
+
+                // assign transaction values to template
+                txTime.innerText = txDetails[1].innerText;
+                txType.innerText = txDetails[2].innerText;
+                txAmount.innerText = txDetails[3].innerText;
+                txOld.innerText = txDetails[4].innerText;
+                txNew.innerText = txDetails[5].innerText;
+              });
+            }
+            const closeButton = document.getElementById("close-tx");
+            if (closeButton) {
+              // close modal when user clicks the x button/logo
+              closeButton.addEventListener("click", () => {
+                txModal.style.display = "none";
+              });
+            }
+
+            //close modal when user clicks outside the modal
+            window.addEventListener("click", e => {
+              if (e.target == txModal) {
+                txModal.style.display = "none";
+              }
+            });
+            return;
+          }
         }
         transactionTable.innerHTML = `<h1><mark>There are no transactions for your bank account yet</mark></h1>`;
         return;
@@ -839,6 +915,7 @@ if (transactionSection) {
 
       transactionTable.innerHTML = `<h1><mark>You have no transactions yet, Try creating a bank account from your profile first</mark></h1>`;
     } catch (e) {
+      console.log(e);
       transactionTable.innerHTML = `<h1><mark>Something went wrong, Please Check your connection and try again</mark></h1>`;
     }
   })();
